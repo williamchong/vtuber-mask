@@ -23,7 +23,7 @@ export default defineNuxtConfig({
         { name: 'description', content: 'A reaction game for Global Game Jam 2026' },
       ],
     },
-    baseURL: './',
+    baseURL: process.env.NUXT_APP_BASE_URL || './',
   },
 
   vite: {
@@ -35,7 +35,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      debugMode: true,
+      debugMode: process.env.NODE_ENV !== 'production',
     },
   },
 })
