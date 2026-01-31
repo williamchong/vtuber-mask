@@ -52,6 +52,14 @@ watch(
   },
 )
 
+const smoothnessDotColors = {
+  smooth: 'bg-green-400',
+  normal: 'bg-yellow-400',
+  laggy: 'bg-red-400',
+} as const
+
+const smoothnessDotColor = computed(() => smoothnessDotColors[gameStore.smoothness])
+
 const emotionalPercent = computed(() =>
   Math.max(0, Math.min(100, (gameStore.emotionalValue / GAME_CONFIG.EMOTIONAL_VALUE_MAX) * 100)),
 )
@@ -109,9 +117,11 @@ const emotionalEmoji = computed(() => {
           </div>
           <span class="font-bold">VTuber Mask</span>
         </div>
-        <span class="text-sm text-white/50">Your Stream</span>
         <div class="flex items-center gap-2 text-sm text-white/70">
-          <span class="inline-block w-2 h-2 rounded-full bg-red-500" />
+          <span
+            class="inline-block w-2 h-2 rounded-full transition-colors duration-300"
+            :class="smoothnessDotColor"
+          />
           <span>{{ Math.floor(gameStore.viewers).toLocaleString() }} viewers</span>
           <Transition name="delta-pop">
             <span
