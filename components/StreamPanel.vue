@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import type { InfoLeakState } from '~/composables/useInfoLeak'
+
+defineProps<{
+  infoLeakState: InfoLeakState
+}>()
+
+const emit = defineEmits<{
+  censorLeak: []
+}>()
+</script>
+
 <template>
   <div class="relative w-1/2 bg-[#0e0e14] overflow-hidden">
     <!-- Scanline / grid texture -->
@@ -12,6 +24,8 @@
       muted
       playsinline
     />
+
+    <InfoLeakOverlay :state="infoLeakState" @censor="emit('censorLeak')" />
 
     <VTuberOverlay />
   </div>

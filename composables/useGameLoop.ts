@@ -1,6 +1,6 @@
 import { GAME_CONFIG } from '~/data/config'
 
-export function useGameLoop() {
+export function useGameLoop(externalDanger?: Ref<boolean>) {
   const gameStore = useGameStore()
   const chatStore = useChatStore()
   let rafId: number | null = null
@@ -41,6 +41,11 @@ export function useGameLoop() {
           }
         }
       }
+    }
+
+    // Include external danger (e.g. info leak in danger state)
+    if (externalDanger?.value) {
+      hasFlashing = true
     }
 
     // Update smoothness state machine

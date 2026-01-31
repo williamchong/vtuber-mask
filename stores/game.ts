@@ -168,6 +168,24 @@ export const useGameStore = defineStore('game', () => {
     if (emotionalValue.value <= 0) gameOver()
   }
 
+  function penalizeInfoLeakDanger() {
+    if (state.value !== 'playing') return
+    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.INFO_LEAK_DANGER_EMOTIONAL_PENALTY)
+    setLaggy()
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
+  function missedInfoLeak() {
+    if (state.value !== 'playing') return
+    threatsExpired.value++
+    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.INFO_LEAK_MISS_EMOTIONAL_PENALTY)
+    const before = viewers.value
+    viewers.value = Math.max(0, viewers.value - GAME_CONFIG.INFO_LEAK_MISS_VIEWER_PENALTY)
+    viewerDelta.value = Math.round(viewers.value - before)
+    setLaggy()
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
   function updateViewers(dt: number) {
     if (state.value !== 'playing') return
     viewers.value = Math.max(0, viewers.value + viewerRate.value * dt)
@@ -236,6 +254,8 @@ export const useGameStore = defineStore('game', () => {
     penalizeThreatFlash,
     penalizeFalsePositive,
     missedThreat,
+    penalizeInfoLeakDanger,
+    missedInfoLeak,
     updateSmoothness,
     updateViewers,
     fluctuateEmotionalValue,

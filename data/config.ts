@@ -42,6 +42,16 @@ export const GAME_CONFIG = {
   VIEWER_RATE_NORMAL: 1, // viewers/sec baseline
   VIEWER_RATE_LAGGY: -2, // viewers/sec when laggy
 
+  // Info Leak (stream panel threat)
+  INFO_LEAK_BASE_INTERVAL: 30000, // ms between spawn attempts
+  INFO_LEAK_MIN_INTERVAL: 15000, // fastest spawn rate
+  INFO_LEAK_GRACE_PERIOD: 1000, // ms — censor with no penalty
+  INFO_LEAK_DANGER_DURATION: 4000, // ms — danger state before expiry
+  INFO_LEAK_CENSOR_BLUR_TIME: 3000, // ms — blur duration after censoring
+  INFO_LEAK_MISS_EMOTIONAL_PENALTY: 8,
+  INFO_LEAK_MISS_VIEWER_PENALTY: 30,
+  INFO_LEAK_DANGER_EMOTIONAL_PENALTY: 5, // one-time on entering danger
+
   // Chat
   CHAT_MAX_MESSAGES: 15,
 
