@@ -63,10 +63,11 @@ function handleClick(msg: (typeof chatStore.messages)[number], index: number) {
     </div>
 
     <div class="flex-1 flex flex-col justify-end overflow-hidden">
-      <div
-        v-for="(msg, index) in chatStore.messages"
-        :key="msg.id"
-        class="px-4 py-1.5 border-l-2 cursor-pointer select-none"
+      <TransitionGroup name="chat" tag="div" class="relative">
+        <div
+          v-for="(msg, index) in chatStore.messages"
+          :key="msg.id"
+          class="px-4 py-1.5 border-l-2 cursor-pointer select-none"
         :class="{
           'border-transparent hover:bg-white/[0.04]':
             !msg.isMasked && !msg.falsePositive && !isFlashing(msg, index),
@@ -90,12 +91,34 @@ function handleClick(msg: (typeof chatStore.messages)[number], index: number) {
           <span class="text-sm font-bold" :style="{ color: msg.color }">{{ msg.username }}</span>
           <span class="ml-2 text-sm text-white/80">{{ msg.text }}</span>
         </template>
-      </div>
+        </div>
+      </TransitionGroup>
     </div>
   </div>
 </template>
 
 <style scoped>
+.chat-move,
+.chat-enter-active,
+.chat-leave-active {
+  transition: all 0.3s ease;
+}
+
+.chat-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.chat-leave-active {
+  position: absolute;
+  width: 100%;
+}
+
+.chat-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
 .threat-flash {
   animation: threat-flash 0.5s ease-in-out infinite;
   border-left-color: rgb(239 68 68) !important;
