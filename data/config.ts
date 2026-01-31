@@ -10,6 +10,7 @@ export const GAME_CONFIG = {
   MIN_SPAWN_INTERVAL: 2000, // fastest spawn rate
 
   // Scoring
+  INITIAL_VIEWERS: 1000,
   BASE_POINTS: 100,
   SPEED_BONUS: 50,
   SPEED_BONUS_THRESHOLD: 1000, // ms

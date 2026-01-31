@@ -31,7 +31,7 @@ export const normalMessages = [
   'this is my fav stream',
 ]
 
-export type ThreatType = 'hate-speech' | 'dox'
+export type ThreatType = 'hate-speech' | 'dox' | 'spam' | 'scam' | 'spoiler'
 
 export interface ThreatMessage {
   text: string
@@ -49,6 +49,15 @@ export const threatMessages: ThreatMessage[] = [
   { text: 'Your real name is Sarah right? I looked it up', type: 'dox' },
   { text: 'I know where you live, 456 Oak Avenue', type: 'dox' },
   { text: "Isn't your phone number 555-0142?", type: 'dox' },
+  { text: 'BUY FOLLOWERS CHEAP at totallylegit.com!!!', type: 'spam' },
+  { text: '🔥🔥🔥 FREE GIFT CARDS click my profile 🔥🔥🔥', type: 'spam' },
+  { text: 'FOLLOW MY CHANNEL FOLLOW MY CHANNEL FOLLOW MY CHANNEL', type: 'spam' },
+  { text: 'Get rich quick! DM me for crypto tips 💰💰💰', type: 'scam' },
+  { text: 'I can get you verified for $50, DM me', type: 'scam' },
+  { text: "Send me your login and I'll boost your account", type: 'scam' },
+  { text: "The villain is actually the hero's brother btw", type: 'spoiler' },
+  { text: 'She dies at the end of the movie lol', type: 'spoiler' },
+  { text: 'The killer is the detective, I just saved you 2 hours', type: 'spoiler' },
 ]
 
 export const usernames = [

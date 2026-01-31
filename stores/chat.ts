@@ -5,6 +5,7 @@ import {
   usernameColors,
   type ThreatType,
 } from '~/data/chatMessages'
+import { GAME_CONFIG } from '~/data/config'
 
 export interface ChatMessage {
   id: number
@@ -78,11 +79,27 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  function maskMessage(id: number) {
+  function maskMessage(id: number): number {
     const msg = messages.value.find(m => m.id === id)
     if (msg && !msg.isMasked) {
       msg.isMasked = true
+      return msg.spawnedAt
     }
+    return 0
+  }
+
+  function expireThreats(): number {
+    const now = Date.now()
+    let expired = 0
+    for (const msg of messages.value) {
+      if (msg.isThreat && !msg.isMasked && msg.spawnedAt > 0) {
+        if (now - msg.spawnedAt >= GAME_CONFIG.THREAT_DURATION) {
+          msg.isMasked = true
+          expired++
+        }
+      }
+    }
+    return expired
   }
 
   function flagFalsePositive(id: number) {
@@ -145,6 +162,7 @@ export const useChatStore = defineStore('chat', () => {
     addNormalMessage,
     addThreatMessage,
     maskMessage,
+    expireThreats,
     flagFalsePositive,
     startChat,
     stopChat,

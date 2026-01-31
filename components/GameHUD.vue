@@ -15,13 +15,25 @@ const gameStore = useGameStore()
 
     <div class="flex items-baseline justify-between">
       <span class="text-xs text-white/60">Combo</span>
-      <span class="text-lg font-bold text-[#00ff88] tabular-nums">0x</span>
+      <span class="text-lg font-bold text-[#00ff88] tabular-nums">
+        {{ gameStore.combo }}x
+        <span v-if="gameStore.comboMultiplier > 1" class="text-xs text-[#00ff88]/70">
+          ({{ gameStore.comboMultiplier }}x)
+        </span>
+      </span>
     </div>
 
     <div class="flex items-center justify-between">
       <span class="text-xs text-white/60">Health</span>
       <div class="flex gap-1">
-        <span v-for="i in 3" :key="i" class="text-[#e94560]">&#9829;</span>
+        <span
+          v-for="i in 3"
+          :key="i"
+          class="text-base"
+          :class="i <= gameStore.health ? 'text-[#e94560]' : 'text-white/15'"
+        >
+          &#9829;
+        </span>
       </div>
     </div>
   </div>

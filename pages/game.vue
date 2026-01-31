@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const gameStore = useGameStore()
 const gameLoop = useGameLoop()
+const router = useRouter()
 
 onMounted(() => {
   gameLoop.start()
@@ -9,6 +10,16 @@ onMounted(() => {
 onUnmounted(() => {
   gameLoop.stop()
 })
+
+watch(
+  () => gameStore.state,
+  s => {
+    if (s === 'gameover') {
+      gameLoop.stop()
+      router.push('/gameover')
+    }
+  }
+)
 </script>
 
 <template>

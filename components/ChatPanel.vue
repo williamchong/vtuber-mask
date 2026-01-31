@@ -2,6 +2,7 @@
 import { GAME_CONFIG } from '~/data/config'
 
 const chatStore = useChatStore()
+const gameStore = useGameStore()
 const chatContainer = ref<HTMLElement | null>(null)
 const now = ref(Date.now())
 let rafId: number | null = null
@@ -44,12 +45,14 @@ function threatStyle(msg: (typeof chatStore.messages)[number]) {
 }
 
 function handleClick(msg: (typeof chatStore.messages)[number]) {
-  if (msg.isMasked) return
+  if (msg.isMasked || !gameStore.isRunning) return
 
   if (msg.isThreat) {
-    chatStore.maskMessage(msg.id)
+    const spawnedAt = chatStore.maskMessage(msg.id)
+    if (spawnedAt) gameStore.maskThreat(spawnedAt)
   } else {
     chatStore.flagFalsePositive(msg.id)
+    gameStore.penalizeFalsePositive()
   }
 }
 

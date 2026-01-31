@@ -1,3 +1,13 @@
+<script setup lang="ts">
+const gameStore = useGameStore()
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+</script>
+
 <template>
   <div class="flex items-center justify-center w-screen h-screen bg-[#111118]">
     <div
@@ -12,7 +22,7 @@
       >
         <!-- Grade -->
         <div class="text-center mb-5">
-          <span class="text-6xl font-black text-[#e94560]">B</span>
+          <span class="text-6xl font-black text-[#e94560]">{{ gameStore.grade }}</span>
           <p class="text-xs text-white/40 mt-1 uppercase tracking-wider">Performance Grade</p>
         </div>
 
@@ -22,23 +32,23 @@
         <div class="space-y-3 text-sm">
           <div class="flex justify-between">
             <span class="text-white/50">Score</span>
-            <span class="font-bold tabular-nums">0</span>
+            <span class="font-bold tabular-nums">{{ gameStore.score.toLocaleString() }}</span>
           </div>
           <div class="flex justify-between">
             <span class="text-white/50">Threats Masked</span>
-            <span class="font-bold tabular-nums">0</span>
+            <span class="font-bold tabular-nums">{{ gameStore.threatsMasked }}</span>
           </div>
           <div class="flex justify-between">
             <span class="text-white/50">Accuracy</span>
-            <span class="font-bold tabular-nums">0%</span>
+            <span class="font-bold tabular-nums">{{ gameStore.accuracy }}%</span>
           </div>
           <div class="flex justify-between">
             <span class="text-white/50">Best Combo</span>
-            <span class="font-bold text-[#00ff88] tabular-nums">0x</span>
+            <span class="font-bold text-[#00ff88] tabular-nums">{{ gameStore.bestCombo }}x</span>
           </div>
           <div class="flex justify-between">
             <span class="text-white/50">Time Survived</span>
-            <span class="font-bold tabular-nums">0:00</span>
+            <span class="font-bold tabular-nums">{{ formatTime(gameStore.survivalTime) }}</span>
           </div>
         </div>
       </div>
