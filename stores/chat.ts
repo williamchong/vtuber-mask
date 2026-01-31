@@ -1,0 +1,150 @@
+import {
+  normalMessages,
+  threatMessages,
+  usernames,
+  usernameColors,
+  type ThreatType,
+} from '~/data/chatMessages'
+
+export interface ChatMessage {
+  id: number
+  username: string
+  color: string
+  text: string
+  isThreat: boolean
+  threatType: ThreatType | null
+  isMasked: boolean
+  falsePositive: boolean
+}
+
+let nextId = 0
+
+function randomItem<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]!
+}
+
+function randomRange(min: number, max: number): number {
+  return min + Math.random() * (max - min)
+}
+
+export const useChatStore = defineStore('chat', () => {
+  const messages = ref<ChatMessage[]>([])
+  let normalTimer: ReturnType<typeof setTimeout> | null = null
+  let threatTimer: ReturnType<typeof setTimeout> | null = null
+
+  function createNormalMessage(): ChatMessage {
+    return {
+      id: nextId++,
+      username: randomItem(usernames),
+      color: randomItem(usernameColors),
+      text: randomItem(normalMessages),
+      isThreat: false,
+      threatType: null,
+      isMasked: false,
+      falsePositive: false,
+    }
+  }
+
+  function createThreatMessage(): ChatMessage {
+    const threat = randomItem(threatMessages)
+    return {
+      id: nextId++,
+      username: randomItem(usernames),
+      color: randomItem(usernameColors),
+      text: threat.text,
+      isThreat: true,
+      threatType: threat.type,
+      isMasked: false,
+      falsePositive: false,
+    }
+  }
+
+  function addNormalMessage() {
+    messages.value.push(createNormalMessage())
+    trimMessages()
+  }
+
+  function addThreatMessage() {
+    messages.value.push(createThreatMessage())
+    trimMessages()
+  }
+
+  function trimMessages() {
+    if (messages.value.length > 50) {
+      messages.value = messages.value.slice(-50)
+    }
+  }
+
+  function maskMessage(id: number) {
+    const msg = messages.value.find(m => m.id === id)
+    if (msg && !msg.isMasked) {
+      msg.isMasked = true
+    }
+  }
+
+  function flagFalsePositive(id: number) {
+    const msg = messages.value.find(m => m.id === id)
+    if (msg) {
+      msg.falsePositive = true
+      setTimeout(() => {
+        msg.falsePositive = false
+      }, 400)
+    }
+  }
+
+  function scheduleNormal() {
+    normalTimer = setTimeout(
+      () => {
+        addNormalMessage()
+        scheduleNormal()
+      },
+      randomRange(1500, 2500)
+    )
+  }
+
+  function scheduleThreat() {
+    threatTimer = setTimeout(
+      () => {
+        addThreatMessage()
+        scheduleThreat()
+      },
+      randomRange(4000, 6000)
+    )
+  }
+
+  function startChat() {
+    // Seed a few initial messages so chat isn't empty
+    for (let i = 0; i < 8; i++) {
+      addNormalMessage()
+    }
+    scheduleNormal()
+    scheduleThreat()
+  }
+
+  function stopChat() {
+    if (normalTimer) {
+      clearTimeout(normalTimer)
+      normalTimer = null
+    }
+    if (threatTimer) {
+      clearTimeout(threatTimer)
+      threatTimer = null
+    }
+  }
+
+  function clearChat() {
+    stopChat()
+    messages.value = []
+  }
+
+  return {
+    messages,
+    addNormalMessage,
+    addThreatMessage,
+    maskMessage,
+    flagFalsePositive,
+    startChat,
+    stopChat,
+    clearChat,
+  }
+})

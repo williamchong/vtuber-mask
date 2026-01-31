@@ -10,11 +10,7 @@ export default defineNuxtConfig({
   // SPA mode for game
   ssr: false,
 
-  modules: [
-    '@pinia/nuxt',
-    '@nuxt/eslint',
-    '@nuxt/ui',
-  ],
+  modules: ['@pinia/nuxt', '@nuxt/eslint', '@nuxt/ui'],
 
   devtools: { enabled: true },
 
