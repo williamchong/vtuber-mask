@@ -21,7 +21,9 @@ export const GAME_CONFIG = {
   EMOTIONAL_VALUE_INITIAL: 100,
   EMOTIONAL_FLUCTUATION_INTERVAL: 3000, // ms
   EMOTIONAL_FLUCTUATION_RANGE: [-0.5, 0.5] as readonly [number, number],
-  MISS_EMOTIONAL_PENALTY: 15,
+  THREAT_RED_EMOTIONAL_PENALTY: 3, // one-time when threat enters red zone
+  THREAT_FLASH_EMOTIONAL_PENALTY: 5, // one-time when threat enters flashing zone
+  MISS_EMOTIONAL_PENALTY: 5, // on top of red+flash penalties already applied
   FALSE_POSITIVE_EMOTIONAL_PENALTY: 5,
 
   // Viewer count

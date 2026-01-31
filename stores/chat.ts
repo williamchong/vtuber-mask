@@ -18,6 +18,8 @@ export interface ChatMessage {
   falsePositive: boolean
   correctMask: boolean
   spawnedAt: number
+  redTriggered: boolean
+  flashTriggered: boolean
   sentiment: 1 | 0 | -1
 }
 
@@ -49,6 +51,8 @@ export const useChatStore = defineStore('chat', () => {
       falsePositive: false,
       correctMask: false,
       spawnedAt: 0,
+      redTriggered: false,
+      flashTriggered: false,
       sentiment: msg.sentiment,
     }
   }
@@ -66,6 +70,8 @@ export const useChatStore = defineStore('chat', () => {
       falsePositive: false,
       correctMask: false,
       spawnedAt: Date.now(),
+      redTriggered: false,
+      flashTriggered: false,
       sentiment: 0,
     }
   }

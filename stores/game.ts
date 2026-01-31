@@ -110,6 +110,18 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  function penalizeThreatRed() {
+    if (state.value !== 'playing') return
+    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.THREAT_RED_EMOTIONAL_PENALTY)
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
+  function penalizeThreatFlash() {
+    if (state.value !== 'playing') return
+    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.THREAT_FLASH_EMOTIONAL_PENALTY)
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
   /**
    * @param positionRatio 0 = top of chat (late), 1 = bottom of chat (early)
    */
@@ -220,6 +232,8 @@ export const useGameStore = defineStore('game', () => {
     grade,
     start,
     maskThreat,
+    penalizeThreatRed,
+    penalizeThreatFlash,
     penalizeFalsePositive,
     missedThreat,
     updateSmoothness,

@@ -13,7 +13,7 @@ export function useGameLoop() {
     const dt = lastTime ? (timestamp - lastTime) / 1000 : 0
     lastTime = timestamp
 
-    // Check danger zones for smoothness state machine
+    // Check danger zones and fire one-time emotional penalties on state transitions
     const total = chatStore.messages.length
     let hasFlashing = false
     let hasRed = false
@@ -21,9 +21,25 @@ export function useGameLoop() {
       for (let i = 0; i < total; i++) {
         const msg = chatStore.messages[i]!
         if (!msg.isThreat || msg.isMasked) continue
-        if (i < total * 0.15) { hasFlashing = true; break }
+        const isFlashing = i < total * 0.15
         const position = i / (total - 1)
-        if (position < 0.5) { hasRed = true }
+        const isRed = !isFlashing && position < 0.5
+
+        if (isFlashing) {
+          hasFlashing = true
+          if (!msg.flashTriggered) {
+            msg.flashTriggered = true
+            if (!msg.redTriggered) msg.redTriggered = true // skip red if went straight to flash
+            gameStore.penalizeThreatFlash()
+          }
+        }
+        else if (isRed) {
+          hasRed = true
+          if (!msg.redTriggered) {
+            msg.redTriggered = true
+            gameStore.penalizeThreatRed()
+          }
+        }
       }
     }
 
