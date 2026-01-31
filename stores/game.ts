@@ -4,7 +4,6 @@ export type GameState = 'menu' | 'playing' | 'gameover'
 
 export const useGameStore = defineStore('game', () => {
   const state = ref<GameState>('menu')
-  const score = ref<number>(0)
   const emotionalValue = ref<number>(GAME_CONFIG.EMOTIONAL_VALUE_INITIAL)
   const viewers = ref<number>(GAME_CONFIG.INITIAL_VIEWERS)
   const viewerRate = ref<number>(GAME_CONFIG.VIEWER_BASE_RATE)
@@ -40,7 +39,6 @@ export const useGameStore = defineStore('game', () => {
 
   function start() {
     state.value = 'playing'
-    score.value = 0
     emotionalValue.value = GAME_CONFIG.EMOTIONAL_VALUE_INITIAL
     viewers.value = GAME_CONFIG.INITIAL_VIEWERS
     viewerRate.value = GAME_CONFIG.VIEWER_BASE_RATE
@@ -61,11 +59,7 @@ export const useGameStore = defineStore('game', () => {
 
     threatsMasked.value++
 
-    // Position-based scoring: early mask (bottom half) gets bonus points
-    let points = GAME_CONFIG.BASE_POINTS
     const earlyBonus = Math.max(0, positionRatio - 0.5) * 2 // 0→1 for bottom half
-    points += Math.round(GAME_CONFIG.EARLY_MASK_BONUS * earlyBonus)
-    score.value += points
 
     // Early mask emotional recovery (only in bottom half)
     if (positionRatio > 0.5) {
@@ -85,7 +79,6 @@ export const useGameStore = defineStore('game', () => {
   function penalizeFalsePositive() {
     if (state.value !== 'playing') return
     falsePositives.value++
-    score.value = Math.max(0, score.value - GAME_CONFIG.FALSE_POSITIVE_PENALTY)
     emotionalValue.value = Math.max(
       0,
       emotionalValue.value - GAME_CONFIG.FALSE_POSITIVE_EMOTIONAL_PENALTY,
@@ -145,7 +138,6 @@ export const useGameStore = defineStore('game', () => {
 
   function reset() {
     state.value = 'menu'
-    score.value = 0
     emotionalValue.value = GAME_CONFIG.EMOTIONAL_VALUE_INITIAL
     viewers.value = GAME_CONFIG.INITIAL_VIEWERS
     viewerRate.value = GAME_CONFIG.VIEWER_BASE_RATE
@@ -160,7 +152,6 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     state,
-    score,
     emotionalValue,
     viewers,
     viewerRate,

@@ -10,10 +10,7 @@ export const GAME_CONFIG = {
   BASE_SPAWN_INTERVAL: 5000, // ms between spawns
   MIN_SPAWN_INTERVAL: 2000, // fastest spawn rate
 
-  // Scoring
-  BASE_POINTS: 100,
-  EARLY_MASK_BONUS: 100, // extra points for masking in bottom half (scales with position)
-  FALSE_POSITIVE_PENALTY: 50,
+  // False positive penalties
   FALSE_POSITIVE_VIEWER_PENALTY: 20, // viewers lost on false positive
   FALSE_POSITIVE_RATE_PENALTY: 0.5, // viewer rate reduction on false positive
 

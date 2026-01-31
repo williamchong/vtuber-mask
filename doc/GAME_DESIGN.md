@@ -22,7 +22,7 @@ You are a VTuber who has just gone live. Your job is to keep the stream "seiso" 
 2. **Threat Appears:** A problematic element appears in one of the three zones
 3. **Detection Window:** Player has limited time to identify the threat
 4. **Masking Action:** Player clicks the problematic element to apply a mask/censor
-5. **Consequence:** Success or failure affects stream health and score
+5. **Consequence:** Success or failure affects emotional value and viewers
 6. **Escalation:** Difficulty increases over time
 
 ## Main UI Elements
@@ -83,12 +83,6 @@ You are a VTuber who has just gone live. Your job is to keep the stream "seiso" 
 - **Mid Game (2-5 min):** Multiple threats, 3-4 seconds to respond
 - **Late Game (5+ min):** Rapid-fire threats, simultaneous issues, 2 seconds to respond
 
-### Scoring System (Position-Based)
-
-- **Base Points:** +100 per successful mask
-- **Early Mask Bonus:** Up to +100 extra for masking threats in the bottom half of chat (scales linearly — earlier = more points)
-- **False Positive:** -50 points + small emotional penalty + viewer loss
-
 ### Emotional Value (HP System)
 
 - **Emotional Value:** Continuous bar (0–100), starts at 100
@@ -102,7 +96,7 @@ You are a VTuber who has just gone live. Your job is to keep the stream "seiso" 
 
 ### Viewer Count System
 
-- **Separate from score** — viewers grow organically over time
+- Viewers grow organically over time
 - **Base Growth Rate:** 1 viewer/sec, accelerates when threats are masked
 - **Viewer Rate Boost:** +0.5 per mask, capped at 10/sec
 - **Missed Threat Penalty:** -50 viewers, growth rate resets to base
@@ -138,8 +132,7 @@ To prevent players from clicking everything:
 
 ### End Game Report
 
-- **Final Score:** Based on successful masks
-- **Grade:** S/A/B/C/D based on performance
+- **Grade:** S/A/B/C/D based on accuracy
 - **Statistics:**
   - Total threats masked
   - Accuracy percentage
@@ -208,7 +201,7 @@ The game can gently satirize:
 - 3 UI sections (VTuber, Stream, Chat)
 - 5-10 different threat types
 - Basic clicking to mask mechanic
-- Simple scoring system
+- Emotional value + viewer count systems
 - 5-minute game duration
 - Basic visual and audio feedback
 
@@ -238,7 +231,6 @@ The game can gently satirize:
 
 ## Replayability
 
-- **Score Chasing:** Beat your high score
 - **Different Threat Patterns:** Semi-randomized threat appearances
 - **Challenge Modes:**
   - "Easy Mode" - Longer reaction times
@@ -278,5 +270,5 @@ A successful implementation should:
 2. Create tension and urgency (time pressure)
 3. Feel satisfying to play (good feedback)
 4. Have a clear difficulty curve
-5. Be replayable (score chasing)
+5. Be replayable (grade chasing, peak viewers)
 6. Fit the "mask" theme both literally and metaphorically
