@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const gameStore = useGameStore()
 const gameLoop = useGameLoop()
 
 onMounted(() => {
@@ -30,7 +31,7 @@ onUnmounted(() => {
         <span class="text-sm text-white/50">Protect the Stream!</span>
         <div class="flex items-center gap-2 text-sm text-white/70">
           <span class="inline-block w-2 h-2 rounded-full bg-red-500" />
-          <span>1,234 viewers</span>
+          <span>{{ gameStore.score.toLocaleString() }} viewers</span>
         </div>
       </header>
 
