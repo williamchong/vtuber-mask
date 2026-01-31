@@ -1,24 +1,60 @@
+<script setup lang="ts">
+import { loadOml2d } from 'oh-my-live2d'
+
+const containerRef = ref<HTMLElement | null>(null)
+const baseURL = useRuntimeConfig().app.baseURL || '/'
+
+onMounted(() => {
+  if (!containerRef.value) return
+
+  loadOml2d({
+    parentElement: containerRef.value,
+    dockedPosition: 'right',
+    sayHello: false,
+    transitionTime: 0,
+    primaryColor: '#e94560',
+    stageStyle: {
+      width: 220,
+      height: 150,
+    },
+    statusBar: {
+      disable: true,
+    },
+    tips: {
+      style: {
+        display: 'none',
+      },
+    },
+    menus: {
+      style: {
+        display: 'none',
+      },
+    },
+    models: [
+      {
+        path: `${baseURL}live2d/hiyori_free_t08.model3.json`,
+        position: [-110, -40],
+        scale: 0.15,
+        stageStyle: {
+          width: 220,
+          height: 150,
+        },
+      },
+    ],
+  })
+})
+</script>
+
 <template>
   <div
     class="absolute bottom-4 right-4 z-50 w-[220px] h-[180px] rounded-xl border-2 border-white/20 bg-gradient-to-t from-[#0e0e14] to-[#1a1a2e]/90 backdrop-blur-sm overflow-hidden"
   >
-    <!-- Avatar placeholder -->
-    <div class="flex items-center justify-center w-full h-[130px] vtuber-idle">
-      <svg
-        class="w-16 h-16 text-white/20"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
-        />
-      </svg>
-    </div>
+    <!-- Live2D container -->
+    <div ref="containerRef" class="w-full h-[150px]" />
 
     <!-- Name bar -->
     <div
-      class="absolute bottom-0 left-0 right-0 flex items-center gap-2 px-3 py-2 bg-black/60 text-xs"
+      class="absolute bottom-0 left-0 right-0 flex items-center gap-2 px-3 py-2 bg-black/60 text-xs z-10"
     >
       <span class="relative flex h-2 w-2">
         <span
@@ -30,19 +66,3 @@
     </div>
   </div>
 </template>
-
-<style scoped>
-.vtuber-idle {
-  animation: vtuber-breathe 3s ease-in-out infinite;
-}
-
-@keyframes vtuber-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-}
-</style>
