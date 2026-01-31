@@ -47,7 +47,7 @@ function cancelHold() {
       @pointerleave="cancelHold"
     >
       <!-- Angry VTuber image -->
-      <img :src="angryImg" class="absolute inset-0 w-full h-full object-cover" draggable="false" />
+      <img :src="angryImg" class="absolute inset-0 w-full h-full object-cover" draggable="false" >
 
       <!-- Pulsing red border (danger only) -->
       <div

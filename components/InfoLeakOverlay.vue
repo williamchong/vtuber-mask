@@ -45,7 +45,7 @@ function cancelHold() {
     @pointerup="cancelHold"
     @pointerleave="cancelHold"
   >
-    <img :src="gmailImg" class="absolute inset-0 w-full h-full object-cover" draggable="false" />
+    <img :src="gmailImg" class="absolute inset-0 w-full h-full object-cover" draggable="false" >
 
     <!-- Danger warning icon -->
     <Transition name="warn-fade">
