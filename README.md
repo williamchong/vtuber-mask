@@ -7,12 +7,13 @@ A web-based reaction game for Global Game Jam 2026
 You are the content moderator for a popular VTuber's live stream. Your job is to identify and mask (censor) dangerous or inappropriate content before viewers notice it. The stream plays normally, but occasionally problematic elements appear in the VTuber model, streaming screen, or chat that you must quickly click to censor.
 
 The game explores the dual meaning of "mask":
+
 - **Literal:** Masking/censoring inappropriate content
 - **Metaphorical:** The VTuber persona itself as a mask hiding the real person
 
 ## Quick Pitch
 
-*"Papers, Please meets VTuber streaming - click to censor inappropriate content before it damages the stream!"*
+_"Papers, Please meets VTuber streaming - click to censor inappropriate content before it damages the stream!"_
 
 ## Core Gameplay
 
@@ -49,6 +50,7 @@ The game explores the dual meaning of "mask":
 ```
 
 **Key Design Decisions:**
+
 - ✅ **Chat is 50% width** - Primary threat source (60% of threats), small click targets
 - ✅ **Stream is 50% width** - Fewer threats (30%), larger targets
 - ✅ **VTuber overlays bottom-right** - Fewest threats (10%), minimal space needed
@@ -56,6 +58,7 @@ The game explores the dual meaning of "mask":
 - ✅ **Game HUD overlays top-left** - Always visible, doesn't block content
 
 **Precise Positioning:**
+
 - Stream Panel: 640×610px (left, relative positioning)
 - Chat Panel: 640×610px (right, overflow-y: auto)
 - VTuber Overlay: 220×180px (absolute, bottom: 16px, right: 16px, z-index: 50)
@@ -66,7 +69,9 @@ The game explores the dual meaning of "mask":
 This repository contains comprehensive design documents for the game:
 
 ### 📋 [Game Design Document](doc/GDD.md)
+
 Complete overview of game concept, mechanics, progression, and features:
+
 - Core gameplay loop and win/lose conditions
 - Threat types for stream, chat, and VTuber areas
 - Scoring system with combo multipliers
@@ -76,7 +81,9 @@ Complete overview of game concept, mechanics, progression, and features:
 - Meta themes and narrative context
 
 ### 💻 [Technical Specification](doc/TECHNICAL_SPEC.md)
+
 Implementation details and architecture:
+
 - **Technology stack:** Nuxt 3 + TypeScript + Pinia
 - **Project structure:** Composables-based architecture
 - **Core systems:** GameManager, ThreatManager, ScoreManager, UIManager
@@ -86,7 +93,9 @@ Implementation details and architecture:
 - **Performance optimization:** 60fps target, efficient rendering
 
 ### 🎨 [UI/UX Design Document](doc/UI_UX_DESIGN.md)
+
 Visual design, layout, and user experience:
+
 - **50/50 split layout** with precise measurements
 - **VTuber overlay positioning** (bottom-right, 220×180px)
 - **Full-height chat** (18-20 messages visible)
@@ -98,7 +107,9 @@ Visual design, layout, and user experience:
 - **Complete asset checklists** for art and audio
 
 ### 📅 [Game Jam Development Plan](doc/GAME_JAM_PLAN.md)
+
 Practical timeline and scope management for 48-hour jam:
+
 - **Feature tiers:** Tier 0 (Must Have) → Tier 3 (Nice to Have)
 - **Three clear milestones:**
   - **Playtest** (Hour 6-8): Validate core mechanic
@@ -114,6 +125,7 @@ Practical timeline and scope management for 48-hour jam:
 ## Development Roadmap
 
 ### 🎯 Milestone 1: PLAYTEST BUILD (Hour 6-8)
+
 **Goal:** Validate core mechanic is fun
 
 - [ ] 50/50 layout structure (Stream | Chat)
@@ -123,9 +135,11 @@ Practical timeline and scope management for 48-hour jam:
 - [ ] **Success:** Team agrees clicking threats feels satisfying
 
 ### 🎯 Milestone 2: MVP BUILD (Hour 20-24)
+
 **Goal:** Complete game loop - playable start to finish
 
 **Layout Complete:**
+
 - [ ] Stream panel: 640×610px (left, relative)
 - [ ] Chat panel: 640×610px (right, full height scrolling)
 - [ ] VTuber overlay: 220×180px (bottom-right corner, z-index: 50)
@@ -133,6 +147,7 @@ Practical timeline and scope management for 48-hour jam:
 - [ ] Platform header (60px) and info bar (50px)
 
 **Core Mechanics:**
+
 - [ ] 5+ threat types (3 chat, 2 stream)
 - [ ] Click-to-mask interaction
 - [ ] Threat timer (5 seconds before damage)
@@ -141,12 +156,14 @@ Practical timeline and scope management for 48-hour jam:
 - [ ] Game over on 0 health
 
 **Game Flow:**
+
 - [ ] Start screen
 - [ ] 3+ minutes of gameplay
 - [ ] Game over screen with final score
 - [ ] Restart capability
 
 **Visuals:**
+
 - [ ] 2 mask styles (black bar + pixelation)
 - [ ] Threat highlight/glow effect
 - [ ] Damage feedback (flash or shake)
@@ -154,9 +171,11 @@ Practical timeline and scope management for 48-hour jam:
 **Success:** Can play from start to game over without bugs
 
 ### 🎯 Milestone 3: DEMO BUILD (Hour 36-40)
+
 **Goal:** Polished & ready to show judges/players
 
 **Enhanced Gameplay:**
+
 - [ ] Combo system (2x, 3x, 5x multipliers)
 - [ ] 10+ threat types for variety
 - [ ] Difficulty progression (faster spawns over time)
@@ -164,6 +183,7 @@ Practical timeline and scope management for 48-hour jam:
 - [ ] False positive detection (penalize masking normal content)
 
 **Visual Polish:**
+
 - [ ] Platform UI styling (🔴 LIVE, viewer count)
 - [ ] Chat formatting (usernames, colors)
 - [ ] VTuber character art (static OK)
@@ -173,10 +193,12 @@ Practical timeline and scope management for 48-hour jam:
 - [ ] Mask stamp effect
 
 **Audio:**
+
 - [ ] Background music (looping track)
 - [ ] 5+ sound effects (mask, damage, combo, appear, game over)
 
 **UX Features:**
+
 - [ ] Tutorial/instructions screen
 - [ ] End game statistics (accuracy, max combo, time)
 - [ ] Grade system (S/A/B/C/D)
@@ -196,6 +218,7 @@ Practical timeline and scope management for 48-hour jam:
 ## Tech Stack
 
 ### Core Technologies
+
 - **Framework:** Nuxt 3 (Vue 3 + TypeScript)
   - ✅ Reactive state management
   - ✅ Component-based architecture
@@ -234,6 +257,7 @@ Practical timeline and scope management for 48-hour jam:
 ### Why Nuxt 3?
 
 **Pros:**
+
 - Fast development with hot module replacement
 - Composables for reusable game logic
 - Built-in TypeScript support
@@ -241,6 +265,7 @@ Practical timeline and scope management for 48-hour jam:
 - Small bundle size (important for web game)
 
 **Alternatives Considered:**
+
 - **Phaser:** More features but steeper learning curve
 - **PixiJS:** Great for sprites but overkill for this UI-focused game
 - **Vanilla JS:** Faster but harder to maintain during jam crunch
@@ -271,6 +296,7 @@ Practical timeline and scope management for 48-hour jam:
 ### For Developers
 
 **Pre-Jam Setup:**
+
 ```bash
 # Create Nuxt project
 npx nuxi@latest init vtuber-mask
@@ -286,6 +312,7 @@ npm run dev
 ```
 
 **Development Order:**
+
 1. **Hour 2-5:** Build 50/50 layout structure
    - Create HTML containers (Stream | Chat)
    - Basic CSS (flex/grid, 640px each)
@@ -312,6 +339,7 @@ npm run dev
    - **CHECKPOINT: Demo ready**
 
 **Key Files to Create:**
+
 - `/composables/useGameManager.ts` - Game state and loop
 - `/composables/useThreatManager.ts` - Threat spawning/timing
 - `/composables/useScoreManager.ts` - Scoring and combos
@@ -325,16 +353,19 @@ npm run dev
 **Priority Order:**
 
 **Phase 1: Playtest (Hour 0-8)**
+
 - Basic layout mockup
 - Simple threat visuals (text placeholders OK)
 
 **Phase 2: MVP (Hour 8-20)**
+
 - VTuber character sprite (static, 220×180px)
 - Stream background (640×610px)
 - 2 mask overlays (black bar, pixelation)
 - Basic HUD graphics
 
 **Phase 3: Demo (Hour 20-40)**
+
 - Platform UI elements (header, footer)
 - Chat message styling
 - 10+ threat graphics
@@ -342,6 +373,7 @@ npm run dev
 - VTuber expressions (if time)
 
 **Asset Checklists:**
+
 - See [UI/UX Design Doc](doc/UI_UX_DESIGN.md) section "Art Asset Requirements"
 - Use placeholder art early, swap later
 - Follow color scheme: #1a1a2e (dark), #e94560 (accent)
@@ -349,6 +381,7 @@ npm run dev
 ### For Team Leads
 
 **Pre-Jam:**
+
 - [ ] Review all 4 documentation files
 - [ ] Assign roles: Gameplay dev, UI dev, Artist, Audio
 - [ ] Set up Git repository
@@ -356,12 +389,14 @@ npm run dev
 - [ ] Schedule 5 playtesting sessions (hours 8, 14, 24, 36, 42)
 
 **During Jam:**
+
 - [ ] Track milestones: Playtest → MVP → Demo
 - [ ] Cut features ruthlessly if behind schedule
 - [ ] Mandatory breaks every 6 hours
 - [ ] Backup project every 2 hours (git commits)
 
 **Emergency Scope Cuts (if behind):**
+
 1. Cut Tier 3 features first
 2. Cut Tier 2 features second
 3. Reduce threat types (keep 5-8)
@@ -371,7 +406,9 @@ npm run dev
 ## Threat Types Reference
 
 ### 🎭 VTuber Overlay (10% of threats)
+
 **Large targets, rare occurrence, bottom-right corner**
+
 - Inappropriate hand gestures
 - Wardrobe malfunctions (model glitches)
 - Real face showing through avatar
@@ -379,7 +416,9 @@ npm run dev
 - Emotional distress reactions
 
 ### 🖥️ Stream Panel (30% of threats)
+
 **Medium-large targets, moderate frequency, left panel**
+
 - Personal information (address, phone, ID card)
 - Credit cards or bank details
 - Inappropriate browser tabs or windows
@@ -389,7 +428,9 @@ npm run dev
 - Desktop icons revealing real name
 
 ### 💬 Chat Panel (60% of threats) - PRIMARY ZONE
+
 **Small targets, high frequency, right panel full-height**
+
 - Hate speech or slurs
 - Doxxing attempts (posting addresses)
 - Sexual harassment messages
@@ -400,6 +441,7 @@ npm run dev
 - Impersonation attempts
 
 **Gameplay Balance:**
+
 - Chat threats are smallest → need more screen space (50%)
 - Chat has most threats → primary focus for players
 - Stream threats are larger → easier to click despite fewer
@@ -407,24 +449,25 @@ npm run dev
 
 ## Feature Comparison: Playtest → MVP → Demo
 
-| Feature | Playtest (8h) | MVP (24h) | Demo (40h) |
-|---------|--------------|-----------|------------|
-| **Layout** | Rough 50/50 | Correct positioning | Full styling |
-| **Threat Types** | 1-2 chat | 5 total (3 chat, 2 stream) | 10+ variety |
-| **Mask Styles** | 1 (black bar) | 2 (bar + pixelation) | 3+ (stickers) |
-| **Scoring** | None | Basic points | Combo multipliers |
-| **Health** | None | 3 hearts | 3 hearts + visual |
-| **Game Flow** | Click only | Start → Play → End | Full UX + tutorial |
-| **VTuber** | Placeholder | Static overlay | Character art |
-| **HUD** | None | Score display | Score + combo + health |
-| **Sound** | None | None | Music + 5+ SFX |
-| **Animations** | None | Basic glow | Pulse + stamp + particles |
-| **Difficulty** | Static | Static | Progressive |
-| **False Positives** | None | None | Penalty system |
-| **Statistics** | None | Final score | Full stats + grade |
-| **Polish** | Rough | Functional | Polished |
+| Feature             | Playtest (8h) | MVP (24h)                  | Demo (40h)                |
+| ------------------- | ------------- | -------------------------- | ------------------------- |
+| **Layout**          | Rough 50/50   | Correct positioning        | Full styling              |
+| **Threat Types**    | 1-2 chat      | 5 total (3 chat, 2 stream) | 10+ variety               |
+| **Mask Styles**     | 1 (black bar) | 2 (bar + pixelation)       | 3+ (stickers)             |
+| **Scoring**         | None          | Basic points               | Combo multipliers         |
+| **Health**          | None          | 3 hearts                   | 3 hearts + visual         |
+| **Game Flow**       | Click only    | Start → Play → End         | Full UX + tutorial        |
+| **VTuber**          | Placeholder   | Static overlay             | Character art             |
+| **HUD**             | None          | Score display              | Score + combo + health    |
+| **Sound**           | None          | None                       | Music + 5+ SFX            |
+| **Animations**      | None          | Basic glow                 | Pulse + stamp + particles |
+| **Difficulty**      | Static        | Static                     | Progressive               |
+| **False Positives** | None          | None                       | Penalty system            |
+| **Statistics**      | None          | Final score                | Full stats + grade        |
+| **Polish**          | Rough         | Functional                 | Polished                  |
 
 **Goal Progression:**
+
 - **Playtest:** Is the mechanic fun? ⚡
 - **MVP:** Can I play the full game? 🎮
 - **Demo:** Would I show this to others? ✨
@@ -463,6 +506,7 @@ vtuber-mask/
 ## Tips for Success
 
 ### Do's ✅
+
 - **Start simple:** Get playtest build working first
 - **Use placeholders:** Swap art later, focus on mechanics
 - **Test early and often:** 5 scheduled playtests
@@ -472,6 +516,7 @@ vtuber-mask/
 - **Focus on feel:** Satisfying feedback > feature count
 
 ### Don'ts ❌
+
 - **Don't add features** before Tier 0 is complete
 - **Don't perfectionist** on one element for hours
 - **Don't skip playtesting** - you'll miss critical issues
@@ -481,6 +526,7 @@ vtuber-mask/
 - **Don't forget fun** - if it's not fun, cut it
 
 ### Common Pitfalls
+
 1. **Scope creep** → Stick to tier system
 2. **Tech issues** → Use familiar tools, don't experiment
 3. **Asset bottleneck** → Use placeholders, parallel work
@@ -492,11 +538,13 @@ vtuber-mask/
 This is a game jam project!
 
 **During Jam:**
+
 - Coordinate all contributions with team lead
 - Follow the development plan milestones
 - Use feature branches and pull requests
 
 **Post-Jam:**
+
 - Feel free to fork and create your own version
 - Submit issues for bugs or suggestions
 - PRs welcome for improvements
@@ -510,10 +558,12 @@ This allows others to learn from and remix your work while maintaining credit.
 ## Credits
 
 **Team:**
+
 - [Add your team members here]
 - Roles: [Gameplay Dev, UI Dev, Artist, Audio, Producer]
 
 **Made for Global Game Jam 2026**
+
 - **Theme:** Mask
 - **Duration:** 48 hours
 - **Engine:** Nuxt 3 / Vue 3 / TypeScript
@@ -521,12 +571,14 @@ This allows others to learn from and remix your work while maintaining credit.
 ## Acknowledgments
 
 **Inspiration:**
-- *Papers, Please* - Document inspection gameplay loop
-- *Content Warning* - Content moderation as game mechanic
-- *Not For Broadcast* - Multi-panel monitoring gameplay
+
+- _Papers, Please_ - Document inspection gameplay loop
+- _Content Warning_ - Content moderation as game mechanic
+- _Not For Broadcast_ - Multi-panel monitoring gameplay
 - VTuber community for cultural context and authenticity
 
 **Tools & Resources:**
+
 - Global Game Jam for the theme and event
 - Nuxt team for excellent framework
 - Free asset communities (Kenney, OpenGameArt)
@@ -543,14 +595,15 @@ This allows others to learn from and remix your work while maintaining credit.
 ## Final Notes
 
 This project explores the dual meaning of "mask":
+
 - **Literal:** Censoring inappropriate content to protect viewers
 - **Metaphorical:** The VTuber persona as a mask hiding the real person
 
-The game asks: *What are we protecting? The audience from harmful content, or the streamer's carefully crafted identity?*
+The game asks: _What are we protecting? The audience from harmful content, or the streamer's carefully crafted identity?_
 
 **Behind every perfect stream is someone protecting the mask.** 🎭
 
-*Good luck with your jam! Remember: scope small, iterate fast, and have fun!*
+_Good luck with your jam! Remember: scope small, iterate fast, and have fun!_
 
 ---
 

@@ -3,6 +3,7 @@
 ## Technology Stack
 
 ### Recommended Stack (Modern)
+
 - **Framework:** Nuxt 3
 - **Language:** TypeScript
 - **State Management:** Pinia (built-in with Nuxt)
@@ -15,6 +16,7 @@
 - **Deployment:** Static export to Itch.io or GitHub Pages
 
 ### Why Tailwind CSS v4?
+
 - **Utility-first:** Rapid prototyping - style directly in templates without switching files
 - **Game jam speed:** No naming CSS classes, no context switching
 - **Consistent spacing/colors:** Design tokens enforce visual consistency
@@ -24,19 +26,23 @@
 - **Dark theme native:** Game's dark UI maps naturally to Tailwind's dark palette
 
 ### @nuxt/ui - Selective Use
+
 @nuxt/ui is a dashboard/app-focused component library (125+ components). **Most game UI is custom**, but these components are useful:
+
 - **UButton:** Menu screen buttons (Start, Restart, Settings)
 - **UModal:** Pause overlay, settings panel
 - **UCard:** Game over stats display
 - **UBadge:** Score/combo indicators on menu screens
 
 **Do NOT use @nuxt/ui for:**
+
 - In-game HUD (needs custom positioning/animations)
 - Chat panel (custom scrolling behavior)
 - Threat overlays (custom click handling/animations)
 - Stream panel (fully custom layout)
 
 ### Why Nuxt 3?
+
 - **All the benefits of Vue 3** with additional features
 - **Auto-imports:** No need to import components, composables, or utilities
 - **TypeScript built-in:** Zero config TypeScript support
@@ -49,6 +55,7 @@
 - **Perfect for UI-heavy games** with reactive state updates
 
 ### Nuxt Benefits for Game Jam
+
 1. **Faster Development:** Auto-imports save time - no import statements needed
 2. **Type Safety:** TypeScript catches bugs before runtime - critical for tight deadlines
 3. **Hot Reload:** See changes instantly without full page reload
@@ -61,6 +68,7 @@
 10. **Production Ready:** Optimized builds out of the box
 
 ### Why NOT Phaser?
+
 - Phaser is overkill for a UI-driven click game
 - This game is fundamentally a web app, not a sprite-based game
 - Canvas rendering would make styling and DOM manipulation harder
@@ -127,6 +135,7 @@ vtuber-mask/
 ```
 
 **Nuxt 3 Conventions:**
+
 - **`pages/`:** File-based routing - each `.vue` file becomes a route
 - **`components/`:** Auto-imported components (no import needed)
 - **`composables/`:** Auto-imported composables (no import needed)
@@ -143,12 +152,14 @@ vtuber-mask/
 ### 1. Game Store (stores/game.ts)
 
 **Responsibilities:**
+
 - Manage game state (menu, playing, paused, gameover)
 - Handle game loop timing
 - Control difficulty progression
 - Coordinate state transitions
 
 **Implementation (Pinia + TypeScript):**
+
 ```typescript
 // stores/game.ts
 import { defineStore } from 'pinia'
@@ -234,6 +245,7 @@ export const useGameStore = defineStore('game', () => {
 ```
 
 **Type Definitions:**
+
 ```typescript
 // types/game.ts
 export type GameState = 'menu' | 'playing' | 'paused' | 'gameover'
@@ -248,12 +260,14 @@ export interface GameConfig {
 ### 2. Threat Store (stores/threat.ts)
 
 **Responsibilities:**
+
 - Spawn threats based on difficulty
 - Track active threats
 - Remove masked or expired threats
 - Manage threat lifecycle
 
 **Type Definitions:**
+
 ```typescript
 // types/threat.ts
 export type ThreatType = 'vtuber' | 'stream' | 'chat'
@@ -299,6 +313,7 @@ export interface ThreatDefinition {
 ```
 
 **Implementation:**
+
 ```typescript
 // stores/threat.ts
 import { defineStore } from 'pinia'
@@ -318,9 +333,7 @@ export const useThreatStore = defineStore('threat', () => {
   const spawnInterval = ref(5000) // ms between spawns
 
   // Computed
-  const activeThreats = computed(() =>
-    threats.value.filter(t => !t.isMasked)
-  )
+  const activeThreats = computed(() => threats.value.filter(t => !t.isMasked))
 
   const threatsByType = computed(() => ({
     vtuber: threats.value.filter(t => t.type === 'vtuber'),
@@ -459,11 +472,13 @@ function getRandomPosition(type: ThreatType): { x: number; y: number } {
 ### 3. Score Manager (ScoreManager.js)
 
 **Responsibilities:**
+
 - Track score, combo, and health
 - Calculate bonuses
 - Provide stats for end screen
 
 **Key Methods:**
+
 ```javascript
 class ScoreManager {
   constructor() {
@@ -475,7 +490,7 @@ class ScoreManager {
       totalThreats: 0,
       maskedThreats: 0,
       missedThreats: 0,
-      falsePositives: 0
+      falsePositives: 0,
     }
   }
 
@@ -513,12 +528,14 @@ class ScoreManager {
 ### 4. Input Manager (InputManager.js)
 
 **Responsibilities:**
+
 - Handle click events
 - Determine what was clicked
 - Apply mask effect
 - Validate if click was correct
 
 **Click Detection:**
+
 ```javascript
 class InputManager {
   handleClick(event) {
@@ -578,12 +595,14 @@ class InputManager {
 ```
 
 **Tailwind Styling Notes:**
+
 - Layout uses utility classes directly in templates — no separate `<style>` block needed
 - `w-[220px]` and `h-[180px]` use Tailwind's arbitrary value syntax for exact game dimensions
 - `z-50` maps to `z-index: 50` (Tailwind default scale)
 - For custom z-index values like `z-100` (HUD), extend in `tailwind.config` or use `z-[100]`
 
 **Layout Rationale:**
+
 - 50/50 split optimizes for gameplay (chat has 60% of threats)
 - VTuber overlaps stream (doesn't steal space from chat)
 - Chat is full height (maximum threat visibility)
@@ -594,7 +613,9 @@ class InputManager {
 ```vue
 <!-- components/PlatformHeader.vue -->
 <template>
-  <header class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10">
+  <header
+    class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10"
+  >
     <div class="flex items-center gap-3">
       <img src="/logo.svg" class="h-8" />
       <h1 class="text-lg font-bold">VTuber Mask</h1>
@@ -604,7 +625,9 @@ class InputManager {
     </div>
     <div class="flex items-center gap-4">
       <span class="text-sm text-white/70">👁 {{ viewerCount.toLocaleString() }}</span>
-      <button class="text-white/60 hover:text-white transition-colors" @click="openSettings">⚙️</button>
+      <button class="text-white/60 hover:text-white transition-colors" @click="openSettings">
+        ⚙️
+      </button>
     </div>
   </header>
 </template>
@@ -619,7 +642,9 @@ const viewerCount = ref(1234)
 ```vue
 <!-- components/VTuberPanel.vue -->
 <template>
-  <div class="relative p-3 rounded-xl border-2 border-white/10 backdrop-blur-[10px] shadow-[0_8px_32px_rgba(0,0,0,0.4)] bg-gradient-to-br from-[rgba(26,26,46,0.95)] to-[rgba(22,33,62,0.95)]">
+  <div
+    class="relative p-3 rounded-xl border-2 border-white/10 backdrop-blur-[10px] shadow-[0_8px_32px_rgba(0,0,0,0.4)] bg-gradient-to-br from-[rgba(26,26,46,0.95)] to-[rgba(22,33,62,0.95)]"
+  >
     <div class="relative w-full h-[120px] rounded-lg overflow-hidden">
       <img :src="currentExpression" class="w-full h-full object-cover" />
 
@@ -654,6 +679,7 @@ const currentExpression = ref('/assets/images/vtuber/idle.png')
 ```
 
 **Notes:**
+
 - Gradient backgrounds use Tailwind arbitrary values: `bg-gradient-to-br from-[...] to-[...]`
 - `backdrop-blur-[10px]` for the frosted glass effect
 - `animate-pulse` is a built-in Tailwind animation (replaces custom `@keyframes pulse`)
@@ -661,6 +687,7 @@ const currentExpression = ref('/assets/images/vtuber/idle.png')
 - No imports needed — Nuxt auto-imports `computed`, `ref`, and `useThreatStore`
 
 **Overlay Positioning:**
+
 - Position: Absolute, bottom-right of stream panel
 - Z-index: 50 (above stream content, below game HUD)
 - Semi-transparent background with backdrop blur
@@ -673,7 +700,9 @@ const currentExpression = ref('/assets/images/vtuber/idle.png')
 <!-- components/ChatPanel.vue -->
 <template>
   <div class="flex flex-col w-full h-full bg-[#1f1f23] overflow-hidden border-l border-white/10">
-    <div class="flex justify-between items-center px-4 py-3.5 bg-[#18181b] border-b border-white/10 font-semibold text-sm">
+    <div
+      class="flex justify-between items-center px-4 py-3.5 bg-[#18181b] border-b border-white/10 font-semibold text-sm"
+    >
       <span>💬 STREAM CHAT</span>
       <button class="text-white/60 hover:text-white transition-colors text-base p-1">⚙️</button>
     </div>
@@ -685,7 +714,7 @@ const currentExpression = ref('/assets/images/vtuber/idle.png')
         :class="[
           'px-4 py-1.5 text-sm leading-relaxed border-l-2 border-transparent cursor-pointer transition-colors duration-100 break-words',
           'hover:bg-white/[0.04] hover:border-l-[#e94560]',
-          message.isThreat && 'chat-threat bg-[#ff3355]/15 !border-l-[#ff3355]'
+          message.isThreat && 'chat-threat bg-[#ff3355]/15 !border-l-[#ff3355]',
         ]"
         @click="handleMessageClick(message)"
       >
@@ -722,9 +751,7 @@ const threatStore = useThreatStore()
 const scoreStore = useScoreStore()
 const chatContainer = ref<HTMLElement>()
 
-const visibleMessages = computed(() =>
-  threatStore.chatMessages.slice(-20)
-)
+const visibleMessages = computed(() => threatStore.chatMessages.slice(-20))
 
 function handleMessageClick(message: ChatMessage) {
   if (message.isThreat && !message.isMasked) {
@@ -750,24 +777,40 @@ watch(visibleMessages, async () => {
 }
 
 @keyframes threat-pulse {
-  0%, 100% { background: rgba(255, 51, 85, 0.15); }
-  50% { background: rgba(255, 51, 85, 0.25); }
+  0%,
+  100% {
+    background: rgba(255, 51, 85, 0.15);
+  }
+  50% {
+    background: rgba(255, 51, 85, 0.25);
+  }
 }
 
 /* Custom scrollbar - keep in scoped styles */
-.scrollbar-thin::-webkit-scrollbar { width: 8px; }
-.scrollbar-thin::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
-.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
 </style>
 ```
 
 **Tailwind + Scoped Style Strategy:**
+
 - **Tailwind utilities** for layout, spacing, colors, typography, and hover states
 - **Scoped `<style>`** only for keyframe animations and pseudo-element selectors (scrollbars)
 - This hybrid approach gives the speed of utility classes with the power of CSS animations
 
 **Full-Height Chat Benefits:**
+
 - Displays **18-20 messages** at once (vs 8-10 in smaller chat)
 - 50% screen width = **larger font sizes** (14px) for better readability
 - **Primary threat zone** gets primary screen real estate
@@ -782,7 +825,9 @@ watch(visibleMessages, async () => {
 <template>
   <div class="relative w-full h-full bg-[#0e0e14]">
     <!-- Game HUD Overlay -->
-    <div class="absolute top-4 left-4 z-[100] min-w-[180px] p-3 rounded-xl bg-black/70 backdrop-blur-[10px]">
+    <div
+      class="absolute top-4 left-4 z-[100] min-w-[180px] p-3 rounded-xl bg-black/70 backdrop-blur-[10px]"
+    >
       <div class="text-base font-semibold mb-2">💯 {{ score.toLocaleString() }}</div>
       <div class="text-base font-semibold mb-2" :class="{ 'hud-combo-glow': combo > 0 }">
         🔥 {{ combo }}x
@@ -832,8 +877,13 @@ const streamThreats = computed(() =>
 }
 
 @keyframes combo-glow {
-  0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-  50% { text-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+  }
 }
 </style>
 ```
@@ -843,7 +893,9 @@ const streamThreats = computed(() =>
 ```vue
 <!-- components/StreamInfoBar.vue -->
 <template>
-  <div class="flex justify-between items-center h-[50px] px-6 bg-gradient-to-t from-black/90 to-black/70 backdrop-blur-[10px] border-t border-white/10">
+  <div
+    class="flex justify-between items-center h-[50px] px-6 bg-gradient-to-t from-black/90 to-black/70 backdrop-blur-[10px] border-t border-white/10"
+  >
     <div class="flex gap-4 items-center">
       <span class="text-red-500 font-bold animate-pulse">🔴 LIVE</span>
       <span class="text-sm text-white/70">Reaction Game</span>
@@ -865,6 +917,7 @@ const viewerCount = ref(1234)
 **@nuxt/ui Usage:** The `UButton` component is used here for decorative stream UI buttons. These are non-interactive game elements (cosmetic), so the pre-built styling saves time without impacting game mechanics.
 
 **Key Points:**
+
 - All components use Nuxt 3 auto-imports
 - TypeScript for type safety
 - Reactive state with Pinia stores
@@ -876,6 +929,7 @@ const viewerCount = ref(1234)
 ### Stream Panel
 
 **HTML Structure:**
+
 ```html
 <div id="stream-panel" class="panel">
   <div class="stream-screen">
@@ -893,12 +947,13 @@ const viewerCount = ref(1234)
 ```
 
 **Content Rotation:**
+
 ```javascript
 const streamContents = [
   { type: 'game', image: 'gameplay1.gif' },
   { type: 'desktop', image: 'desktop.png' },
   { type: 'browser', image: 'browser.png' },
-  { type: 'video', image: 'video-player.png' }
+  { type: 'video', image: 'video-player.png' },
 ]
 
 // Rotate content every 30 seconds
@@ -910,6 +965,7 @@ setInterval(() => {
 ### Chat Panel
 
 **HTML Structure:**
+
 ```html
 <div id="chat-panel" class="panel">
   <div class="chat-header">
@@ -922,6 +978,7 @@ setInterval(() => {
 ```
 
 **Message Generation:**
+
 ```javascript
 class ChatManager {
   generateMessage(isThreat = false) {
@@ -931,18 +988,18 @@ class ChatManager {
 
     // Normal messages with variation
     const templates = [
-      "Hi everyone! 👋",
-      "This is so fun!",
+      'Hi everyone! 👋',
+      'This is so fun!',
       "You're doing great!",
-      "PogChamp",
-      "Love your content!",
+      'PogChamp',
+      'Love your content!',
       // ... more templates
     ]
 
     return {
       username: this.getRandomUsername(),
       text: templates[Math.floor(Math.random() * templates.length)],
-      color: this.getRandomColor()
+      color: this.getRandomColor(),
     }
   }
 
@@ -979,9 +1036,9 @@ export const threatDefinitions = {
       severity: 2,
       visual: {
         type: 'sprite',
-        path: 'assets/vtuber/gestures/inappropriate.png'
+        path: 'assets/vtuber/gestures/inappropriate.png',
       },
-      description: 'Inappropriate hand gesture'
+      description: 'Inappropriate hand gesture',
     },
     {
       id: 'wardrobe-malfunction',
@@ -989,9 +1046,9 @@ export const threatDefinitions = {
       severity: 3,
       visual: {
         type: 'sprite',
-        path: 'assets/vtuber/glitch/wardrobe.png'
+        path: 'assets/vtuber/glitch/wardrobe.png',
       },
-      description: 'Model glitch showing too much'
+      description: 'Model glitch showing too much',
     },
     // ... more vtuber threats
   ],
@@ -1004,9 +1061,9 @@ export const threatDefinitions = {
       visual: {
         type: 'overlay',
         path: 'assets/stream/threats/address.png',
-        position: 'bottom-right'
+        position: 'bottom-right',
       },
-      description: 'Home address visible on screen'
+      description: 'Home address visible on screen',
     },
     {
       id: 'credit-card',
@@ -1015,9 +1072,9 @@ export const threatDefinitions = {
       visual: {
         type: 'overlay',
         path: 'assets/stream/threats/credit-card.png',
-        position: 'center'
+        position: 'center',
       },
-      description: 'Credit card visible'
+      description: 'Credit card visible',
     },
     // ... more stream threats
   ],
@@ -1027,33 +1084,29 @@ export const threatDefinitions = {
       id: 'hate-speech',
       category: 'harassment',
       severity: 2,
-      messages: [
-        "You're so [SLUR]",
-        "Kill yourself",
-        "I hate [GROUP]"
-      ],
-      username: 'Troll123'
+      messages: ["You're so [SLUR]", 'Kill yourself', 'I hate [GROUP]'],
+      username: 'Troll123',
     },
     {
       id: 'dox-attempt',
       category: 'dox',
       severity: 3,
       messages: [
-        "I found your address: [ADDRESS]",
-        "Your real name is [NAME] right?",
-        "I know where you live"
+        'I found your address: [ADDRESS]',
+        'Your real name is [NAME] right?',
+        'I know where you live',
       ],
-      username: 'CreepyViewer'
+      username: 'CreepyViewer',
     },
     // ... more chat threats
-  ]
+  ],
 }
 
 export const normalChatMessages = [
-  "This stream is amazing!",
+  'This stream is amazing!',
   "You're so talented!",
-  "Hi from Brazil! 🇧🇷",
-  "First time watching, love it!",
+  'Hi from Brazil! 🇧🇷',
+  'First time watching, love it!',
   // ... 50+ normal messages
 ]
 ```
@@ -1065,28 +1118,56 @@ export const normalChatMessages = [
 ```css
 /* Threat appear animation */
 @keyframes threat-appear {
-  0% { opacity: 0; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Masking animation */
 @keyframes mask-stamp {
-  0% { transform: scale(0) rotate(0deg); opacity: 0; }
-  50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
 /* Combo glow */
 @keyframes combo-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 1); }
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 215, 0, 1);
+  }
 }
 
 /* Health warning pulse */
 @keyframes health-warning {
-  0%, 100% { border-color: red; }
-  50% { border-color: darkred; }
+  0%,
+  100% {
+    border-color: red;
+  }
+  50% {
+    border-color: darkred;
+  }
 }
 ```
 
@@ -1158,6 +1239,7 @@ class AudioManager {
 ## Performance Considerations
 
 ### Optimization Strategies
+
 1. **Object Pooling:** Reuse DOM elements for chat messages and threats
 2. **Debouncing:** Limit update frequency for non-critical UI elements
 3. **Asset Preloading:** Load all images and sounds at game start
@@ -1165,6 +1247,7 @@ class AudioManager {
 5. **Efficient Rendering:** Only update changed UI elements
 
 ### Asset Size Management
+
 - Keep images under 200KB each
 - Use sprite sheets for VTuber expressions
 - Compress audio files (MP3, OGG for compatibility)
@@ -1189,9 +1272,9 @@ export default defineNuxtConfig({
 
   // Modules
   modules: [
-    '@pinia/nuxt',    // State management
-    '@nuxt/eslint',   // ESLint flat config integration
-    '@nuxt/ui',       // UI components (selective use for menus/buttons)
+    '@pinia/nuxt', // State management
+    '@nuxt/eslint', // ESLint flat config integration
+    '@nuxt/ui', // UI components (selective use for menus/buttons)
   ],
 
   // Dev tools
@@ -1228,6 +1311,7 @@ export default defineNuxtConfig({
 ```
 
 **Notes:**
+
 - `@nuxt/ui` includes Tailwind CSS v4 automatically — no separate `tailwindcss` config needed
 - `@nuxt/eslint` provides flat config ESLint integration (replaces `.eslintrc.cjs`)
 - No `css` entry needed — Tailwind is injected by `@nuxt/ui`
@@ -1291,6 +1375,7 @@ export default withNuxt(
 ## Testing Checklist
 
 ### Functionality
+
 - [ ] Threats spawn correctly in all three panels
 - [ ] Clicking threats masks them successfully
 - [ ] Score increases with successful masks
@@ -1301,12 +1386,14 @@ export default withNuxt(
 - [ ] Navigation between pages works (menu → game → gameover)
 
 ### Balance
+
 - [ ] Difficulty curve feels appropriate
 - [ ] Threats are visible and identifiable
 - [ ] Reaction time windows are fair
 - [ ] Score scaling rewards skill
 
 ### Polish
+
 - [ ] All animations play smoothly
 - [ ] Sound effects trigger correctly
 - [ ] UI is readable and clear
@@ -1314,12 +1401,14 @@ export default withNuxt(
 - [ ] Page transitions are smooth
 
 ### Browser Compatibility
+
 - [ ] Chrome/Edge
 - [ ] Firefox
 - [ ] Safari
 - [ ] Mobile browsers (responsive)
 
 ### Type Safety
+
 - [ ] No TypeScript errors (`npm run typecheck`)
 - [ ] All stores properly typed
 - [ ] All components properly typed
@@ -1357,6 +1446,7 @@ zip -r ../../vtuber-mask.zip .
 ```
 
 **Itch.io Settings:**
+
 - Kind of project: HTML
 - Viewport dimensions: 1280 x 720
 - Fullscreen button: ✅ Enabled
@@ -1375,6 +1465,7 @@ git subtree push --prefix .output/public origin gh-pages
 ```
 
 **GitHub Actions (.github/workflows/deploy.yml):**
+
 ```yaml
 name: Deploy to GitHub Pages
 
@@ -1428,6 +1519,7 @@ Nuxt has built-in Vercel support - zero configuration needed.
 ## Post-Jam Extensions
 
 ### Potential Additions
+
 - Multiple VTuber characters with different personalities
 - Story mode with progression
 - Daily challenges
@@ -1491,6 +1583,7 @@ npm run lint:fix
 ### Development Steps (Game Jam Timeline)
 
 **Hour 0-2: Setup**
+
 ```bash
 # 1. Set up Nuxt project (above)
 # 2. Create basic pages (index, game, gameover)
@@ -1499,6 +1592,7 @@ npm run lint:fix
 ```
 
 **Hour 2-4: Core Components**
+
 ```bash
 # 1. Create components (VTuberPanel, StreamPanel, ChatPanel, HUD)
 # 2. Set up basic styling in each component
@@ -1507,6 +1601,7 @@ npm run lint:fix
 ```
 
 **Hour 4-8: Game Logic**
+
 ```bash
 # 1. Create threat store (stores/threat.ts)
 # 2. Implement threat data (data/threats.ts)
@@ -1515,6 +1610,7 @@ npm run lint:fix
 ```
 
 **Hour 8-12: Features**
+
 ```bash
 # 1. Add masking mechanic
 # 2. Implement combo system

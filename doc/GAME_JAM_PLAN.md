@@ -11,20 +11,25 @@
 ## Scope Philosophy
 
 ### The 1/3 Rule
+
 For a successful game jam:
+
 - Spend 1/3 of time on core mechanics
 - Spend 1/3 of time on content and features
 - Spend 1/3 of time on polish and bug fixing
 
 ### MVP-First Approach
+
 Build the minimum viable product first, then add features in priority order. Every feature should ask: "Does this make the game more fun?"
 
 ## Feature Tiers
 
 ### Tier 0: ABSOLUTELY REQUIRED (Must Have)
+
 These features define the core game. Without them, there is no game.
 
 **Layout & Structure:**
+
 - [ ] 50/50 split layout (Stream 640px | Chat 640px)
 - [ ] Platform header (60px) and info bar (50px)
 - [ ] Full-height chat panel with scrolling
@@ -33,6 +38,7 @@ These features define the core game. Without them, there is no game.
 - [ ] Correct z-index layering (1 → 10 → 50 → 100)
 
 **Core Mechanics:**
+
 - [ ] Click to mask mechanic (detect clicks on threats)
 - [ ] At least 5 threat types (3 chat, 2 stream minimum)
 - [ ] Basic scoring system (points per masked threat)
@@ -40,6 +46,7 @@ These features define the core game. Without them, there is no game.
 - [ ] Threat spawning system with timing
 
 **Content & Flow:**
+
 - [ ] 3-minute minimum gameplay duration
 - [ ] Start screen with "Begin Stream" button
 - [ ] Game over screen with final score
@@ -48,6 +55,7 @@ These features define the core game. Without them, there is no game.
 **Time Estimate:** 15-20 hours
 
 ### Tier 1: CORE EXPERIENCE (Should Have)
+
 These features make the game actually fun and replayable.
 
 - [ ] Combo system with score multiplier
@@ -63,6 +71,7 @@ These features make the game actually fun and replayable.
 **Time Estimate:** 12-18 hours
 
 ### Tier 2: ENHANCED EXPERIENCE (Nice to Have)
+
 These features add polish and depth but aren't essential.
 
 - [ ] Animated VTuber model (blinking, breathing)
@@ -79,6 +88,7 @@ These features add polish and depth but aren't essential.
 **Time Estimate:** 8-12 hours
 
 ### Tier 3: POLISH & EXTRAS (If Time Permits)
+
 These are the cherry on top, only add if everything else is done.
 
 - [ ] Multiple VTuber characters
@@ -100,20 +110,26 @@ These are the cherry on top, only add if everything else is done.
 ## Quick Priority Reference
 
 ### 🎯 PLAYTEST (Hour 6-8)
+
 **Focus:** Validate core mechanic
+
 - 50/50 layout (rough is OK)
 - Click chat threats → see mask effect
 - **Success = Team agrees it's fun**
 
 ### 🎯 MVP (Hour 20-24)
+
 **Focus:** Complete game loop
+
 - All Tier 0 features ✅
 - Start → Play → Game Over → Restart
 - 5+ threat types, scoring, health system
 - **Success = Can play from start to finish**
 
 ### 🎯 DEMO (Hour 36-40)
+
 **Focus:** Polished & presentable
+
 - All Tier 0 + Tier 1 features ✅
 - Combo system, 10+ threats, difficulty progression
 - Sound effects, music, animations
@@ -125,9 +141,11 @@ These are the cherry on top, only add if everything else is done.
 ## Development Milestones
 
 ### PLAYTEST BUILD (Hour 6-8) - First Playable
+
 **Goal:** Validate core mechanic is fun
 
 **Must Have:**
+
 - [ ] 50/50 layout visible (can be rough/unstyled)
 - [ ] Stream panel (left) and Chat panel (right) rendered
 - [ ] 1-2 threat types appear in chat
@@ -136,6 +154,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Threats disappear when clicked
 
 **Can Skip:**
+
 - Scoring, health, game over
 - Multiple mask styles
 - VTuber overlay (use placeholder)
@@ -150,9 +169,11 @@ These are the cherry on top, only add if everything else is done.
 ---
 
 ### MVP BUILD (Hour 20-24) - Minimum Viable Product
+
 **Goal:** Complete game loop, ready for extended playtesting
 
 **Must Have (Tier 0 Complete):**
+
 - [ ] **Layout:** 50/50 split with proper positioning
   - [ ] Stream panel: 640×610px (left, relative)
   - [ ] Chat panel: 640×610px (right, full height)
@@ -181,6 +202,7 @@ These are the cherry on top, only add if everything else is done.
   - [ ] Restart capability
 
 **Can Skip for MVP:**
+
 - Combo system
 - Sound effects
 - Animations
@@ -198,9 +220,11 @@ These are the cherry on top, only add if everything else is done.
 ---
 
 ### DEMO BUILD (Hour 36-40) - Polished & Presentable
+
 **Goal:** Ready to show judges/players, includes Tier 1 features
 
 **Must Have (MVP + Tier 1):**
+
 - [ ] **Visual Polish:**
   - [ ] Platform UI styling (header with "LIVE", viewer count)
   - [ ] Chat styling (usernames, message formatting)
@@ -231,6 +255,7 @@ These are the cherry on top, only add if everything else is done.
   - [ ] Mute button for audio
 
 **Optional (Time Permitting):**
+
 - Animated VTuber (blinking, expressions)
 - Screen shake effects
 - Particle systems
@@ -249,6 +274,7 @@ These are the cherry on top, only add if everything else is done.
 ## Day-by-Day Plan (48-hour Jam)
 
 ### Before Jam Starts (Preparation)
+
 - [ ] Set up development environment
 - [ ] Choose tech stack and create project skeleton
 - [ ] Gather team and assign roles
@@ -259,6 +285,7 @@ These are the cherry on top, only add if everything else is done.
 ### Day 1 (Friday Evening - Hours 0-8)
 
 **Hour 0-2: Setup & Planning**
+
 - [ ] Jam theme announced
 - [ ] Team brainstorm and concept finalization
 - [ ] Review this document and prioritize features
@@ -266,6 +293,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Create task list in Trello/GitHub Issues
 
 **Hour 2-5: Core Foundation**
+
 - [ ] Create HTML structure:
   - [ ] Container: 1280×720px
   - [ ] Header bar (60px)
@@ -282,6 +310,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Create first threat type (hate speech message)
 
 **Hour 5-8: First Playable (PLAYTEST BUILD)**
+
 - [ ] Add masking mechanic (black bar overlay on click)
 - [ ] Implement basic scoring (display score in console)
 - [ ] Create 2-3 more threat types (doxxing, spam)
@@ -295,6 +324,7 @@ These are the cherry on top, only add if everything else is done.
 ### Day 2 (Saturday - Hours 8-28)
 
 **Hour 8-12: Layout Finalization & Content**
+
 - [ ] Complete layout implementation:
   - [ ] VTuber overlay: bottom-right (220×180px, 16px gaps)
   - [ ] Game HUD: top-left (180×100px, 16px gaps)
@@ -307,6 +337,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Create 2nd mask style (pixelation)
 
 **Hour 12-14: Lunch & Playtesting**
+
 - [ ] Team plays the game for 5+ minutes
 - [ ] Identify what's fun and what's not
 - [ ] Adjust threat spawn rate and timing
@@ -314,6 +345,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Verify 50/50 layout works for gameplay
 
 **Hour 14-18: MVP Completion**
+
 - [ ] Implement health system (3 hearts display)
 - [ ] Add threat timer (5 sec countdown, visual indicator)
 - [ ] Create start screen with "Begin Stream" button
@@ -324,11 +356,13 @@ These are the cherry on top, only add if everything else is done.
 - [ ] **CHECKPOINT: MVP BUILD COMPLETE**
 
 **Hour 18-20: Dinner Break**
+
 - [ ] Rest and recharge
 - [ ] Backup project files
 - [ ] Review remaining tasks
 
 **Hour 20-24: Tier 1 Features - Depth**
+
 - [ ] Implement combo system (2x, 3x, 5x multipliers)
 - [ ] Add combo display in HUD with glow effect
 - [ ] Add 5+ more threat types (total 10+)
@@ -339,6 +373,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] **PLAYTEST:** Are combos satisfying?
 
 **Hour 24-28: Tier 1 Features - Polish**
+
 - [ ] Add background music (looping track)
 - [ ] Implement 5 key sound effects:
   - [ ] Threat appear sound
@@ -358,6 +393,7 @@ These are the cherry on top, only add if everything else is done.
 ### Day 3 (Sunday - Hours 28-48)
 
 **Hour 28-32: Testing & Balance**
+
 - [ ] Extensive playtesting (full game run-throughs)
 - [ ] Balance difficulty curve:
   - [ ] Adjust threat spawn rate progression
@@ -369,6 +405,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Verify layout works at 1280×720
 
 **Hour 32-36: Visual Polish (Toward Demo Build)**
+
 - [ ] Platform UI styling:
   - [ ] Header with "🔴 LIVE" indicator and viewer count
   - [ ] Footer with stream info
@@ -383,6 +420,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Add particle effect for successful mask (if time)
 
 **Hour 36-40: Demo Build Completion**
+
 - [ ] Implement grade system (S/A/B/C/D)
 - [ ] Add pause functionality
 - [ ] Add mute button for audio
@@ -396,12 +434,14 @@ These are the cherry on top, only add if everything else is done.
 - [ ] **PLAYTEST:** Is it ready to show?
 
 **Hour 40-44: Final Testing & Bug Fixing**
+
 - [ ] Full game run-throughs
 - [ ] Fix any remaining bugs
 - [ ] Test submission process
 - [ ] Create promotional screenshots
 
 **Hour 44-47: Submission Preparation**
+
 - [ ] Write game description for jam page
 - [ ] Create gameplay GIF/video
 - [ ] Take polished screenshots
@@ -409,6 +449,7 @@ These are the cherry on top, only add if everything else is done.
 - [ ] Upload to itch.io/jam platform
 
 **Hour 47-48: Submit & Buffer**
+
 - [ ] Final submission
 - [ ] Buffer time for technical issues
 - [ ] Celebrate!
@@ -418,6 +459,7 @@ These are the cherry on top, only add if everything else is done.
 ## Team Role Suggestions
 
 ### Programmer 1 (Gameplay)
+
 - Game loop and state management
 - Threat spawning system
 - Scoring and combo logic
@@ -425,6 +467,7 @@ These are the cherry on top, only add if everything else is done.
 - Health and difficulty systems
 
 ### Programmer 2 (UI/Frontend)
+
 - HTML/CSS layout
 - UI animations
 - Visual effects and particles
@@ -432,6 +475,7 @@ These are the cherry on top, only add if everything else is done.
 - Asset integration
 
 ### Artist/Designer
+
 - VTuber character design
 - Threat visual assets
 - Mask overlays
@@ -440,37 +484,42 @@ These are the cherry on top, only add if everything else is done.
 - Color scheme and branding
 
 ### Audio Designer
+
 - Background music composition
 - Sound effects creation
 - Audio mixing and balancing
 - VTuber voice clips (if included)
 
 ### Generalist/Producer
+
 - Task management
 - Playtesting coordination
 - Content creation (threat ideas)
 - Documentation
 - Submission preparation
 
-*Note: For smaller teams, combine roles. One person can handle programming + UI, another can do art + audio.*
+_Note: For smaller teams, combine roles. One person can handle programming + UI, another can do art + audio._
 
 ## Asset Creation Strategy
 
 ### Art Assets
 
 **Option A: Hand-drawn (Higher Quality, More Time)**
+
 - Draw VTuber character in chosen style
 - Create threat graphics
 - Pros: Unique, polished, thematic
 - Cons: Time-consuming, requires skilled artist
 
 **Option B: Asset Packs (Faster, Generic)**
+
 - Use free VTuber models from Booth.pm or VRoid
 - Download UI elements from Kenney.nl or itch.io
 - Pros: Fast, consistent quality
 - Cons: Less unique, potential licensing issues
 
 **Option C: Hybrid (Recommended)**
+
 - Use free/placeholder assets for background elements
 - Create custom assets only for key elements (VTuber, masks)
 - Pros: Balanced approach, manageable scope
@@ -479,12 +528,14 @@ These are the cherry on top, only add if everything else is done.
 ### Audio Assets
 
 **Music Options:**
+
 1. Create original chiptune tracks (tools: BeepBox, Bosca Ceoil)
 2. Use royalty-free music (incompetech.com, freesound.org)
 3. Generate AI music (Suno, Soundraw) - check jam rules
 4. Use game jam friendly music packs
 
 **SFX Options:**
+
 1. Record with household items + audio editing
 2. Use free SFX libraries (freesound.org, zapsplat.com)
 3. Generate with tools (Bfxr, ChipTone)
@@ -495,26 +546,31 @@ These are the cherry on top, only add if everything else is done.
 ### Common Pitfalls & Solutions
 
 **Pitfall 1: Scope Creep**
+
 - Solution: Stick to Tier 0 and 1 features until Day 3
 - Red Flag: Adding new features before core is done
 - Recovery: Cut features ruthlessly, focus on polish
 
 **Pitfall 2: Technical Difficulties**
+
 - Solution: Use familiar technology, avoid experimental tools
 - Red Flag: Spending hours debugging one issue
 - Recovery: Move to a working alternative, don't get stuck
 
 **Pitfall 3: Asset Bottleneck**
+
 - Solution: Use placeholders, create assets in parallel
 - Red Flag: Programmers waiting for art assets
 - Recovery: Implement with placeholder art, swap later
 
 **Pitfall 4: No Clear Direction**
+
 - Solution: Have a playable prototype by hour 8
 - Red Flag: Still discussing features on Day 2
 - Recovery: Single decision-maker makes final calls
 
 **Pitfall 5: Burnout**
+
 - Solution: Mandatory sleep, meal breaks, and rest
 - Red Flag: Team member exhausted and making mistakes
 - Recovery: Rotate tasks, take breaks, cut scope
@@ -534,26 +590,31 @@ If you're running behind, cut in this order:
 ## Playtesting Schedule
 
 ### Playtest 1: Hour 6-8
+
 - **Goal:** Is the core mechanic fun?
 - **Questions:** Can you click threats? Does masking feel good?
 - **Action:** Fix critical issues, validate concept
 
 ### Playtest 2: Hour 14-16
+
 - **Goal:** Is the game challenging and fair?
 - **Questions:** Is difficulty balanced? Are threats visible?
 - **Action:** Adjust spawn rates, timing, visual clarity
 
 ### Playtest 3: Hour 24-26
+
 - **Goal:** Is the game loop satisfying?
 - **Questions:** Do combos feel rewarding? Is audio/visual feedback good?
 - **Action:** Tune feedback, add juice, improve feel
 
 ### Playtest 4: Hour 36-38
+
 - **Goal:** Is the game ready to ship?
 - **Questions:** Any game-breaking bugs? Is it fun for 5+ minutes?
 - **Action:** Final bug fixes, minor balance tweaks
 
 ### Playtest 5: Hour 42-44
+
 - **Goal:** Final validation
 - **Questions:** Does it work on all browsers? Is it submission-ready?
 - **Action:** Last minute fixes only
@@ -561,6 +622,7 @@ If you're running behind, cut in this order:
 ## Submission Checklist
 
 ### Technical
+
 - [ ] Game runs in major browsers (Chrome, Firefox, Safari)
 - [ ] No console errors or critical bugs
 - [ ] Performant (60fps on average hardware)
@@ -569,6 +631,7 @@ If you're running behind, cut in this order:
 - [ ] Clear instructions/tutorial
 
 ### Content
+
 - [ ] Game is completable (has win/lose condition)
 - [ ] Minimum 5 minutes of gameplay content
 - [ ] Theme is clearly represented
@@ -576,6 +639,7 @@ If you're running behind, cut in this order:
 - [ ] All assets are properly licensed
 
 ### Presentation
+
 - [ ] Engaging title
 - [ ] Clear description explaining gameplay
 - [ ] 3-5 screenshots showing key features
@@ -584,6 +648,7 @@ If you're running behind, cut in this order:
 - [ ] Browser compatibility noted
 
 ### Polish
+
 - [ ] Audio can be muted
 - [ ] Game can be paused
 - [ ] Clear visual and audio feedback
@@ -595,18 +660,21 @@ If you're running behind, cut in this order:
 After the jam, if you want to continue development:
 
 ### Week 1 Post-Jam
+
 - Address critical bugs found by players
 - Add most-requested feature
 - Improve accessibility
 - Add proper tutorial
 
 ### Week 2-4 Post-Jam
+
 - Add story mode with progression
 - Create multiple characters
 - Add daily challenges
 - Implement leaderboard
 
 ### Long-term
+
 - Port to mobile
 - Add multiplayer/competitive mode
 - Create content updates

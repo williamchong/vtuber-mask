@@ -3,6 +3,7 @@
 ## Design Philosophy
 
 **Core Principles:**
+
 1. **Immediate Clarity:** Players should instantly understand what's happening
 2. **Visual Hierarchy:** Threats must stand out from normal content
 3. **Satisfying Feedback:** Every action should feel responsive and rewarding
@@ -77,6 +78,7 @@ Key Features:
 ## Color Scheme
 
 ### Primary Palette
+
 ```
 Main Background:     #1a1a2e (Dark blue-black)
 Panel Background:    #16213e (Slightly lighter blue-black)
@@ -90,12 +92,14 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 ### Threat Color Coding
+
 - **Low Severity:** Yellow glow (#ffaa00)
 - **Medium Severity:** Orange glow (#ff6b35)
 - **High Severity:** Red glow (#ff3355)
 - **Pulsing Effect:** Increases in intensity as time runs out
 
 ### UI State Colors
+
 - **Normal State:** Neutral blues and purples
 - **Combo Active:** Gold/yellow highlights (#ffd700)
 - **Low Health:** Red border pulse
@@ -104,6 +108,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ## Typography
 
 ### Font Choices
+
 ```css
 /* Main UI Font - Clean, modern */
 --font-ui: 'Inter', 'Segoe UI', system-ui, sans-serif;
@@ -119,14 +124,15 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 ### Size Scale
+
 ```css
---text-xs: 12px;   /* Chat usernames, small labels */
---text-sm: 14px;   /* Chat messages, secondary info */
---text-md: 16px;   /* Body text, UI labels */
---text-lg: 20px;   /* Panel headers */
---text-xl: 28px;   /* Score display */
---text-2xl: 36px;  /* Combo counter */
---text-3xl: 48px;  /* Game over screen */
+--text-xs: 12px; /* Chat usernames, small labels */
+--text-sm: 14px; /* Chat messages, secondary info */
+--text-md: 16px; /* Body text, UI labels */
+--text-lg: 20px; /* Panel headers */
+--text-xl: 28px; /* Score display */
+--text-2xl: 36px; /* Combo counter */
+--text-3xl: 48px; /* Game over screen */
 ```
 
 ## Component Designs
@@ -144,6 +150,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 **Purpose:** Mimics YouTube/Twitch platform UI
 
 **Visual Design:**
+
 - Background: Solid dark (#0f0f1e)
 - Border bottom: 1px rgba(255,255,255,0.1)
 - Left section: Game logo + title
@@ -151,6 +158,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 - Right section: Viewer count + settings icon
 
 **Elements:**
+
 - Game logo (32×32px icon)
 - Stream title (18px, medium weight)
 - Live viewer count (animated, updates every 5s)
@@ -170,6 +178,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 **Dimensions:** 180px × 100px
 
 **Visual Design:**
+
 - Semi-transparent dark background (rgba(0,0,0,0.7))
 - Backdrop blur (10px)
 - Rounded corners (12px)
@@ -179,6 +188,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 - Health: Bar with gradient (green → yellow → red)
 
 **Animations:**
+
 - Score: Bounce up (+20px) when points added
 - Combo: Pulse on each successful mask
 - Health: Shake (±5px) when damage taken
@@ -202,6 +212,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 **Z-index:** Above stream content, below game HUD
 
 **Visual Details:**
+
 - Rounded corners (border-radius: 16px)
 - Semi-transparent dark background with backdrop blur
 - Gradient border (subtle glow effect)
@@ -212,6 +223,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 - **NEW:** Live indicator with viewer count inline
 
 **Threat Visualization:**
+
 - Inappropriate gesture: Overlay sprite on model
 - Wardrobe malfunction: Glitch effect with pixelation
 - Face reveal: Blur effect with photo overlay
@@ -219,6 +231,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 - Severity glow: Color-coded based on threat level
 
 **Mask Effect:**
+
 - Large emoji or pixelated blur covers the threat
 - Animation: Scale from 0 → 1.2 → 1.0 (300ms)
 - Stamp animation (scale from 0 to 1.2 to 1)
@@ -250,11 +263,13 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 **Dimensions:** 640px width × 610px height (minus header/footer)
 
 **Reasoning for 50%:**
+
 - Stream threats are LARGER and FEWER (easier to spot and click)
 - VTuber overlay adds visual interest without taking full column
 - More space allocated to chat where MOST threats appear
 
 **Content Types:**
+
 1. **Game Footage:**
    - Animated GIF or video of gameplay
    - Could be placeholder retro game graphics
@@ -273,12 +288,14 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
    - Threats appear as messages or notifications
 
 **Threat Placement:**
+
 - Overlays appear at specific positions
 - Flash briefly before settling
 - Glow effect around threat area
 - Subtle pulse to draw attention
 
 **Mask Styles:**
+
 - **Black Bar:** For sensitive info (horizontal bar)
 - **Pixelation:** For inappropriate images
 - **Blur:** For personal information
@@ -316,6 +333,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 **Dimensions:** 640px width × 610px height (50% of screen width, full content height)
 
 **Why 50% width and full height:**
+
 - **60% of ALL threats** appear in chat (hate speech, doxxing, harassment)
 - Chat messages are **SMALL clickable targets** - need space for accuracy
 - Can display **18-20 messages** at once (excellent threat visibility)
@@ -330,6 +348,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ✅ Full height = see more context for threat detection
 
 **Message Structure:**
+
 ```html
 <div class="chat-message [normal|threat]">
   <span class="username" style="color: [user-color]">Username:</span>
@@ -339,6 +358,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 **Visual Design:**
+
 - Dark background (#0e1621)
 - Username colors: Random pastel colors
 - Emojis and emoticons supported
@@ -346,6 +366,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 - Auto-scroll to show latest
 
 **Threat Visualization:**
+
 - Red background highlight
 - Warning icon (⚠️) before message
 - Bold text
@@ -353,12 +374,14 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 - Priority positioning (doesn't scroll away immediately)
 
 **Mask Effect:**
+
 - [CENSORED] or [BANNED] replaces message
 - Red ❌ or 🔨 icon appears
 - Message fades to gray
 - Ban animation (crossed out)
 
 **Updated Features (Based on Real Streams):**
+
 - User badges: 🔰 (newbie), ⭐ (subscriber), 👑 (moderator)
 - Timestamps: Added to each message
 - User avatars: Small circular icons (optional)
@@ -378,11 +401,13 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 **Purpose:** Mimics YouTube/Twitch stream info bar
 
 **Visual Design:**
+
 - Background: Gradient from rgba(0,0,0,0.9) to rgba(0,0,0,0.7)
 - Backdrop blur: 10px
 - Border top: 1px rgba(255,255,255,0.1)
 
 **Elements:**
+
 - Left section:
   - 🔴 LIVE indicator (pulsing red dot)
   - Category tag
@@ -395,6 +420,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
   - Chat rules link (optional)
 
 **Styling:**
+
 ```css
 .stream-info-bar {
   display: flex;
@@ -411,14 +437,20 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 }
 
 @keyframes live-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 ```
 
 ### 6. Mask Overlays
 
 **Pixelation Mask:**
+
 ```
 ┌─────────┐
 │░░▓▓░░▓▓│
@@ -429,6 +461,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 **Black Bar Mask:**
+
 ```
 ┌─────────┐
 │         │
@@ -438,6 +471,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 **Blur Mask:**
+
 ```
 ┌─────────┐
 │░▒▓█▓▒░  │
@@ -447,6 +481,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 **Cute Sticker Mask:**
+
 ```
     ⭐
   ✨💫✨
@@ -456,6 +491,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ## Animation & Feedback
 
 ### Threat Appearance Sequence
+
 ```
 0.0s: Warning glow begins (subtle)
 0.5s: Threat element fades in
@@ -467,6 +503,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 ### Successful Mask Sequence
+
 ```
 0.0s: Click detected
 0.1s: Mask animation starts (stamp effect)
@@ -478,6 +515,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 ### Missed Threat Sequence
+
 ```
 0.0s: Threat expires or escapes notice
 0.1s: Health bar flashes red
@@ -489,6 +527,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 ### Combo Effects
+
 ```
 3x Combo:  Border glow (yellow)
 5x Combo:  Intensified glow + size increase
@@ -500,6 +539,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ## UI States
 
 ### 1. Main Menu
+
 ```
 ┌─────────────────────────────────────┐
 │                                     │
@@ -515,12 +555,14 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 **Visual Style:**
+
 - Animated background (subtle particle effects)
 - Large logo/title with glow effect
 - Buttons with hover effects
 - Pastel color scheme
 
 ### 2. Tutorial/How to Play
+
 ```
 ┌─────────────────────────────────────┐
 │         HOW TO PLAY                 │
@@ -538,12 +580,14 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 ### 3. Active Gameplay
+
 - Full interface as described above
 - Minimal UI chrome, maximum playfield
 - Persistent HUD
 - Dynamic threat spawning
 
 ### 4. Pause Menu
+
 ```
 ┌─────────────────────────────────────┐
 │           ⏸️ PAUSED                 │
@@ -559,6 +603,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 ### 5. Game Over Screen
+
 ```
 ┌─────────────────────────────────────┐
 │       STREAM ENDED 💔               │
@@ -577,6 +622,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ```
 
 **Grade Calculation:**
+
 - S: 95%+ accuracy, 4+ min survived
 - A: 85%+ accuracy, 3+ min survived
 - B: 70%+ accuracy, 2+ min survived
@@ -586,6 +632,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
 ## Accessibility Features
 
 ### Visual Accessibility
+
 1. **High Contrast Mode:**
    - Increase border thickness
    - Stronger color differentiation
@@ -602,6 +649,7 @@ Text Secondary:      #a0a0c0 (Light purple-gray)
    - Icons to indicate threat type
 
 ### Difficulty Accessibility
+
 1. **Easy Mode:**
    - 7-second reaction time
    - Fewer simultaneous threats
@@ -635,6 +683,7 @@ Layer 0:   Background
 ```
 
 **CSS Implementation:**
+
 ```css
 .stream-content {
   z-index: 1;
@@ -658,21 +707,18 @@ Layer 0:   Background
 ### VTuber Overlay (Bottom-Right Corner)
 
 **Position Specifications:**
+
 ```css
 .vtuber-overlay {
   position: absolute;
-  bottom: 16px;  /* 16px from bottom edge */
-  right: 16px;   /* 16px from right edge */
+  bottom: 16px; /* 16px from bottom edge */
+  right: 16px; /* 16px from right edge */
   width: 220px;
   height: 180px;
   z-index: 50;
 
   /* Visual styling */
-  background: linear-gradient(
-    135deg,
-    rgba(26, 26, 46, 0.95),
-    rgba(22, 33, 62, 0.95)
-  );
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
   backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.1);
@@ -681,6 +727,7 @@ Layer 0:   Background
 ```
 
 **Corner Placement Diagram:**
+
 ```
 Stream Panel (640px × 610px)
 ┌────────────────────────────┐
@@ -704,11 +751,12 @@ Stream Panel (640px × 610px)
 ### Game HUD (Top-Left Overlay)
 
 **Position Specifications:**
+
 ```css
 .game-hud {
   position: absolute;
-  top: 16px;     /* 16px from top edge */
-  left: 16px;    /* 16px from left edge */
+  top: 16px; /* 16px from top edge */
+  left: 16px; /* 16px from left edge */
   width: 180px;
   min-height: 100px;
   z-index: 100;
@@ -722,6 +770,7 @@ Stream Panel (640px × 610px)
 ```
 
 **Top-Left Placement Diagram:**
+
 ```
 Stream Panel (640px × 610px)
 ┌────────────────────────────┐
@@ -742,6 +791,7 @@ Stream Panel (640px × 610px)
 ## Responsive Design
 
 ### Desktop (1280×720+) - Primary Target
+
 **Layout:** 50% Stream | 50% Chat
 
 ```
@@ -760,6 +810,7 @@ Stream Panel (640px × 610px)
 - Optimal click accuracy
 
 ### Tablet (768px - 1280px)
+
 **Layout:** 50% Stream | 50% Chat (maintained)
 
 - Slightly smaller VTuber overlay (200×160px)
@@ -768,6 +819,7 @@ Stream Panel (640px × 610px)
 - Maintain 50/50 split for gameplay
 
 ### Mobile (< 768px) - Vertical Stack
+
 **Layout:** Vertical stacking prioritizing gameplay
 
 ```
@@ -797,6 +849,7 @@ Stream Panel (640px × 610px)
 ## Sound Design Integration
 
 ### UI Sound Cues
+
 - **Menu Navigation:** Soft click
 - **Button Hover:** Subtle beep
 - **Start Game:** Rising tone
@@ -807,6 +860,7 @@ Stream Panel (640px × 610px)
 - **Game Over:** Sad trombone or "stream ended" notification
 
 ### Music Layers
+
 - **Base Layer:** Cute chiptune melody
 - **+3 Combo:** Add rhythm layer
 - **+7 Combo:** Add harmony layer
@@ -816,24 +870,28 @@ Stream Panel (640px × 610px)
 ## Polish & Juice
 
 ### Particle Effects
+
 - Successful mask: Confetti burst
 - High combo: Sparkles around score
 - Damage: Screen shake + red flash
 - Perfect wave: Rainbow shimmer
 
 ### Screen Effects
+
 - **Combo Glow:** Border glows brighter with combo
 - **Vignette:** Darkens at low health
 - **Color Shift:** Slight red tint when in danger
 - **Slow-Mo:** Brief slow-motion on close calls
 
 ### Micro-interactions
+
 - Buttons: Scale up 5% on hover
 - Panels: Subtle float animation
 - VTuber: Blink randomly, react to events
 - Chat: Messages bounce in slightly
 
 ### Dynamic Elements
+
 - Viewer count slowly increases over time
 - Occasional normal "donation" messages
 - VTuber idle variations (stretching, waving)
@@ -842,6 +900,7 @@ Stream Panel (640px × 610px)
 ## Visual Asset Checklist
 
 ### VTuber Assets
+
 - [ ] Base model (idle pose)
 - [ ] 5-8 expression variations
 - [ ] 3-5 gesture sprites
@@ -849,6 +908,7 @@ Stream Panel (640px × 610px)
 - [ ] Face reveal overlay (blurred photo)
 
 ### Stream Content Assets
+
 - [ ] 3-4 different "game" backgrounds
 - [ ] Desktop mockup
 - [ ] Browser window template
@@ -857,6 +917,7 @@ Stream Panel (640px × 610px)
 - [ ] Inappropriate content placeholders
 
 ### Mask Assets
+
 - [ ] Pixelation overlay (tileable)
 - [ ] Black bar (stretchable)
 - [ ] Blur shader/image
@@ -865,6 +926,7 @@ Stream Panel (640px × 610px)
 - [ ] Censored stamp
 
 ### UI Elements
+
 - [ ] Heart icons (full/empty)
 - [ ] Combo flame icon
 - [ ] Severity warning icons
@@ -873,6 +935,7 @@ Stream Panel (640px × 610px)
 - [ ] Panel backgrounds
 
 ### Effects
+
 - [ ] Particle sprites (confetti, sparkles)
 - [ ] Glow overlays
 - [ ] Screen shake shader
@@ -881,6 +944,7 @@ Stream Panel (640px × 610px)
 ## Implementation Priority
 
 ### Phase 1: Core Layout ✅ CRITICAL
+
 1. **Create 50/50 split layout**
    - Stream container: 50% width (640px), relative positioning
    - Chat panel: 50% width (640px), full height
@@ -898,6 +962,7 @@ Stream Panel (640px × 610px)
    - Auto-scroll to bottom on new messages
 
 ### Phase 2: Visual Identity
+
 1. **Implement color scheme**
    - Platform UI colors (#0f0f1e header, gradient footer)
    - Chat background (#1f1f23)
@@ -916,6 +981,7 @@ Stream Panel (640px × 610px)
    - Subtle borders and shadows
 
 ### Phase 3: Interactive Elements
+
 1. **Click detection**
    - Chat messages clickable
    - Stream threat overlays clickable
@@ -929,6 +995,7 @@ Stream Panel (640px × 610px)
    - Mask stamp animations
 
 ### Phase 4: Animations & Polish
+
 1. **Threat animations**
    - Threat appearance (fade + pulse)
    - Urgency pulse (faster as time runs out)
@@ -946,6 +1013,7 @@ Stream Panel (640px × 610px)
    - Damage flash
 
 ### Phase 5: Responsive & Accessibility
+
 1. **Responsive breakpoints**
    - Desktop (1280+): Full layout
    - Tablet (768-1280): Maintain 50/50, smaller overlays
@@ -960,6 +1028,7 @@ Stream Panel (640px × 610px)
 ## Design Validation
 
 ### Gameplay Testing:
+
 - [ ] Can I identify threats within 1 second?
 - [ ] Are chat threats easy to click accurately?
 - [ ] Is the VTuber overlay visible but not intrusive?
@@ -967,6 +1036,7 @@ Stream Panel (640px × 610px)
 - [ ] Can I see 18-20 chat messages clearly?
 
 ### Visual Testing:
+
 - [ ] Is the feedback satisfying?
 - [ ] Does the UI feel like a real stream?
 - [ ] Are combos exciting visually?
@@ -974,6 +1044,7 @@ Stream Panel (640px × 610px)
 - [ ] Are masked areas obviously censored?
 
 ### Technical Testing:
+
 - [ ] Does it work for colorblind players?
 - [ ] Is performance smooth (60fps)?
 - [ ] Do overlays layer correctly?
@@ -981,6 +1052,7 @@ Stream Panel (640px × 610px)
 - [ ] Are click targets large enough?
 
 ### Accessibility Testing:
+
 - [ ] Can navigate with keyboard only?
 - [ ] Do screen readers work correctly?
 - [ ] Is text readable at all sizes?
@@ -1011,6 +1083,7 @@ Z-Index Layers:
 ## Final Layout Notes
 
 **Critical Features:**
+
 - ✅ 50/50 split optimized for gameplay (chat has 60% of threats)
 - ✅ VTuber in **bottom-right corner** of stream (overlay style)
 - ✅ Chat is **full height** for maximum threat visibility
@@ -1018,12 +1091,14 @@ Z-Index Layers:
 - ✅ Platform header and info bar for authentic streaming feel
 
 **Gameplay Optimization:**
+
 - Chat messages are small targets → need 50% width for accuracy
 - Stream threats are larger → need less space
 - VTuber threats are rare → can be small overlay
 - Equal split balances realism with playability
 
 **Visual Hierarchy:**
+
 - Game HUD always visible (z-index: 100)
 - VTuber visible but doesn't block important content
 - Chat dominates right side for threat scanning
