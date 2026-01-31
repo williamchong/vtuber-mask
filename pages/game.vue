@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { GAME_CONFIG } from '~/data/config'
+
 const gameStore = useGameStore()
 const gameLoop = useGameLoop()
 const router = useRouter()
+const missFlash = ref(false)
+const viewerDeltaDisplay = ref<number | null>(null)
+let deltaTimeout: ReturnType<typeof setTimeout> | null = null
 
 onMounted(() => {
   gameLoop.start()
@@ -18,15 +23,80 @@ watch(
       gameLoop.stop()
       router.push('/gameover')
     }
-  }
+  },
 )
+
+// Flash red when a threat is missed
+watch(
+  () => gameStore.threatsExpired,
+  (newVal, oldVal) => {
+    if (newVal > oldVal) {
+      missFlash.value = true
+      setTimeout(() => {
+        missFlash.value = false
+      }, 400)
+    }
+  },
+)
+
+// Show viewer delta when it changes from player action
+watch(
+  () => gameStore.viewerDelta,
+  (delta) => {
+    if (delta === 0) return
+    viewerDeltaDisplay.value = delta
+    if (deltaTimeout) clearTimeout(deltaTimeout)
+    deltaTimeout = setTimeout(() => {
+      viewerDeltaDisplay.value = null
+    }, 1200)
+  },
+)
+
+const emotionalPercent = computed(() =>
+  Math.max(0, Math.min(100, (gameStore.emotionalValue / GAME_CONFIG.EMOTIONAL_VALUE_MAX) * 100)),
+)
+
+const emotionalBarColor = computed(() => {
+  const p = emotionalPercent.value
+  if (p > 60) return 'bg-green-500'
+  if (p > 30) return 'bg-yellow-500'
+  return 'bg-red-500'
+})
+
+const emotionalEmoji = computed(() => {
+  const p = emotionalPercent.value
+  if (p > 70) return '\u{1F60A}' // smiling face
+  if (p > 40) return '\u{1F610}' // neutral face
+  return '\u{1F622}' // crying face
+})
 </script>
 
 <template>
   <div class="flex items-center justify-center w-screen h-screen bg-[#111118]">
     <div
-      class="flex flex-col w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50"
+      class="flex flex-col w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50 relative"
+      :class="{ 'miss-shake': missFlash }"
     >
+      <!-- Miss flash overlay -->
+      <Transition name="miss-flash">
+        <div
+          v-if="missFlash"
+          class="absolute inset-0 z-[200] pointer-events-none border-4 border-red-500/60 rounded-lg"
+        />
+      </Transition>
+
+      <!-- Emotional Value Bar -->
+      <div class="flex items-center h-6 bg-[#0a0a16] px-2 gap-2">
+        <span class="text-sm leading-none">{{ emotionalEmoji }}</span>
+        <div class="flex-1 h-1.5 bg-white/10 rounded-full relative overflow-hidden">
+          <div
+            class="absolute inset-y-0 left-0 rounded-full transition-all duration-300"
+            :class="emotionalBarColor"
+            :style="{ width: `${emotionalPercent}%` }"
+          />
+        </div>
+      </div>
+
       <!-- Platform header -->
       <header
         class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10"
@@ -42,7 +112,17 @@ watch(
         <span class="text-sm text-white/50">Protect the Stream!</span>
         <div class="flex items-center gap-2 text-sm text-white/70">
           <span class="inline-block w-2 h-2 rounded-full bg-red-500" />
-          <span>{{ gameStore.score.toLocaleString() }} viewers</span>
+          <span>{{ Math.floor(gameStore.viewers).toLocaleString() }} viewers</span>
+          <Transition name="delta-pop">
+            <span
+              v-if="viewerDeltaDisplay !== null"
+              :key="viewerDeltaDisplay"
+              class="text-xs font-bold tabular-nums"
+              :class="viewerDeltaDisplay < 0 ? 'text-red-400' : 'text-green-400'"
+            >
+              {{ viewerDeltaDisplay < 0 ? '' : '+' }}{{ viewerDeltaDisplay }}
+            </span>
+          </Transition>
         </div>
       </header>
 
@@ -70,3 +150,68 @@ watch(
     </div>
   </div>
 </template>
+
+<style scoped>
+.miss-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+.miss-flash-enter-active {
+  transition: opacity 0.05s ease-in;
+}
+.miss-flash-leave-active {
+  transition: opacity 0.35s ease-out;
+}
+.miss-flash-enter-from,
+.miss-flash-leave-to {
+  opacity: 0;
+}
+
+.delta-pop-enter-active {
+  animation: delta-in 0.25s ease-out;
+}
+.delta-pop-leave-active {
+  animation: delta-out 0.4s ease-in;
+}
+
+@keyframes delta-in {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes delta-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+</style>

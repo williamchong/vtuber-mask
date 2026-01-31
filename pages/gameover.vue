@@ -35,6 +35,10 @@ function formatTime(seconds: number): string {
             <span class="font-bold tabular-nums">{{ gameStore.score.toLocaleString() }}</span>
           </div>
           <div class="flex justify-between">
+            <span class="text-white/50">Peak Viewers</span>
+            <span class="font-bold tabular-nums">{{ gameStore.peakViewers.toLocaleString() }}</span>
+          </div>
+          <div class="flex justify-between">
             <span class="text-white/50">Threats Masked</span>
             <span class="font-bold tabular-nums">{{ gameStore.threatsMasked }}</span>
           </div>

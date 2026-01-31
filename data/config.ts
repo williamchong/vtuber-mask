@@ -6,16 +6,16 @@ export const GAME_CONFIG = {
   MAX_ACTIVE_THREATS: 5,
 
   // Threat timing
-  THREAT_DURATION: 5000, // ms before threat expires
+  THREAT_DURATION: 5000, // ms before threat expires (safety net)
   BASE_SPAWN_INTERVAL: 5000, // ms between spawns
   MIN_SPAWN_INTERVAL: 2000, // fastest spawn rate
 
   // Scoring
-  INITIAL_VIEWERS: 1000,
   BASE_POINTS: 100,
-  SPEED_BONUS: 50,
-  SPEED_BONUS_THRESHOLD: 1000, // ms
+  EARLY_MASK_BONUS: 100, // extra points for masking in bottom half (scales with position)
   FALSE_POSITIVE_PENALTY: 50,
+  FALSE_POSITIVE_VIEWER_PENALTY: 20, // viewers lost on false positive
+  FALSE_POSITIVE_RATE_PENALTY: 0.5, // viewer rate reduction on false positive
 
   // Combo multipliers
   COMBO_THRESHOLDS: [
@@ -24,10 +24,33 @@ export const GAME_CONFIG = {
     { combo: 10, multiplier: 3.0 },
   ],
 
-  // Health
-  MAX_HEALTH: 100,
-  MISS_DAMAGE: [10, 20, 30], // per severity 1/2/3
-  FALSE_POSITIVE_DAMAGE: 5,
+  // Combo milestone emotional recovery
+  COMBO_EMOTIONAL_RECOVERY: [
+    { combo: 3, recovery: 3 },
+    { combo: 5, recovery: 5 },
+    { combo: 10, recovery: 10 },
+  ],
+
+  // Early mask emotional recovery (masking in bottom half of chat)
+  EARLY_MASK_EMOTIONAL_RECOVERY: 2,
+
+  // Emotional Value (HP)
+  EMOTIONAL_VALUE_MAX: 100,
+  EMOTIONAL_VALUE_INITIAL: 100,
+  EMOTIONAL_FLUCTUATION_INTERVAL: 3000, // ms
+  EMOTIONAL_FLUCTUATION_RANGE: [-0.5, 0.5] as readonly [number, number],
+  MISS_EMOTIONAL_PENALTY: 15,
+  FALSE_POSITIVE_EMOTIONAL_PENALTY: 5,
+
+  // Viewer count
+  INITIAL_VIEWERS: 1000,
+  VIEWER_BASE_RATE: 1, // viewers/sec
+  VIEWER_RATE_BOOST: 0.5, // added per timely censor
+  VIEWER_MAX_RATE: 10,
+  VIEWER_MISS_PENALTY: 50, // viewers lost on miss
+
+  // Chat
+  CHAT_MAX_MESSAGES: 15,
 
   // Threat distribution
   THREAT_WEIGHTS: {

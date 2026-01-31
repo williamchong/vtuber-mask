@@ -1,14 +1,27 @@
+import { GAME_CONFIG } from '~/data/config'
+
 export function useGameLoop() {
   const gameStore = useGameStore()
   const chatStore = useChatStore()
   let rafId: number | null = null
+  let lastTime = 0
+  let emotionalFluctuationAccum = 0
 
-  function tick() {
+  function tick(timestamp: number) {
     if (!gameStore.isRunning) return
 
-    const expired = chatStore.expireThreats()
-    for (let i = 0; i < expired; i++) {
-      gameStore.missedThreat()
+    const dt = lastTime ? (timestamp - lastTime) / 1000 : 0
+    lastTime = timestamp
+
+    // Update viewer growth
+    gameStore.updateViewers(dt)
+
+    // Emotional fluctuation on a timer
+    emotionalFluctuationAccum += dt * 1000
+    const interval = GAME_CONFIG.EMOTIONAL_FLUCTUATION_INTERVAL * (0.8 + Math.random() * 0.4)
+    if (emotionalFluctuationAccum >= interval) {
+      emotionalFluctuationAccum = 0
+      gameStore.fluctuateEmotionalValue()
     }
 
     rafId = requestAnimationFrame(tick)
@@ -17,6 +30,8 @@ export function useGameLoop() {
   function start() {
     gameStore.start()
     chatStore.startChat()
+    lastTime = 0
+    emotionalFluctuationAccum = 0
     rafId = requestAnimationFrame(tick)
   }
 

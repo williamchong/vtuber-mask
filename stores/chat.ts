@@ -16,7 +16,9 @@ export interface ChatMessage {
   threatType: ThreatType | null
   isMasked: boolean
   falsePositive: boolean
+  correctMask: boolean
   spawnedAt: number
+  sentiment: 1 | 0 | -1
 }
 
 let nextId = 0
@@ -35,16 +37,19 @@ export const useChatStore = defineStore('chat', () => {
   let threatTimer: ReturnType<typeof setTimeout> | null = null
 
   function createNormalMessage(): ChatMessage {
+    const msg = randomItem(normalMessages)
     return {
       id: nextId++,
       username: randomItem(usernames),
       color: randomItem(usernameColors),
-      text: randomItem(normalMessages),
+      text: msg.text,
       isThreat: false,
       threatType: null,
       isMasked: false,
       falsePositive: false,
+      correctMask: false,
       spawnedAt: 0,
+      sentiment: msg.sentiment,
     }
   }
 
@@ -59,12 +64,18 @@ export const useChatStore = defineStore('chat', () => {
       threatType: threat.type,
       isMasked: false,
       falsePositive: false,
+      correctMask: false,
       spawnedAt: Date.now(),
+      sentiment: 0,
     }
   }
 
   function addNormalMessage() {
-    messages.value.push(createNormalMessage())
+    const msg = createNormalMessage()
+    messages.value.push(msg)
+    // Apply sentiment to emotional value
+    const gameStore = useGameStore()
+    gameStore.applySentiment(msg.sentiment)
     trimMessages()
   }
 
@@ -73,10 +84,34 @@ export const useChatStore = defineStore('chat', () => {
     trimMessages()
   }
 
-  function trimMessages() {
-    if (messages.value.length > 50) {
-      messages.value = messages.value.slice(-50)
+  /**
+   * Trim messages to CHAT_MAX_MESSAGES. Any unmasked threats that get
+   * pushed off count as missed (position-based expiry).
+   * Returns the number of threats that expired.
+   */
+  function trimMessages(): number {
+    const max = GAME_CONFIG.CHAT_MAX_MESSAGES
+    if (messages.value.length <= max) return 0
+
+    const removed = messages.value.slice(0, messages.value.length - max)
+    messages.value = messages.value.slice(-max)
+
+    let expired = 0
+    for (const msg of removed) {
+      if (msg.isThreat && !msg.isMasked) {
+        expired++
+      }
     }
+
+    // Notify game store of expired threats
+    if (expired > 0) {
+      const gameStore = useGameStore()
+      for (let i = 0; i < expired; i++) {
+        gameStore.missedThreat()
+      }
+    }
+
+    return expired
   }
 
   function maskMessage(id: number): number {
@@ -88,18 +123,14 @@ export const useChatStore = defineStore('chat', () => {
     return 0
   }
 
-  function expireThreats(): number {
-    const now = Date.now()
-    let expired = 0
-    for (const msg of messages.value) {
-      if (msg.isThreat && !msg.isMasked && msg.spawnedAt > 0) {
-        if (now - msg.spawnedAt >= GAME_CONFIG.THREAT_DURATION) {
-          msg.isMasked = true
-          expired++
-        }
-      }
+  function flagCorrectMask(id: number) {
+    const msg = messages.value.find(m => m.id === id)
+    if (msg) {
+      msg.correctMask = true
+      setTimeout(() => {
+        msg.correctMask = false
+      }, 400)
     }
-    return expired
   }
 
   function flagFalsePositive(id: number) {
@@ -143,7 +174,9 @@ export const useChatStore = defineStore('chat', () => {
   function startChat() {
     // Seed a few initial messages so chat isn't empty
     for (let i = 0; i < 8; i++) {
-      addNormalMessage()
+      // Bypass sentiment for seed messages
+      const msg = createNormalMessage()
+      messages.value.push(msg)
     }
     scheduleNormal()
     scheduleThreat()
@@ -170,7 +203,7 @@ export const useChatStore = defineStore('chat', () => {
     addNormalMessage,
     addThreatMessage,
     maskMessage,
-    expireThreats,
+    flagCorrectMask,
     flagFalsePositive,
     startChat,
     stopChat,
