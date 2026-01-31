@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { loadOml2d } from 'oh-my-live2d'
+import { GAME_CONFIG } from '~/data/config'
 import type { MisbehaviorState } from '~/composables/useMisbehavior'
 
 defineProps<{
@@ -13,13 +14,16 @@ const emit = defineEmits<{
 const gameStore = useGameStore()
 const containerRef = ref<HTMLElement | null>(null)
 
-const smoothnessColors = {
-  smooth: { dot: 'bg-green-500', ping: 'bg-green-400' },
-  normal: { dot: 'bg-yellow-500', ping: 'bg-yellow-400' },
-  laggy: { dot: 'bg-red-500', ping: 'bg-red-400' },
-} as const
+const emotionalPercent = computed(() =>
+  Math.max(0, Math.min(100, (gameStore.emotionalValue / GAME_CONFIG.EMOTIONAL_VALUE_MAX) * 100))
+)
 
-const dotColor = computed(() => smoothnessColors[gameStore.smoothness])
+const dotColor = computed(() => {
+  const p = emotionalPercent.value
+  if (p > 60) return { dot: 'bg-green-500', ping: 'bg-green-400' }
+  if (p > 30) return { dot: 'bg-yellow-500', ping: 'bg-yellow-400' }
+  return { dot: 'bg-red-500', ping: 'bg-red-400' }
+})
 const baseURL = useRuntimeConfig().app.baseURL || '/'
 
 onMounted(() => {
