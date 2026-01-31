@@ -40,7 +40,7 @@ export function useGameLoop() {
       cancelAnimationFrame(rafId)
       rafId = null
     }
-    chatStore.stopChat()
+    chatStore.clearChat()
   }
 
   return { start, stop }
