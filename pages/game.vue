@@ -11,37 +11,50 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col w-[1280px] h-[720px] mx-auto bg-[#1a1a2e] text-white">
-    <header
-      class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10"
+  <div class="flex items-center justify-center w-screen h-screen bg-[#111118]">
+    <div
+      class="flex flex-col w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50"
     >
-      <span class="font-bold">VTuber Mask</span>
-      <span class="text-sm">Protect the Stream!</span>
-      <span class="text-sm text-white/70">1,234 viewers</span>
-    </header>
-
-    <div class="flex flex-1 min-h-0">
-      <!-- Stream Panel (50%) -->
-      <div class="relative w-1/2 bg-[#0e0e14]">
-        <div
-          class="absolute top-4 left-4 z-[100] min-w-[180px] p-3 rounded-xl bg-black/70 backdrop-blur-[10px] text-sm"
-        >
-          <div class="font-semibold">Score: 0</div>
-          <div class="font-semibold mt-1">Combo: 0x</div>
-          <div class="mt-1">Health: 100%</div>
+      <!-- Platform header -->
+      <header
+        class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-7 h-7 rounded-lg bg-[#e94560] flex items-center justify-center text-xs font-bold"
+          >
+            VM
+          </div>
+          <span class="font-bold">VTuber Mask</span>
         </div>
-        <div class="flex items-center justify-center w-full h-full text-white/30">Stream Panel</div>
+        <span class="text-sm text-white/50">Protect the Stream!</span>
+        <div class="flex items-center gap-2 text-sm text-white/70">
+          <span class="inline-block w-2 h-2 rounded-full bg-red-500" />
+          <span>1,234 viewers</span>
+        </div>
+      </header>
+
+      <!-- Main panels -->
+      <div class="flex flex-1 min-h-0">
+        <StreamPanel />
+        <ChatPanel />
       </div>
 
-      <!-- Chat Panel (50%) -->
-      <ChatPanel />
-    </div>
-
-    <div
-      class="flex justify-between items-center h-[50px] px-6 bg-black/80 border-t border-white/10 text-sm text-white/70"
-    >
-      <span class="text-red-500 font-bold animate-pulse">LIVE</span>
-      <span>Click threats to mask them!</span>
+      <!-- Info bar -->
+      <div
+        class="flex justify-between items-center h-[50px] px-6 bg-[#0f0f1e] border-t border-white/10 text-sm"
+      >
+        <div class="flex items-center gap-3">
+          <span
+            class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider"
+          >
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+            Live
+          </span>
+          <span class="text-white/40">Gaming &middot; Content Moderation Simulator</span>
+        </div>
+        <span class="text-white/50">Click threats to mask them!</span>
+      </div>
     </div>
   </div>
 </template>
