@@ -13,6 +13,7 @@ const emit = defineEmits<{
 
 const gameStore = useGameStore()
 const containerRef = ref<HTMLElement | null>(null)
+const config = useRuntimeConfig()
 
 const emotionalPercent = computed(() =>
   Math.max(0, Math.min(100, (gameStore.emotionalValue / GAME_CONFIG.EMOTIONAL_VALUE_MAX) * 100))
@@ -24,7 +25,10 @@ const dotColor = computed(() => {
   if (p > 30) return { dot: 'bg-yellow-500', ping: 'bg-yellow-400' }
   return { dot: 'bg-red-500', ping: 'bg-red-400' }
 })
-const baseURL = useRuntimeConfig().app.baseURL || '/'
+
+const baseURL = computed(() => {
+  return config.app.baseURL || '/'
+})
 
 onMounted(() => {
   if (!containerRef.value) return
@@ -54,7 +58,7 @@ onMounted(() => {
     },
     models: [
       {
-        path: `${baseURL}live2d/hiyori_free_t08.model3.json`,
+        path: `${baseURL.value}live2d/hiyori_free_t08.model3.json`,
         position: [-110, -40],
         scale: 0.15,
         stageStyle: {

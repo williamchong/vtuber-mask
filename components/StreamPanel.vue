@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InfoLeakState } from '~/composables/useInfoLeak'
 import type { MisbehaviorState } from '~/composables/useMisbehavior'
+import streamVideo from '~/assets/video/stream_normal.mp4'
 
 defineProps<{
   infoLeakState: InfoLeakState
@@ -21,7 +22,7 @@ const emit = defineEmits<{
     <!-- Stream video content -->
     <video
       class="absolute inset-0 w-full h-full object-cover"
-      src="~/assets/video/stream_normal.mp4"
+      :src="streamVideo"
       autoplay
       loop
       muted

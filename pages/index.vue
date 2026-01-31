@@ -1,4 +1,19 @@
 <script setup lang="ts">
+import { streamVideoUrl, bgmUrl, hurt1Url, hurt2Url, hurt3Url, newChatUrl } from '~/assets/urls'
+
+const config = useRuntimeConfig()
+
+const baseURL = computed(() => {
+  return config.app.baseURL || '/'
+})
+
+
+const live2dLinks = computed(() => [
+  { rel: 'prefetch' as const, href: `${baseURL.value}live2d/hiyori_free_t08.model3.json` },
+  { rel: 'prefetch' as const, href: `${baseURL.value}live2d/hiyori_free_t08.moc3` },
+  { rel: 'prefetch' as const, href: `${baseURL.value}live2d/hiyori_free_t08.2048/texture_00.png` },
+])
+
 useHead({
   title: 'VTuber Mask - Protect Your Stream',
   meta: [
@@ -12,21 +27,18 @@ useHead({
     { property: 'og:url', content: 'https://williamchong.github.io/vtuber-mask' },
     { property: 'og:title', content: 'VTuber Mask - Protect Your Stream' },
     { property: 'og:description', content: 'You\'re a VTuber going live. Hold to mask dangerous content before your viewers notice!' },
-    { property: 'og:image', content: '/og-image.png' },
+    { property: 'og:image', content: `${baseURL.value}og-image.png` },
   ],
   link: [
-    // Prefetch Live2D model assets
-    { rel: 'prefetch', href: '/live2d/hiyori_free_t08.model3.json' },
-    { rel: 'prefetch', href: '/live2d/hiyori_free_t08.moc3' },
-    { rel: 'prefetch', href: '/live2d/hiyori_free_t08.2048/texture_00.png' },
-    // Prefetch stream video
-    { rel: 'prefetch', href: '/assets/video/stream_normal.mp4' },
-    // Prefetch critical audio
-    { rel: 'prefetch', href: '/assets/audio/bgm.mp3', as: 'audio' },
-    { rel: 'prefetch', href: '/assets/audio/hurt_1.mp3', as: 'audio' },
-    { rel: 'prefetch', href: '/assets/audio/hurt_2.mp3', as: 'audio' },
-    { rel: 'prefetch', href: '/assets/audio/hurt_3.mp3', as: 'audio' },
-    { rel: 'prefetch', href: '/assets/audio/new_chat.mp3', as: 'audio' },
+    ...live2dLinks.value,
+    // Prefetch stream video (Vite-processed asset)
+    { rel: 'prefetch' as const, href: streamVideoUrl },
+    // Prefetch critical audio (Vite-processed assets)
+    { rel: 'prefetch' as const, href: bgmUrl, as: 'audio' as const },
+    { rel: 'prefetch' as const, href: hurt1Url, as: 'audio' as const },
+    { rel: 'prefetch' as const, href: hurt2Url, as: 'audio' as const },
+    { rel: 'prefetch' as const, href: hurt3Url, as: 'audio' as const },
+    { rel: 'prefetch' as const, href: newChatUrl, as: 'audio' as const },
   ],
   script: [
     {

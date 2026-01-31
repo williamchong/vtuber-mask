@@ -1,5 +1,28 @@
 <script setup lang="ts">
 import { GAME_CONFIG } from '~/data/config'
+import {
+  streamVideoUrl,
+  bgmUrl,
+  hurt1Url,
+  hurt2Url,
+  hurt3Url,
+  newChatUrl,
+  gameOverUrl,
+  correctUrl,
+  incorrectUrl,
+} from '~/assets/urls'
+
+const config = useRuntimeConfig()
+
+const baseURL = computed(() => {
+  return config.app.baseURL || '/'
+})
+
+const live2dLinks = computed(() => [
+  { rel: 'preload' as const, href: `${baseURL.value}live2d/hiyori_free_t08.model3.json`, as: 'fetch' as const, crossorigin: 'anonymous' as const },
+  { rel: 'preload' as const, href: `${baseURL.value}live2d/hiyori_free_t08.moc3`, as: 'fetch' as const, crossorigin: 'anonymous' as const },
+  { rel: 'preload' as const, href: `${baseURL.value}live2d/hiyori_free_t08.2048/texture_00.png`, as: 'image' as const, crossorigin: 'anonymous' as const },
+])
 
 useHead({
   title: 'Playing VTuber Mask - Protect Your Stream',
@@ -13,24 +36,21 @@ useHead({
     { property: 'og:type', content: 'website' },
     { property: 'og:title', content: 'VTuber Mask - Now Playing' },
     { property: 'og:description', content: 'Play VTuber Mask - A fast-paced reaction game for Global Game Jam 2026' },
-    { property: 'og:image', content: '/og-image.png' },
+    { property: 'og:image', content: `${baseURL.value}/og-image.png` },
   ],
   link: [
-    // Preload Live2D model assets (critical for game)
-    { rel: 'preload', href: '/live2d/hiyori_free_t08.model3.json', as: 'fetch', crossorigin: 'anonymous' },
-    { rel: 'preload', href: '/live2d/hiyori_free_t08.moc3', as: 'fetch', crossorigin: 'anonymous' },
-    { rel: 'preload', href: '/live2d/hiyori_free_t08.2048/texture_00.png', as: 'image' },
-    // Preload stream video background
-    { rel: 'preload', href: '/assets/video/stream_normal.mp4', as: 'video', type: 'video/mp4' },
-    // Preload critical audio
-    { rel: 'preload', href: '/assets/audio/bgm.mp3', as: 'audio', type: 'audio/mpeg' },
-    { rel: 'preload', href: '/assets/audio/hurt_1.mp3', as: 'audio', type: 'audio/mpeg' },
-    { rel: 'preload', href: '/assets/audio/hurt_2.mp3', as: 'audio', type: 'audio/mpeg' },
-    { rel: 'preload', href: '/assets/audio/hurt_3.mp3', as: 'audio', type: 'audio/mpeg' },
-    { rel: 'preload', href: '/assets/audio/new_chat.mp3', as: 'audio', type: 'audio/mpeg' },
-    { rel: 'preload', href: '/assets/audio/game_over.mp3', as: 'audio', type: 'audio/mpeg' },
-    { rel: 'preload', href: '/assets/audio/correct_action.mp3', as: 'audio', type: 'audio/mpeg' },
-    { rel: 'preload', href: '/assets/audio/incorrect_action.mp3', as: 'audio', type: 'audio/mpeg' },
+    ...live2dLinks.value,
+    // Preload stream video background (Vite-processed asset)
+    { rel: 'preload' as const, href: streamVideoUrl, as: 'video' as const, type: 'video/mp4' as const },
+    // Preload critical audio (Vite-processed assets)
+    { rel: 'preload' as const, href: bgmUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
+    { rel: 'preload' as const, href: hurt1Url, as: 'audio' as const, type: 'audio/mpeg' as const },
+    { rel: 'preload' as const, href: hurt2Url, as: 'audio' as const, type: 'audio/mpeg' as const },
+    { rel: 'preload' as const, href: hurt3Url, as: 'audio' as const, type: 'audio/mpeg' as const },
+    { rel: 'preload' as const, href: newChatUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
+    { rel: 'preload' as const, href: gameOverUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
+    { rel: 'preload' as const, href: correctUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
+    { rel: 'preload' as const, href: incorrectUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
   ],
 })
 
