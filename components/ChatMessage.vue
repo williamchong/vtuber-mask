@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ChatMessage } from '~/stores/chat'
 
+const HOLD_DURATION = 100 // ms
+
 const props = defineProps<{
   message: ChatMessage
   index: number
@@ -10,6 +12,9 @@ const props = defineProps<{
 const chatStore = useChatStore()
 const gameStore = useGameStore()
 const audio = useAudio()
+
+let holdTimer: ReturnType<typeof setTimeout> | null = null
+const holding = ref(false)
 
 function getDanger(): number {
   if (!props.message.isThreat || props.message.isMasked) return 0
@@ -38,7 +43,7 @@ const threatStyle = computed(() => {
   }
 })
 
-function handleClick() {
+function maskMessage() {
   const msg = props.message
   if (msg.isMasked || !gameStore.isRunning) return
 
@@ -61,11 +66,28 @@ function handleClick() {
     audio.playIncorrect()
   }
 }
+
+function startHold() {
+  if (props.message.isMasked || !gameStore.isRunning) return
+  holding.value = true
+  holdTimer = setTimeout(() => {
+    holding.value = false
+    maskMessage()
+  }, HOLD_DURATION)
+}
+
+function cancelHold() {
+  holding.value = false
+  if (holdTimer) {
+    clearTimeout(holdTimer)
+    holdTimer = null
+  }
+}
 </script>
 
 <template>
   <div
-    class="px-4 py-1.5 border-l-2 cursor-pointer select-none"
+    class="relative px-4 py-1.5 border-l-2 cursor-pointer select-none overflow-hidden"
     :class="{
       'border-transparent hover:bg-white/[0.04]':
         !message.isMasked && !message.falsePositive && !isFlashing,
@@ -79,8 +101,15 @@ function handleClick() {
         ? threatStyle
         : {}
     "
-    @click="handleClick"
+    @mousedown.prevent="startHold"
+    @mouseup="cancelHold"
+    @mouseleave="cancelHold"
   >
+    <!-- Hold progress bar -->
+    <div
+      v-if="holding"
+      class="hold-progress absolute inset-0 bg-white/15 pointer-events-none"
+    />
     <template v-if="message.isMasked">
       <span class="text-sm font-bold text-white/40">{{ message.username }}</span>
       <span class="ml-2 text-sm text-white/30 line-through">[CENSORED]</span>
@@ -105,6 +134,20 @@ function handleClick() {
   }
   50% {
     background-color: rgb(239 68 68 / 0.55);
+  }
+}
+
+.hold-progress {
+  transform-origin: left;
+  animation: hold-fill 100ms linear forwards;
+}
+
+@keyframes hold-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 </style>
