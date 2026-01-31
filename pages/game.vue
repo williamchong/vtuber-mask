@@ -2,7 +2,9 @@
 import { GAME_CONFIG } from '~/data/config'
 
 const gameStore = useGameStore()
+const chatStore = useChatStore()
 const gameLoop = useGameLoop()
+const audio = useAudio()
 const router = useRouter()
 const missFlash = ref(false)
 const viewerDeltaDisplay = ref<number | null>(null)
@@ -10,31 +12,46 @@ let deltaTimeout: ReturnType<typeof setTimeout> | null = null
 
 onMounted(() => {
   gameLoop.start()
+  audio.startBgm()
 })
 
 onUnmounted(() => {
   gameLoop.stop()
+  audio.stopBgm()
 })
 
 watch(
   () => gameStore.state,
-  s => {
+  (s) => {
     if (s === 'gameover') {
       gameLoop.stop()
+      audio.stopBgm()
+      audio.playGameOver()
       router.push('/gameover')
     }
   },
 )
 
-// Flash red when a threat is missed
+// Flash red and play hurt sound when a threat is missed
 watch(
   () => gameStore.threatsExpired,
   (newVal, oldVal) => {
     if (newVal > oldVal) {
       missFlash.value = true
+      audio.playHurt()
       setTimeout(() => {
         missFlash.value = false
       }, 400)
+    }
+  },
+)
+
+// Play sound when new chat message appears
+watch(
+  () => chatStore.messages.length,
+  (newLen, oldLen) => {
+    if (newLen > oldLen) {
+      audio.playNewChat()
     }
   },
 )

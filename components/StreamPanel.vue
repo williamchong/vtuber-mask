@@ -6,7 +6,7 @@
     <!-- Stream video content -->
     <video
       class="absolute inset-0 w-full h-full object-cover"
-      src="~/assets/stream_normal.mp4"
+      src="~/assets/video/stream_normal.mp4"
       autoplay
       loop
       muted

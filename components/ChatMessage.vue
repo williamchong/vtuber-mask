@@ -9,6 +9,7 @@ const props = defineProps<{
 
 const chatStore = useChatStore()
 const gameStore = useGameStore()
+const audio = useAudio()
 
 function getDanger(): number {
   if (!props.message.isThreat || props.message.isMasked) return 0
@@ -41,6 +42,8 @@ function handleClick() {
   const msg = props.message
   if (msg.isMasked || !gameStore.isRunning) return
 
+  audio.playClick()
+
   if (msg.isThreat) {
     const spawnedAt = chatStore.maskMessage(msg.id)
     if (spawnedAt) {
@@ -48,12 +51,14 @@ function handleClick() {
       const total = props.totalMessages
       const positionRatio = total > 1 ? props.index / (total - 1) : 0
       gameStore.maskThreat(positionRatio)
+      audio.playCorrect()
     }
   }
   else {
     chatStore.maskMessage(msg.id)
     chatStore.flagFalsePositive(msg.id)
     gameStore.penalizeFalsePositive()
+    audio.playIncorrect()
   }
 }
 </script>
