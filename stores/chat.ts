@@ -15,6 +15,7 @@ export interface ChatMessage {
   threatType: ThreatType | null
   isMasked: boolean
   falsePositive: boolean
+  spawnedAt: number
 }
 
 let nextId = 0
@@ -42,6 +43,7 @@ export const useChatStore = defineStore('chat', () => {
       threatType: null,
       isMasked: false,
       falsePositive: false,
+      spawnedAt: 0,
     }
   }
 
@@ -56,6 +58,7 @@ export const useChatStore = defineStore('chat', () => {
       threatType: threat.type,
       isMasked: false,
       falsePositive: false,
+      spawnedAt: Date.now(),
     }
   }
 

@@ -1,6 +1,47 @@
 <script setup lang="ts">
+import { GAME_CONFIG } from '~/data/config'
+
 const chatStore = useChatStore()
 const chatContainer = ref<HTMLElement | null>(null)
+const now = ref(Date.now())
+let rafId: number | null = null
+
+function tick() {
+  now.value = Date.now()
+  rafId = requestAnimationFrame(tick)
+}
+
+onMounted(() => {
+  rafId = requestAnimationFrame(tick)
+})
+
+onUnmounted(() => {
+  if (rafId !== null) cancelAnimationFrame(rafId)
+})
+
+function getDanger(msg: (typeof chatStore.messages)[number]): number {
+  if (!msg.isThreat || msg.isMasked || !msg.spawnedAt) return 0
+  const elapsed = now.value - msg.spawnedAt
+  const progress = Math.min(elapsed / GAME_CONFIG.THREAT_DURATION, 1)
+  // Cubic ease-in: slow start, quick end
+  return progress * progress * progress
+}
+
+function isFlashing(msg: (typeof chatStore.messages)[number]): boolean {
+  if (!msg.isThreat || msg.isMasked || !msg.spawnedAt) return false
+  const elapsed = now.value - msg.spawnedAt
+  // Flash during the last 20% of the duration
+  return elapsed > GAME_CONFIG.THREAT_DURATION * 0.8
+}
+
+function threatStyle(msg: (typeof chatStore.messages)[number]) {
+  const danger = getDanger(msg)
+  if (danger === 0) return {}
+  return {
+    backgroundColor: `rgb(239 68 68 / ${danger * 0.2})`,
+    borderLeftColor: `rgb(239 68 68 / ${danger})`,
+  }
+}
 
 function handleClick(msg: (typeof chatStore.messages)[number]) {
   if (msg.isMasked) return
@@ -35,14 +76,15 @@ watch(
       <div
         v-for="msg in chatStore.messages"
         :key="msg.id"
-        class="chat-message px-4 py-1.5 border-l-2 cursor-pointer select-none transition-colors duration-150"
+        class="px-4 py-1.5 border-l-2 cursor-pointer select-none"
         :class="{
           'border-transparent hover:bg-white/[0.04]':
             !msg.isThreat && !msg.isMasked && !msg.falsePositive,
-          'border-l-red-500 bg-red-500/10 hover:bg-red-500/20': msg.isThreat && !msg.isMasked,
           'border-l-[#1a1a2e] bg-[#1a1a2e]': msg.isMasked,
           'border-l-red-400 bg-red-500/30': msg.falsePositive,
+          'threat-flash': isFlashing(msg),
         }"
+        :style="!msg.isMasked && !msg.falsePositive ? threatStyle(msg) : {}"
         @click="handleClick(msg)"
       >
         <template v-if="msg.isMasked">
@@ -59,17 +101,17 @@ watch(
 </template>
 
 <style scoped>
-.chat-message.border-l-red-500 {
-  animation: threat-pulse 1.5s ease-in-out infinite;
+.threat-flash {
+  animation: threat-flash 0.4s ease-in-out infinite;
 }
 
-@keyframes threat-pulse {
+@keyframes threat-flash {
   0%,
   100% {
-    background-color: rgb(239 68 68 / 0.1);
+    background-color: rgb(239 68 68 / 0.15);
   }
   50% {
-    background-color: rgb(239 68 68 / 0.2);
+    background-color: rgb(239 68 68 / 0.35);
   }
 }
 </style>
