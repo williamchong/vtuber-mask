@@ -1,3 +1,15 @@
+import bgmSrc from '~/assets/audio/bgm.mp3'
+import correctSrc from '~/assets/audio/correct_action.mp3'
+import gameOverSrc from '~/assets/audio/game_over.mp3'
+import clickSrc from '~/assets/audio/generic_click.mp3'
+import hurt1Src from '~/assets/audio/hurt_1.mp3'
+import hurt2Src from '~/assets/audio/hurt_2.mp3'
+import hurt3Src from '~/assets/audio/hurt_3.mp3'
+import incorrectSrc from '~/assets/audio/incorrect_action.mp3'
+import newChatSrc from '~/assets/audio/new_chat.mp3'
+
+const hurtSrcs = [hurt1Src, hurt2Src, hurt3Src]
+
 const audioCache = new Map<string, HTMLAudioElement>()
 let bgmElement: HTMLAudioElement | null = null
 
@@ -18,37 +30,34 @@ function playSfx(path: string, volume = 0.5) {
 }
 
 export function useAudio() {
-  const baseURL = useRuntimeConfig().app.baseURL || '/'
-  const sfxPath = (name: string) => `${baseURL}audio/${name}`
-
   function playClick() {
-    playSfx(sfxPath('generic_click.mp3'), 0.3)
+    playSfx(clickSrc, 0.3)
   }
 
   function playCorrect() {
-    playSfx(sfxPath('correct_action.mp3'), 0.5)
+    playSfx(correctSrc, 0.5)
   }
 
   function playIncorrect() {
-    playSfx(sfxPath('incorrect_action.mp3'), 0.5)
+    playSfx(incorrectSrc, 0.5)
   }
 
   function playHurt() {
-    const idx = Math.floor(Math.random() * 3) + 1
-    playSfx(sfxPath(`hurt_${idx}.mp3`), 0.5)
+    const src = hurtSrcs[Math.floor(Math.random() * hurtSrcs.length)]!
+    playSfx(src, 0.5)
   }
 
   function playNewChat() {
-    playSfx(sfxPath('new_chat.mp3'), 0.15)
+    playSfx(newChatSrc, 0.15)
   }
 
   function playGameOver() {
-    playSfx(sfxPath('game_over.mp3'), 0.6)
+    playSfx(gameOverSrc, 0.6)
   }
 
   function startBgm() {
     if (bgmElement) return
-    bgmElement = new Audio(sfxPath('bgm.mp3'))
+    bgmElement = new Audio(bgmSrc)
     bgmElement.loop = true
     bgmElement.volume = 0.08
     bgmElement.play().catch(() => {})
