@@ -69,8 +69,9 @@ watch(
 
 // Show viewer delta when it changes from player action
 watch(
-  () => gameStore.viewerDelta,
-  delta => {
+  () => gameStore.viewerDeltaSeq,
+  () => {
+    const delta = gameStore.viewerDelta
     if (delta === 0) return
     viewerDeltaDisplay.value = delta
     if (deltaTimeout) clearTimeout(deltaTimeout)

@@ -16,6 +16,7 @@ export const useGameStore = defineStore('game', () => {
   const endTime = ref<number>(0)
   const peakViewers = ref<number>(GAME_CONFIG.INITIAL_VIEWERS)
   const viewerDelta = ref<number>(0)
+  const viewerDeltaSeq = ref<number>(0)
 
   const viewerRate = computed(() => {
     switch (smoothness.value) {
@@ -158,6 +159,7 @@ export const useGameStore = defineStore('game', () => {
     const before = viewers.value
     viewers.value = Math.max(0, viewers.value - GAME_CONFIG.FALSE_POSITIVE_VIEWER_PENALTY)
     viewerDelta.value = Math.round(viewers.value - before)
+    viewerDeltaSeq.value++
     setLaggy()
     if (emotionalValue.value <= 0) gameOver()
   }
@@ -170,6 +172,7 @@ export const useGameStore = defineStore('game', () => {
     const before = viewers.value
     viewers.value = Math.max(0, viewers.value - GAME_CONFIG.VIEWER_MISS_PENALTY)
     viewerDelta.value = Math.round(viewers.value - before)
+    viewerDeltaSeq.value++
     setLaggy()
 
     if (emotionalValue.value <= 0) gameOver()
@@ -195,6 +198,7 @@ export const useGameStore = defineStore('game', () => {
     const before = viewers.value
     viewers.value = Math.max(0, viewers.value - GAME_CONFIG.INFO_LEAK_MISS_VIEWER_PENALTY)
     viewerDelta.value = Math.round(viewers.value - before)
+    viewerDeltaSeq.value++
     setLaggy()
     if (emotionalValue.value <= 0) gameOver()
   }
@@ -277,6 +281,7 @@ export const useGameStore = defineStore('game', () => {
     endTime,
     peakViewers,
     viewerDelta,
+    viewerDeltaSeq,
     isRunning,
     survivalTime,
     accuracy,
