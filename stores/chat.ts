@@ -149,17 +149,26 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  function getDifficultyMultiplier(): number {
+  /** Chat speed multiplier driven by viewer count */
+  function getChatSpeedMultiplier(): number {
     const gameStore = useGameStore()
-    if (!gameStore.startTime) return GAME_CONFIG.INITIAL_DIFFICULTY
+    const viewers = Math.min(gameStore.viewers, GAME_CONFIG.VIEWER_DIFFICULTY_CAP)
+    const multiplier = 1 + (viewers - GAME_CONFIG.INITIAL_VIEWERS) / GAME_CONFIG.VIEWER_DIFFICULTY_SCALE
+    return Math.max(GAME_CONFIG.VIEWER_DIFFICULTY_FLOOR, multiplier)
+  }
+
+  /** Threat ratio multiplier — threats get proportionally more frequent over time */
+  function getThreatRatioMultiplier(): number {
+    const gameStore = useGameStore()
+    if (!gameStore.startTime) return 1
     const elapsed = (Date.now() - gameStore.startTime) / 1000
-    const capped = Math.min(elapsed, GAME_CONFIG.DIFFICULTY_CAP_TIME)
-    return GAME_CONFIG.INITIAL_DIFFICULTY + (capped / 60) * GAME_CONFIG.DIFFICULTY_INCREASE_RATE
+    const capped = Math.min(elapsed, GAME_CONFIG.THREAT_RATIO_CAP_TIME)
+    return 1 + (capped / 60) * GAME_CONFIG.THREAT_RATIO_INCREASE_RATE
   }
 
   function scheduleNormal() {
-    const multiplier = getDifficultyMultiplier()
-    const interval = randomRange(1500, 2500) / multiplier
+    const chatSpeed = getChatSpeedMultiplier()
+    const interval = randomRange(1500, 2500) / chatSpeed
     normalTimer = setTimeout(() => {
       addNormalMessage()
       scheduleNormal()
@@ -167,9 +176,10 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   function scheduleThreat() {
-    const multiplier = getDifficultyMultiplier()
+    const chatSpeed = getChatSpeedMultiplier()
+    const threatRatio = getThreatRatioMultiplier()
     const base = GAME_CONFIG.BASE_SPAWN_INTERVAL
-    const interval = Math.max(GAME_CONFIG.MIN_SPAWN_INTERVAL, base / multiplier)
+    const interval = Math.max(GAME_CONFIG.MIN_SPAWN_INTERVAL, base / (chatSpeed * threatRatio))
     const jitter = randomRange(0.8, 1.2)
     threatTimer = setTimeout(() => {
       addThreatMessage()

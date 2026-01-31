@@ -1,9 +1,15 @@
 export const GAME_CONFIG = {
   TARGET_DURATION: 300, // 5 minutes in seconds
-  INITIAL_DIFFICULTY: 1.0,
-  DIFFICULTY_INCREASE_RATE: 0.5,
-  DIFFICULTY_CAP_TIME: 180, // seconds — difficulty stops increasing at 3 minutes
   MAX_ACTIVE_THREATS: 5,
+
+  // Viewer-driven chat speed
+  VIEWER_DIFFICULTY_FLOOR: 0.5, // minimum chat speed multiplier (when viewers very low)
+  VIEWER_DIFFICULTY_SCALE: 900, // viewers above initial per 1x multiplier increase
+  VIEWER_DIFFICULTY_CAP: 2000, // stop scaling chat speed past this viewer count
+
+  // Time-driven threat ratio (threats get proportionally more frequent over time)
+  THREAT_RATIO_INCREASE_RATE: 0.3, // per minute
+  THREAT_RATIO_CAP_TIME: 180, // seconds — threat ratio stops increasing at 3 minutes
 
   // Threat timing
   THREAT_DURATION: 5000, // ms before threat expires (safety net)
@@ -27,7 +33,7 @@ export const GAME_CONFIG = {
   FALSE_POSITIVE_EMOTIONAL_PENALTY: 5,
 
   // Viewer count
-  INITIAL_VIEWERS: 1000,
+  INITIAL_VIEWERS: 100,
   VIEWER_MISS_PENALTY: 50, // viewers lost on miss
 
   // Stream smoothness state machine
