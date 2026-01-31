@@ -47,10 +47,6 @@ function formatTime(seconds: number): string {
             <span class="font-bold tabular-nums">{{ gameStore.accuracy }}%</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-white/50">Best Combo</span>
-            <span class="font-bold text-[#00ff88] tabular-nums">{{ gameStore.bestCombo }}x</span>
-          </div>
-          <div class="flex justify-between">
             <span class="text-white/50">Time Survived</span>
             <span class="font-bold tabular-nums">{{ formatTime(gameStore.survivalTime) }}</span>
           </div>

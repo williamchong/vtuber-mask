@@ -8,25 +8,15 @@ export const useGameStore = defineStore('game', () => {
   const emotionalValue = ref<number>(GAME_CONFIG.EMOTIONAL_VALUE_INITIAL)
   const viewers = ref<number>(GAME_CONFIG.INITIAL_VIEWERS)
   const viewerRate = ref<number>(GAME_CONFIG.VIEWER_BASE_RATE)
-  const combo = ref<number>(0)
-  const bestCombo = ref<number>(0)
   const threatsMasked = ref<number>(0)
   const threatsExpired = ref<number>(0)
   const falsePositives = ref<number>(0)
   const startTime = ref<number>(0)
   const endTime = ref<number>(0)
   const peakViewers = ref<number>(GAME_CONFIG.INITIAL_VIEWERS)
-  const viewerDelta = ref<number>(0) // last discrete viewer change from player action
+  const viewerDelta = ref<number>(0)
 
   const isRunning = computed(() => state.value === 'playing')
-
-  const comboMultiplier = computed(() => {
-    const thresholds = GAME_CONFIG.COMBO_THRESHOLDS
-    for (let i = thresholds.length - 1; i >= 0; i--) {
-      if (combo.value >= thresholds[i]!.combo) return thresholds[i]!.multiplier
-    }
-    return 1
-  })
 
   const survivalTime = computed(() => {
     const end = endTime.value || Date.now()
@@ -54,8 +44,6 @@ export const useGameStore = defineStore('game', () => {
     emotionalValue.value = GAME_CONFIG.EMOTIONAL_VALUE_INITIAL
     viewers.value = GAME_CONFIG.INITIAL_VIEWERS
     viewerRate.value = GAME_CONFIG.VIEWER_BASE_RATE
-    combo.value = 0
-    bestCombo.value = 0
     threatsMasked.value = 0
     threatsExpired.value = 0
     falsePositives.value = 0
@@ -72,57 +60,42 @@ export const useGameStore = defineStore('game', () => {
     if (state.value !== 'playing') return
 
     threatsMasked.value++
-    const prevCombo = combo.value
-    combo.value++
-    if (combo.value > bestCombo.value) bestCombo.value = combo.value
 
     // Position-based scoring: early mask (bottom half) gets bonus points
     let points = GAME_CONFIG.BASE_POINTS
     const earlyBonus = Math.max(0, positionRatio - 0.5) * 2 // 0→1 for bottom half
     points += Math.round(GAME_CONFIG.EARLY_MASK_BONUS * earlyBonus)
-    score.value += Math.round(points * comboMultiplier.value)
+    score.value += points
 
     // Early mask emotional recovery (only in bottom half)
     if (positionRatio > 0.5) {
       emotionalValue.value = Math.min(
         GAME_CONFIG.EMOTIONAL_VALUE_MAX,
-        emotionalValue.value + GAME_CONFIG.EARLY_MASK_EMOTIONAL_RECOVERY * earlyBonus
+        emotionalValue.value + GAME_CONFIG.EARLY_MASK_EMOTIONAL_RECOVERY * earlyBonus,
       )
     }
 
-    // Combo milestone emotional recovery
-    for (const milestone of GAME_CONFIG.COMBO_EMOTIONAL_RECOVERY) {
-      if (prevCombo < milestone.combo && combo.value >= milestone.combo) {
-        emotionalValue.value = Math.min(
-          GAME_CONFIG.EMOTIONAL_VALUE_MAX,
-          emotionalValue.value + milestone.recovery
-        )
-      }
-    }
-
-    // Boost viewer growth rate — scales slightly with combo
-    const comboScale = 1 + combo.value * 0.1
+    // Boost viewer growth rate
     viewerRate.value = Math.min(
       GAME_CONFIG.VIEWER_MAX_RATE,
-      viewerRate.value + GAME_CONFIG.VIEWER_RATE_BOOST * comboScale
+      viewerRate.value + GAME_CONFIG.VIEWER_RATE_BOOST,
     )
   }
 
   function penalizeFalsePositive() {
     if (state.value !== 'playing') return
     falsePositives.value++
-    combo.value = 0
     score.value = Math.max(0, score.value - GAME_CONFIG.FALSE_POSITIVE_PENALTY)
     emotionalValue.value = Math.max(
       0,
-      emotionalValue.value - GAME_CONFIG.FALSE_POSITIVE_EMOTIONAL_PENALTY
+      emotionalValue.value - GAME_CONFIG.FALSE_POSITIVE_EMOTIONAL_PENALTY,
     )
     const before = viewers.value
     viewers.value = Math.max(0, viewers.value - GAME_CONFIG.FALSE_POSITIVE_VIEWER_PENALTY)
     viewerDelta.value = Math.round(viewers.value - before)
     viewerRate.value = Math.max(
       GAME_CONFIG.VIEWER_BASE_RATE,
-      viewerRate.value - GAME_CONFIG.FALSE_POSITIVE_RATE_PENALTY
+      viewerRate.value - GAME_CONFIG.FALSE_POSITIVE_RATE_PENALTY,
     )
     if (emotionalValue.value <= 0) gameOver()
   }
@@ -130,7 +103,6 @@ export const useGameStore = defineStore('game', () => {
   function missedThreat() {
     if (state.value !== 'playing') return
     threatsExpired.value++
-    combo.value = 0
 
     emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.MISS_EMOTIONAL_PENALTY)
     const before = viewers.value
@@ -153,17 +125,16 @@ export const useGameStore = defineStore('game', () => {
     const delta = min + Math.random() * (max - min)
     emotionalValue.value = Math.max(
       0,
-      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + delta)
+      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + delta),
     )
     if (emotionalValue.value <= 0) gameOver()
   }
 
   function applySentiment(sentiment: 1 | 0 | -1) {
     if (state.value !== 'playing') return
-    // Small mood nudge from chat sentiment
     emotionalValue.value = Math.max(
       0,
-      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + sentiment * 0.15)
+      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + sentiment * 0.15),
     )
   }
 
@@ -178,8 +149,6 @@ export const useGameStore = defineStore('game', () => {
     emotionalValue.value = GAME_CONFIG.EMOTIONAL_VALUE_INITIAL
     viewers.value = GAME_CONFIG.INITIAL_VIEWERS
     viewerRate.value = GAME_CONFIG.VIEWER_BASE_RATE
-    combo.value = 0
-    bestCombo.value = 0
     threatsMasked.value = 0
     threatsExpired.value = 0
     falsePositives.value = 0
@@ -195,8 +164,6 @@ export const useGameStore = defineStore('game', () => {
     emotionalValue,
     viewers,
     viewerRate,
-    combo,
-    bestCombo,
     threatsMasked,
     threatsExpired,
     falsePositives,
@@ -205,7 +172,6 @@ export const useGameStore = defineStore('game', () => {
     peakViewers,
     viewerDelta,
     isRunning,
-    comboMultiplier,
     survivalTime,
     accuracy,
     grade,

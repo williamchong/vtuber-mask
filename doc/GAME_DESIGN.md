@@ -87,12 +87,7 @@ You are a VTuber who has just gone live. Your job is to keep the stream "seiso" 
 
 - **Base Points:** +100 per successful mask
 - **Early Mask Bonus:** Up to +100 extra for masking threats in the bottom half of chat (scales linearly — earlier = more points)
-- **Combo Multiplier:** Applied to total points per mask
-  - 3-combo: 1.5x
-  - 5-combo: 2.0x
-  - 10-combo: 3.0x
-  - Combo breaks on missed threat or false positive
-- **False Positive:** -50 points + break combo + small emotional penalty
+- **False Positive:** -50 points + small emotional penalty + viewer loss
 
 ### Emotional Value (HP System)
 
@@ -102,7 +97,6 @@ You are a VTuber who has just gone live. Your job is to keep the stream "seiso" 
 - **Missed Threat:** -15 emotional value
 - **False Positive:** -5 emotional value
 - **Early Mask Recovery:** +0–2 emotional value when masking threats in bottom half of chat
-- **Combo Milestone Recovery:** +3 at 3-combo, +5 at 5-combo, +10 at 10-combo
 - **Game Over:** Emotional value reaches 0
 - **Visual:** Gradient bar (green→yellow→red) with emoji indicator (😊/😐/😢)
 
@@ -110,7 +104,7 @@ You are a VTuber who has just gone live. Your job is to keep the stream "seiso" 
 
 - **Separate from score** — viewers grow organically over time
 - **Base Growth Rate:** 1 viewer/sec, accelerates when threats are masked
-- **Viewer Rate Boost:** +0.5 per mask (scales with combo: ×(1 + combo×0.1)), capped at 10/sec
+- **Viewer Rate Boost:** +0.5 per mask, capped at 10/sec
 - **Missed Threat Penalty:** -50 viewers, growth rate resets to base
 - **Displayed** in the platform header as live viewer count
 
@@ -135,14 +129,6 @@ To prevent players from clicking everything:
 
 ## Additional Features
 
-### Combo System Integration
-
-- **Score:** Combo multiplier (1.5x/2.0x/3.0x) applied to all points
-- **Viewer Growth:** Viewer rate boost scales with combo (×(1 + combo×0.1)), rewarding streaks with faster audience growth
-- **Emotional Recovery:** Combo milestones grant burst healing (+3/+5/+10), representing chat rallying behind good moderation
-- **Visual:** Combo counter appears with pop-in animation when active (≥2), fades out on reset
-- **Risk/Reward:** High combos are powerful but fragile — one miss or false positive resets everything
-
 ### Power-ups/Tools (Optional)
 
 - **Slow-Mo:** Slows threat appearance for 5 seconds
@@ -152,11 +138,10 @@ To prevent players from clicking everything:
 
 ### End Game Report
 
-- **Final Score:** Based on successful masks and combos
+- **Final Score:** Based on successful masks
 - **Grade:** S/A/B/C/D based on performance
 - **Statistics:**
   - Total threats masked
-  - Highest combo
   - Accuracy percentage
   - Threats by category
 - **Streamer Reaction:** VTuber thanks you based on performance
@@ -201,14 +186,12 @@ The game can gently satirize:
 
 - **Main Theme:** Upbeat, cute electronic music (chiptune or J-pop style)
 - **Tension Layers:** Music intensity increases with unmasked threats
-- **Combo Music:** Additional melodic layers at high combos
 
 ### Sound Effects
 
 - **Threat Appears:** Subtle alert sound (not too jarring)
 - **Successful Mask:** Satisfying stamp/click sound
 - **Missed Threat:** Viewer gasp or groan
-- **Combo:** Rising pitch chimes
 - **Game Over:** Stream "ended" notification sound
 
 ### VTuber Voice (Optional)
@@ -231,7 +214,6 @@ The game can gently satirize:
 
 ### Nice to Have
 
-- Combo system
 - Multiple mask styles
 - Power-ups
 - Difficulty scaling
@@ -264,7 +246,6 @@ The game can gently satirize:
   - "Chaos Mode" - Everything goes wrong at once
 - **Achievement System:**
   - "Perfect Stream" - No missed threats
-  - "Combo Master" - Achieve 20x combo
   - "Speed Demon" - Mask 10 threats in 5 seconds
 
 ## Development Priorities
@@ -280,7 +261,6 @@ The game can gently satirize:
 
 - Create all threat types
 - Add visual/audio feedback
-- Implement combo system
 - Create VTuber animations
 
 ### Day 3: Balance & Testing

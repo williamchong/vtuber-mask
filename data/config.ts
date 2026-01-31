@@ -17,20 +17,6 @@ export const GAME_CONFIG = {
   FALSE_POSITIVE_VIEWER_PENALTY: 20, // viewers lost on false positive
   FALSE_POSITIVE_RATE_PENALTY: 0.5, // viewer rate reduction on false positive
 
-  // Combo multipliers
-  COMBO_THRESHOLDS: [
-    { combo: 3, multiplier: 1.5 },
-    { combo: 5, multiplier: 2.0 },
-    { combo: 10, multiplier: 3.0 },
-  ],
-
-  // Combo milestone emotional recovery
-  COMBO_EMOTIONAL_RECOVERY: [
-    { combo: 3, recovery: 3 },
-    { combo: 5, recovery: 5 },
-    { combo: 10, recovery: 10 },
-  ],
-
   // Early mask emotional recovery (masking in bottom half of chat)
   EARLY_MASK_EMOTIONAL_RECOVERY: 2,
 

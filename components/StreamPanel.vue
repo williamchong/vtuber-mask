@@ -24,7 +24,6 @@
       </div>
     </div>
 
-    <GameHUD />
     <VTuberOverlay />
   </div>
 </template>
