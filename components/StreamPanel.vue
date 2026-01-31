@@ -13,6 +13,8 @@
       playsinline
     />
 
+    <SmoothnessIndicator class="absolute top-4 left-4 z-[90]" />
+
     <VTuberOverlay />
   </div>
 </template>

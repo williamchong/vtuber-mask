@@ -13,6 +13,23 @@ export function useGameLoop() {
     const dt = lastTime ? (timestamp - lastTime) / 1000 : 0
     lastTime = timestamp
 
+    // Check danger zones for smoothness state machine
+    const total = chatStore.messages.length
+    let hasFlashing = false
+    let hasRed = false
+    if (total > 1) {
+      for (let i = 0; i < total; i++) {
+        const msg = chatStore.messages[i]!
+        if (!msg.isThreat || msg.isMasked) continue
+        if (i < total * 0.15) { hasFlashing = true; break }
+        const position = i / (total - 1)
+        if (position < 0.5) { hasRed = true }
+      }
+    }
+
+    // Update smoothness state machine
+    gameStore.updateSmoothness(dt, hasFlashing, hasRed)
+
     // Update viewer growth
     gameStore.updateViewers(dt)
 

@@ -12,7 +12,6 @@ export const GAME_CONFIG = {
 
   // False positive penalties
   FALSE_POSITIVE_VIEWER_PENALTY: 20, // viewers lost on false positive
-  FALSE_POSITIVE_RATE_PENALTY: 0.5, // viewer rate reduction on false positive
 
   // Early mask emotional recovery (masking in bottom half of chat)
   EARLY_MASK_EMOTIONAL_RECOVERY: 2,
@@ -27,10 +26,13 @@ export const GAME_CONFIG = {
 
   // Viewer count
   INITIAL_VIEWERS: 1000,
-  VIEWER_BASE_RATE: 1, // viewers/sec
-  VIEWER_RATE_BOOST: 0.5, // added per timely censor
-  VIEWER_MAX_RATE: 10,
   VIEWER_MISS_PENALTY: 50, // viewers lost on miss
+
+  // Stream smoothness state machine
+  SMOOTHNESS_NORMAL_TO_SMOOTH_TIME: 4000, // ms clean play to go smooth
+  VIEWER_RATE_SMOOTH: 5, // viewers/sec when smooth
+  VIEWER_RATE_NORMAL: 1, // viewers/sec baseline
+  VIEWER_RATE_LAGGY: -2, // viewers/sec when laggy
 
   // Chat
   CHAT_MAX_MESSAGES: 15,
