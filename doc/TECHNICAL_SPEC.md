@@ -7,11 +7,34 @@
 - **Language:** TypeScript
 - **State Management:** Pinia (built-in with Nuxt)
 - **Build Tool:** Vite (built-in with Nuxt)
-- **Styling:** CSS3 with Scoped Styles
-- **Linting:** ESLint + @typescript-eslint
+- **Styling:** Tailwind CSS v4 (utility-first) + scoped styles for keyframes/animations
+- **UI Components:** @nuxt/ui (selectively - menu screens, modals, buttons only)
+- **Linting:** ESLint (via @nuxt/eslint)
 - **Formatting:** Prettier
 - **Testing:** Vitest (optional for game jam)
 - **Deployment:** Static export to Itch.io or GitHub Pages
+
+### Why Tailwind CSS v4?
+- **Utility-first:** Rapid prototyping - style directly in templates without switching files
+- **Game jam speed:** No naming CSS classes, no context switching
+- **Consistent spacing/colors:** Design tokens enforce visual consistency
+- **Responsive:** Built-in responsive utilities if needed
+- **Small bundle:** Purges unused styles automatically
+- **Arbitrary values:** `w-[220px]` `h-[180px]` for exact game dimensions
+- **Dark theme native:** Game's dark UI maps naturally to Tailwind's dark palette
+
+### @nuxt/ui - Selective Use
+@nuxt/ui is a dashboard/app-focused component library (125+ components). **Most game UI is custom**, but these components are useful:
+- **UButton:** Menu screen buttons (Start, Restart, Settings)
+- **UModal:** Pause overlay, settings panel
+- **UCard:** Game over stats display
+- **UBadge:** Score/combo indicators on menu screens
+
+**Do NOT use @nuxt/ui for:**
+- In-game HUD (needs custom positioning/animations)
+- Chat panel (custom scrolling behavior)
+- Threat overlays (custom click handling/animations)
+- Stream panel (fully custom layout)
 
 ### Why Nuxt 3?
 - **All the benefits of Vue 3** with additional features
@@ -33,7 +56,7 @@
 5. **Easy Deployment:** One command to generate static files
 6. **Better DX:** Error overlay, Vue DevTools, TypeScript hints
 7. **No Routing Code:** Pages automatically become routes
-8. **Scoped Styles:** No CSS conflicts between components
+8. **Tailwind + Scoped Styles:** Utility classes for layout, scoped styles for animations
 9. **Reactive by Default:** State changes automatically update UI
 10. **Production Ready:** Optimized builds out of the box
 
@@ -51,7 +74,7 @@ vtuber-mask/
 ├── nuxt.config.ts              # Nuxt configuration
 ├── tsconfig.json               # TypeScript configuration (auto-generated)
 ├── package.json
-├── .eslintrc.cjs               # ESLint rules
+├── eslint.config.mjs           # ESLint flat config (via @nuxt/eslint)
 ├── .prettierrc                 # Prettier formatting
 ├── app.vue                     # Root component (optional, can use pages/)
 ├── pages/
@@ -533,65 +556,32 @@ class InputManager {
 ```vue
 <!-- pages/game.vue -->
 <template>
-  <div class="game-container">
+  <div class="flex flex-col w-[1280px] h-[720px]">
     <!-- Platform Header -->
     <PlatformHeader />
 
-    <div class="main-content">
+    <div class="flex flex-1">
       <!-- Left: Stream Panel (50%) with VTuber overlay -->
-      <div class="stream-container">
-        <StreamPanel class="stream-panel" />
-        <VTuberPanel class="vtuber-overlay" />
+      <div class="relative w-1/2">
+        <StreamPanel class="w-full h-full" />
+        <VTuberPanel class="absolute bottom-4 right-4 w-[220px] h-[180px] z-50" />
       </div>
 
       <!-- Right: Full-height Chat (50%) -->
-      <ChatPanel class="chat-panel" />
+      <ChatPanel class="w-1/2 h-full" />
     </div>
 
     <!-- Stream Info Bar -->
     <StreamInfoBar />
   </div>
 </template>
-
-<style scoped>
-.game-container {
-  width: 1280px;
-  height: 720px;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  gap: 0;
-}
-
-.stream-container {
-  width: 50%; /* 640px - gameplay optimized */
-  position: relative;
-}
-
-.stream-panel {
-  width: 100%;
-  height: 100%;
-}
-
-.vtuber-overlay {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: 220px;
-  height: 180px;
-  z-index: 50; /* Above stream, below HUD */
-}
-
-.chat-panel {
-  width: 50%; /* 640px - primary threat source */
-  height: 100%; /* Full height */
-}
-</style>
 ```
+
+**Tailwind Styling Notes:**
+- Layout uses utility classes directly in templates — no separate `<style>` block needed
+- `w-[220px]` and `h-[180px]` use Tailwind's arbitrary value syntax for exact game dimensions
+- `z-50` maps to `z-index: 50` (Tailwind default scale)
+- For custom z-index values like `z-100` (HUD), extend in `tailwind.config` or use `z-[100]`
 
 **Layout Rationale:**
 - 50/50 split optimizes for gameplay (chat has 60% of threats)
@@ -604,17 +594,17 @@ class InputManager {
 ```vue
 <!-- components/PlatformHeader.vue -->
 <template>
-  <header class="platform-header">
-    <div class="header-left">
-      <img src="/logo.svg" class="logo" />
-      <h1>VTuber Mask</h1>
+  <header class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <img src="/logo.svg" class="h-8" />
+      <h1 class="text-lg font-bold">VTuber Mask</h1>
     </div>
-    <div class="header-center">
-      <span class="stream-title">🎭 Protect the Stream!</span>
+    <div>
+      <span class="text-sm font-medium">🎭 Protect the Stream!</span>
     </div>
-    <div class="header-right">
-      <span class="viewers">👁 {{ viewerCount.toLocaleString() }}</span>
-      <button @click="openSettings">⚙️</button>
+    <div class="flex items-center gap-4">
+      <span class="text-sm text-white/70">👁 {{ viewerCount.toLocaleString() }}</span>
+      <button class="text-white/60 hover:text-white transition-colors" @click="openSettings">⚙️</button>
     </div>
   </header>
 </template>
@@ -622,18 +612,6 @@ class InputManager {
 <script setup lang="ts">
 const viewerCount = ref(1234)
 </script>
-
-<style scoped>
-.platform-header {
-  height: 60px;
-  background: #0f0f1e;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-</style>
 ```
 
 ### VTuber Panel Component (Overlay)
@@ -641,9 +619,9 @@ const viewerCount = ref(1234)
 ```vue
 <!-- components/VTuberPanel.vue -->
 <template>
-  <div class="vtuber-overlay">
-    <div class="vtuber-avatar-container">
-      <img :src="currentExpression" class="vtuber-avatar" />
+  <div class="relative p-3 rounded-xl border-2 border-white/10 backdrop-blur-[10px] shadow-[0_8px_32px_rgba(0,0,0,0.4)] bg-gradient-to-br from-[rgba(26,26,46,0.95)] to-[rgba(22,33,62,0.95)]">
+    <div class="relative w-full h-[120px] rounded-lg overflow-hidden">
+      <img :src="currentExpression" class="w-full h-full object-cover" />
 
       <!-- Threat overlays -->
       <ThreatOverlay
@@ -654,19 +632,16 @@ const viewerCount = ref(1234)
       />
     </div>
 
-    <div class="vtuber-info">
-      <span class="vtuber-name">{{ vtuberName }} 認証済</span>
-      <span class="live-status">
-        <span class="live-dot">🔴</span> LIVE {{ viewerCount }} 👁
+    <div class="flex justify-between items-center mt-2 text-xs">
+      <span class="font-semibold text-white">{{ vtuberName }} 認証済</span>
+      <span class="flex items-center gap-1 text-[11px] text-white/80">
+        <span class="animate-pulse">🔴</span> LIVE {{ viewerCount }} 👁
       </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useThreatStore } from '@/stores/threat'
-
 const threatStore = useThreatStore()
 const vtuberThreats = computed(() =>
   threatStore.threats.filter(t => t.type === 'vtuber' && !t.isMasked)
@@ -676,65 +651,14 @@ const vtuberName = ref('KawaiiChan')
 const viewerCount = ref(1234)
 const currentExpression = ref('/assets/images/vtuber/idle.png')
 </script>
-
-<style scoped>
-.vtuber-overlay {
-  width: 220px;
-  height: 180px;
-  background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  padding: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  position: relative;
-}
-
-.vtuber-avatar-container {
-  position: relative;
-  width: 100%;
-  height: 120px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.vtuber-avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.vtuber-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-  font-size: 12px;
-}
-
-.vtuber-name {
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.live-status {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.live-dot {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-</style>
 ```
+
+**Notes:**
+- Gradient backgrounds use Tailwind arbitrary values: `bg-gradient-to-br from-[...] to-[...]`
+- `backdrop-blur-[10px]` for the frosted glass effect
+- `animate-pulse` is a built-in Tailwind animation (replaces custom `@keyframes pulse`)
+- No `<style>` block needed — all styling is in utility classes
+- No imports needed — Nuxt auto-imports `computed`, `ref`, and `useThreatStore`
 
 **Overlay Positioning:**
 - Position: Absolute, bottom-right of stream panel
@@ -748,49 +672,50 @@ const currentExpression = ref('/assets/images/vtuber/idle.png')
 ```vue
 <!-- components/ChatPanel.vue -->
 <template>
-  <div class="chat-panel">
-    <div class="chat-header">
+  <div class="flex flex-col w-full h-full bg-[#1f1f23] overflow-hidden border-l border-white/10">
+    <div class="flex justify-between items-center px-4 py-3.5 bg-[#18181b] border-b border-white/10 font-semibold text-sm">
       <span>💬 STREAM CHAT</span>
-      <button class="settings-btn">⚙️</button>
+      <button class="text-white/60 hover:text-white transition-colors text-base p-1">⚙️</button>
     </div>
 
-    <div ref="chatContainer" class="chat-messages">
+    <div ref="chatContainer" class="flex-1 overflow-y-auto overflow-x-hidden py-1 scrollbar-thin">
       <div
         v-for="message in visibleMessages"
         :key="message.id"
-        :class="['chat-message', { threat: message.isThreat }]"
+        :class="[
+          'px-4 py-1.5 text-sm leading-relaxed border-l-2 border-transparent cursor-pointer transition-colors duration-100 break-words',
+          'hover:bg-white/[0.04] hover:border-l-[#e94560]',
+          message.isThreat && 'chat-threat bg-[#ff3355]/15 !border-l-[#ff3355]'
+        ]"
         @click="handleMessageClick(message)"
       >
         <!-- Badges -->
-        <span v-if="message.badges" class="badges">
+        <span v-if="message.badges" class="inline-flex gap-0.5 mr-1.5 items-center">
           <img
             v-for="badge in message.badges"
             :key="badge.type"
             :src="badge.icon"
             :title="badge.tooltip"
-            class="badge-icon"
+            class="w-[18px] h-[18px] align-middle"
           />
         </span>
 
         <!-- Username -->
-        <span class="username" :style="{ color: message.userColor }">
+        <span class="font-bold mr-1.5" :style="{ color: message.userColor }">
           {{ message.username }}:
         </span>
 
         <!-- Message -->
-        <span class="message-text">{{ message.text }}</span>
+        <span class="text-white/95">{{ message.text }}</span>
 
         <!-- Timestamp -->
-        <span class="timestamp">{{ formatTime(message.timestamp) }}</span>
+        <span class="text-[11px] text-white/35 ml-2">{{ formatTime(message.timestamp) }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from 'vue'
-import { useThreatStore } from '@/stores/threat'
-import { useScoreStore } from '@/stores/score'
 import type { ChatMessage } from '@/types/threat'
 
 const threatStore = useThreatStore()
@@ -798,7 +723,6 @@ const scoreStore = useScoreStore()
 const chatContainer = ref<HTMLElement>()
 
 const visibleMessages = computed(() =>
-  // Show last 20 messages for full-height chat (50% of screen)
   threatStore.chatMessages.slice(-20)
 )
 
@@ -806,7 +730,6 @@ function handleMessageClick(message: ChatMessage) {
   if (message.isThreat && !message.isMasked) {
     threatStore.maskThreat(message.id, { x: 0, y: 0 })
   } else if (!message.isThreat) {
-    // False positive penalty
     scoreStore.onFalsePositive()
   }
 }
@@ -821,65 +744,8 @@ watch(visibleMessages, async () => {
 </script>
 
 <style scoped>
-.chat-panel {
-  width: 100%;
-  height: 100%;
-  background: #1f1f23;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.chat-header {
-  padding: 14px 16px;
-  background: #18181b;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.settings-btn {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-  padding: 4px;
-  font-size: 16px;
-}
-
-.settings-btn:hover {
-  color: rgba(255, 255, 255, 1);
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 4px 0;
-}
-
-.chat-message {
-  padding: 6px 16px;
-  font-size: 14px; /* Slightly larger for 50% width */
-  line-height: 1.6;
-  border-left: 2px solid transparent;
-  cursor: pointer;
-  transition: background 0.1s ease;
-  word-wrap: break-word;
-}
-
-.chat-message:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-left-color: #e94560;
-}
-
-.chat-message.threat {
-  background: rgba(255, 51, 85, 0.15);
-  border-left-color: #ff3355;
+/* Threat pulse animation - can't be done with Tailwind alone */
+.chat-threat {
   animation: threat-pulse 1s ease-in-out;
 }
 
@@ -888,53 +754,18 @@ watch(visibleMessages, async () => {
   50% { background: rgba(255, 51, 85, 0.25); }
 }
 
-.badges {
-  display: inline-flex;
-  gap: 2px;
-  margin-right: 6px;
-  align-items: center;
-}
-
-.badge-icon {
-  width: 18px;
-  height: 18px;
-  vertical-align: middle;
-}
-
-.username {
-  font-weight: 700;
-  margin-right: 6px;
-}
-
-.message-text {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.timestamp {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.35);
-  margin-left: 8px;
-}
-
-/* Scrollbar styling */
-.chat-messages::-webkit-scrollbar {
-  width: 8px;
-}
-
-.chat-messages::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
+/* Custom scrollbar - keep in scoped styles */
+.scrollbar-thin::-webkit-scrollbar { width: 8px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 </style>
 ```
+
+**Tailwind + Scoped Style Strategy:**
+- **Tailwind utilities** for layout, spacing, colors, typography, and hover states
+- **Scoped `<style>`** only for keyframe animations and pseudo-element selectors (scrollbars)
+- This hybrid approach gives the speed of utility classes with the power of CSS animations
 
 **Full-Height Chat Benefits:**
 - Displays **18-20 messages** at once (vs 8-10 in smaller chat)
@@ -949,24 +780,27 @@ watch(visibleMessages, async () => {
 ```vue
 <!-- components/StreamPanel.vue -->
 <template>
-  <div class="stream-panel">
+  <div class="relative w-full h-full bg-[#0e0e14]">
     <!-- Game HUD Overlay -->
-    <div class="game-hud">
-      <div class="hud-item">💯 {{ score.toLocaleString() }}</div>
-      <div class="hud-item combo" :class="{ active: combo > 0 }">
+    <div class="absolute top-4 left-4 z-[100] min-w-[180px] p-3 rounded-xl bg-black/70 backdrop-blur-[10px]">
+      <div class="text-base font-semibold mb-2">💯 {{ score.toLocaleString() }}</div>
+      <div class="text-base font-semibold mb-2" :class="{ 'hud-combo-glow': combo > 0 }">
         🔥 {{ combo }}x
       </div>
-      <div class="hud-item health">
-        <div class="health-bar">
-          <div class="health-fill" :style="{ width: health + '%' }"></div>
+      <div class="text-base font-semibold">
+        <div class="w-full h-2 bg-white/20 rounded overflow-hidden mb-1">
+          <div
+            class="h-full bg-gradient-to-r from-[#00ff88] via-[#ffaa00] to-[#ff3355] transition-[width] duration-300"
+            :style="{ width: health + '%' }"
+          />
         </div>
         <span>❤️ {{ health }}%</span>
       </div>
     </div>
 
     <!-- Stream content -->
-    <div class="stream-content">
-      <img :src="currentStreamContent" class="content-image" />
+    <div class="w-full h-full">
+      <img :src="currentStreamContent" class="w-full h-full object-cover" />
 
       <!-- Threat overlays -->
       <ThreatOverlay
@@ -980,10 +814,6 @@ watch(visibleMessages, async () => {
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useScoreStore } from '@/stores/score'
-import { useThreatStore } from '@/stores/threat'
-
 const scoreStore = useScoreStore()
 const threatStore = useThreatStore()
 
@@ -997,48 +827,13 @@ const streamThreats = computed(() =>
 </script>
 
 <style scoped>
-.stream-panel {
-  width: 100%;
-  height: 100%;
-  background: #0e0e14;
-  position: relative;
+.hud-combo-glow {
+  animation: combo-glow 1s ease-in-out infinite;
 }
 
-.game-hud {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 12px;
-  z-index: 100;
-  min-width: 180px;
-}
-
-.hud-item {
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.hud-item:last-child {
-  margin-bottom: 0;
-}
-
-.health-bar {
-  width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 4px;
-}
-
-.health-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #00ff88, #ffaa00, #ff3355);
-  transition: width 0.3s ease;
+@keyframes combo-glow {
+  0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(255, 215, 0, 1); }
 }
 </style>
 ```
@@ -1048,16 +843,16 @@ const streamThreats = computed(() =>
 ```vue
 <!-- components/StreamInfoBar.vue -->
 <template>
-  <div class="stream-info-bar">
-    <div class="info-left">
-      <span class="live-indicator">🔴 LIVE</span>
-      <span class="category">Reaction Game</span>
-      <span class="viewers">{{ viewerCount.toLocaleString() }} viewers</span>
+  <div class="flex justify-between items-center h-[50px] px-6 bg-gradient-to-t from-black/90 to-black/70 backdrop-blur-[10px] border-t border-white/10">
+    <div class="flex gap-4 items-center">
+      <span class="text-red-500 font-bold animate-pulse">🔴 LIVE</span>
+      <span class="text-sm text-white/70">Reaction Game</span>
+      <span class="text-sm text-white/70">{{ viewerCount.toLocaleString() }} viewers</span>
     </div>
 
-    <div class="info-right">
-      <button class="subscribe-btn">⭐ Subscribe</button>
-      <button class="share-btn">Share</button>
+    <div class="flex gap-2">
+      <UButton color="warning" variant="solid" size="sm">⭐ Subscribe</UButton>
+      <UButton color="neutral" variant="ghost" size="sm">Share</UButton>
     </div>
   </div>
 </template>
@@ -1065,43 +860,17 @@ const streamThreats = computed(() =>
 <script setup lang="ts">
 const viewerCount = ref(1234)
 </script>
-
-<style scoped>
-.stream-info-bar {
-  height: 50px;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.info-left {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.live-indicator {
-  color: #ff0000;
-  font-weight: bold;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-</style>
 ```
+
+**@nuxt/ui Usage:** The `UButton` component is used here for decorative stream UI buttons. These are non-interactive game elements (cosmetic), so the pre-built styling saves time without impacting game mechanics.
 
 **Key Points:**
 - All components use Nuxt 3 auto-imports
 - TypeScript for type safety
 - Reactive state with Pinia stores
-- Scoped styles for isolation
+- **Tailwind utilities** for layout, spacing, colors, typography
+- **Scoped `<style>`** only when needed for keyframes and pseudo-elements
+- **@nuxt/ui** for non-game UI elements (menu buttons, decorative stream UI)
 - Component-based architecture
 
 ### Stream Panel
@@ -1407,6 +1176,8 @@ class AudioManager {
 
 ```typescript
 export default defineNuxtConfig({
+  compatibilityDate: '2025-07-15',
+
   // TypeScript support
   typescript: {
     strict: true,
@@ -1417,13 +1188,14 @@ export default defineNuxtConfig({
   ssr: false, // SPA mode for game
 
   // Modules
-  modules: ['@pinia/nuxt'],
+  modules: [
+    '@pinia/nuxt',    // State management
+    '@nuxt/eslint',   // ESLint flat config integration
+    '@nuxt/ui',       // UI components (selective use for menus/buttons)
+  ],
 
   // Dev tools
   devtools: { enabled: true },
-
-  // CSS
-  css: ['~/assets/css/main.css'],
 
   // App config
   app: {
@@ -1455,33 +1227,31 @@ export default defineNuxtConfig({
 })
 ```
 
-### ESLint Configuration (.eslintrc.cjs)
+**Notes:**
+- `@nuxt/ui` includes Tailwind CSS v4 automatically — no separate `tailwindcss` config needed
+- `@nuxt/eslint` provides flat config ESLint integration (replaces `.eslintrc.cjs`)
+- No `css` entry needed — Tailwind is injected by `@nuxt/ui`
+
+### ESLint Configuration (eslint.config.mjs)
+
+Uses `@nuxt/eslint` flat config — auto-generated from Nuxt module:
 
 ```javascript
-module.exports = {
-  root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
-  extends: [
-    '@nuxtjs/eslint-config-typescript',
-    'plugin:vue/vue3-recommended',
-    'plugin:prettier/recommended',
-  ],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  rules: {
-    'vue/multi-word-component-names': 'off', // Allow single-word components
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-  },
-}
+// eslint.config.mjs
+// @ts-check
+import withNuxt from './.nuxt/eslint.config.mjs'
+
+export default withNuxt(
+  // Custom overrides go here
+  {
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    },
+  }
+)
 ```
+
+**Note:** The `@nuxt/eslint` module auto-generates the base config during `nuxt prepare`. No need for separate `@nuxtjs/eslint-config-typescript` or plugin installs.
 
 ### Prettier Configuration (.prettierrc)
 
@@ -1507,13 +1277,16 @@ module.exports = {
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "lint": "eslint --ext .ts,.js,.vue .",
-    "lint:fix": "eslint --ext .ts,.js,.vue . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,js,vue,json,md}\"",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "postinstall": "nuxt prepare"
   }
 }
 ```
+
+**Note:** ESLint flat config doesn't need `--ext` flags — file patterns are configured in the config file.
 
 ## Testing Checklist
 
@@ -1670,20 +1443,16 @@ Nuxt has built-in Vercel support - zero configuration needed.
 ### Initial Setup
 
 ```bash
-# Create Nuxt 3 project
+# Create Nuxt 3 project (includes @nuxt/ui and Tailwind CSS v4)
 npx nuxi@latest init vtuber-mask
-
-# Navigate to project
 cd vtuber-mask
 
-# Install dependencies
+# Install core dependencies
 npm install
-
-# Install Pinia (if not already included)
 npm install @pinia/nuxt
 
-# Install dev dependencies
-npm install -D @nuxtjs/eslint-config-typescript prettier eslint-plugin-prettier
+# Install formatting
+npm install -D prettier
 
 # Create directory structure
 mkdir -p components stores composables types data utils public/assets/{images,audio}
@@ -1691,12 +1460,14 @@ mkdir -p public/assets/images/{vtuber,stream,threats,masks}
 mkdir -p public/assets/audio/{music,sfx}
 ```
 
+**Note:** `@nuxt/ui` bundles Tailwind CSS v4, `@nuxt/eslint` bundles ESLint — minimal extra dependencies needed.
+
 ### Configuration Files
 
 Create the following files:
 
 **nuxt.config.ts** - See "Nuxt Configuration" section above
-**.eslintrc.cjs** - See "ESLint Configuration" section above
+**eslint.config.mjs** - See "ESLint Configuration" section above
 **.prettierrc** - See "Prettier Configuration" section above
 
 ### Development Workflow
@@ -1778,6 +1549,7 @@ const { playSound } = useAudio() // Auto-imported from composables/
 
 // Components are also auto-imported
 // <ThreatOverlay /> works without importing
+// <UButton /> from @nuxt/ui works without importing
 </script>
 ```
 
