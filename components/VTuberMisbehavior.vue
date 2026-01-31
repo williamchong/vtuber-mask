@@ -42,9 +42,9 @@ function cancelHold() {
     <div
       v-if="state === 'grace' || state === 'danger'"
       class="absolute inset-0 z-[9999] cursor-pointer select-none overflow-hidden rounded-xl"
-      @mousedown.prevent="startHold"
-      @mouseup="cancelHold"
-      @mouseleave="cancelHold"
+      @pointerdown.prevent="startHold"
+      @pointerup="cancelHold"
+      @pointerleave="cancelHold"
     >
       <!-- Angry VTuber image -->
       <img :src="angryImg" class="absolute inset-0 w-full h-full object-cover" draggable="false" />

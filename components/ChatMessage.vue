@@ -97,9 +97,9 @@ function cancelHold() {
       'threat-flash': isFlashing,
     }"
     :style="!message.isMasked && !message.falsePositive && !isFlashing ? threatStyle : {}"
-    @mousedown.prevent="startHold"
-    @mouseup="cancelHold"
-    @mouseleave="cancelHold"
+    @pointerdown.prevent="startHold"
+    @pointerup="cancelHold"
+    @pointerleave="cancelHold"
   >
     <!-- Hold progress bar -->
     <div v-if="holding" class="hold-progress absolute inset-0 bg-white/15 pointer-events-none" />

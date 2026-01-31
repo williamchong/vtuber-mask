@@ -1,2 +1,8 @@
 @import 'tailwindcss';
 @import '@nuxt/ui';
+
+/* Prevent touch delay and long-press context menu on mobile */
+.select-none {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+}

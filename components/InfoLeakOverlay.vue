@@ -41,9 +41,9 @@ function cancelHold() {
   <div
     v-if="state === 'grace' || state === 'danger'"
     class="absolute inset-0 z-[80] cursor-pointer select-none"
-    @mousedown.prevent="startHold"
-    @mouseup="cancelHold"
-    @mouseleave="cancelHold"
+    @pointerdown.prevent="startHold"
+    @pointerup="cancelHold"
+    @pointerleave="cancelHold"
   >
     <img :src="gmailImg" class="absolute inset-0 w-full h-full object-cover" draggable="false" />
 
