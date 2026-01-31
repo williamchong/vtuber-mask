@@ -112,24 +112,32 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
+  function getDifficultyMultiplier(): number {
+    const gameStore = useGameStore()
+    if (!gameStore.startTime) return GAME_CONFIG.INITIAL_DIFFICULTY
+    const elapsed = (Date.now() - gameStore.startTime) / 1000
+    const capped = Math.min(elapsed, GAME_CONFIG.DIFFICULTY_CAP_TIME)
+    return GAME_CONFIG.INITIAL_DIFFICULTY + (capped / 60) * GAME_CONFIG.DIFFICULTY_INCREASE_RATE
+  }
+
   function scheduleNormal() {
-    normalTimer = setTimeout(
-      () => {
-        addNormalMessage()
-        scheduleNormal()
-      },
-      randomRange(1500, 2500)
-    )
+    const multiplier = getDifficultyMultiplier()
+    const interval = randomRange(1500, 2500) / multiplier
+    normalTimer = setTimeout(() => {
+      addNormalMessage()
+      scheduleNormal()
+    }, interval)
   }
 
   function scheduleThreat() {
-    threatTimer = setTimeout(
-      () => {
-        addThreatMessage()
-        scheduleThreat()
-      },
-      randomRange(4000, 6000)
-    )
+    const multiplier = getDifficultyMultiplier()
+    const base = GAME_CONFIG.BASE_SPAWN_INTERVAL
+    const interval = Math.max(GAME_CONFIG.MIN_SPAWN_INTERVAL, base / multiplier)
+    const jitter = randomRange(0.8, 1.2)
+    threatTimer = setTimeout(() => {
+      addThreatMessage()
+      scheduleThreat()
+    }, interval * jitter)
   }
 
   function startChat() {

@@ -2,6 +2,7 @@ export const GAME_CONFIG = {
   TARGET_DURATION: 300, // 5 minutes in seconds
   INITIAL_DIFFICULTY: 1.0,
   DIFFICULTY_INCREASE_RATE: 0.5,
+  DIFFICULTY_CAP_TIME: 180, // seconds — difficulty stops increasing at 3 minutes
   MAX_ACTIVE_THREATS: 5,
 
   // Threat timing
