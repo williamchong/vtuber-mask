@@ -109,7 +109,7 @@ const emotionalEmoji = computed(() => {
           </div>
           <span class="font-bold">VTuber Mask</span>
         </div>
-        <span class="text-sm text-white/50">Protect the Stream!</span>
+        <span class="text-sm text-white/50">Your Stream</span>
         <div class="flex items-center gap-2 text-sm text-white/70">
           <span class="inline-block w-2 h-2 rounded-full bg-red-500" />
           <span>{{ Math.floor(gameStore.viewers).toLocaleString() }} viewers</span>
@@ -145,7 +145,7 @@ const emotionalEmoji = computed(() => {
           </span>
           <span class="text-white/40">Gaming &middot; Content Moderation Simulator</span>
         </div>
-        <span class="text-white/50">Click threats to mask them!</span>
+        <span class="text-white/50">Click to censor inappropriate content!</span>
       </div>
     </div>
   </div>

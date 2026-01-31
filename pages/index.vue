@@ -13,12 +13,12 @@
       <h1 class="text-5xl font-black tracking-tight mb-2">
         VTuber <span class="text-[#e94560]">Mask</span>
       </h1>
-      <p class="text-lg text-white/50 mb-10">Content Moderation Simulator</p>
+      <p class="text-lg text-white/50 mb-10">Protect Your Stream</p>
 
-      <UButton size="xl" color="primary" to="/game" class="px-10 mb-6"> Start Stream </UButton>
+      <UButton size="xl" color="primary" to="/game" class="px-10 mb-6"> Go Live </UButton>
 
       <p class="text-sm text-white/30 max-w-xs text-center leading-relaxed">
-        Click to mask inappropriate content before viewers notice. Protect the streamer!
+        You're a VTuber going live. Click to mask dangerous content before your viewers notice!
       </p>
     </div>
   </div>

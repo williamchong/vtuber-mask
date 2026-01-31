@@ -10,11 +10,11 @@
 
 ## Core Concept
 
-Players take on the role of a content moderator for a VTuber live stream. While the stream plays normally, dangerous or inappropriate elements occasionally appear that must be quickly identified and "masked" (censored) before viewers notice. The game explores the dual meaning of "mask" - both the literal censorship of content and the metaphorical mask that VTubers wear to hide their real identity.
+You are a VTuber protecting your own live stream. While streaming, dangerous or inappropriate content occasionally appears — in your chat, on the stream screen, or even on your VTuber model — and you must quickly click to censor it before viewers notice. The game explores the dual meaning of "mask" — both the literal censorship of content and the metaphorical mask that VTubers wear to hide their real identity.
 
 ## Narrative Frame
 
-You are the behind-the-scenes moderator for a popular VTuber. Your job is to keep the stream "seiso" (pure/clean) by masking any problematic content before it damages the VTuber's reputation. The VTuber themselves is unaware of many issues happening on screen, relying on you to protect their image - their "mask" of perfection.
+You are a VTuber who has just gone live. Your job is to keep the stream "seiso" (pure/clean) by masking any problematic content before it damages your reputation and emotional state. You must protect your own image — your "mask" of perfection — while keeping your viewers happy and your audience growing.
 
 ## Core Gameplay Loop
 

@@ -14,7 +14,7 @@ function formatTime(seconds: number): string {
       class="flex flex-col items-center justify-center w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50"
     >
       <h1 class="text-4xl font-black tracking-tight mb-1">Stream Ended</h1>
-      <p class="text-white/40 mb-8">Your moderation shift is over.</p>
+      <p class="text-white/40 mb-8">Your stream is over. Here's how it went.</p>
 
       <!-- Stats card -->
       <div
