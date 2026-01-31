@@ -4,8 +4,11 @@ import { GAME_CONFIG } from '~/data/config'
 const gameStore = useGameStore()
 const chatStore = useChatStore()
 const infoLeak = useInfoLeak()
-const infoLeakDanger = computed(() => infoLeak.leakState.value === 'danger')
-const gameLoop = useGameLoop(infoLeakDanger)
+const misbehavior = useMisbehavior()
+const externalDanger = computed(
+  () => infoLeak.leakState.value === 'danger' || misbehavior.state.value === 'danger'
+)
+const gameLoop = useGameLoop(externalDanger)
 const audio = useAudio()
 const router = useRouter()
 const missFlash = ref(false)
@@ -15,12 +18,14 @@ let deltaTimeout: ReturnType<typeof setTimeout> | null = null
 onMounted(() => {
   gameLoop.start()
   infoLeak.start()
+  misbehavior.start()
   audio.startBgm()
 })
 
 onUnmounted(() => {
   gameLoop.stop()
   infoLeak.stop()
+  misbehavior.stop()
   audio.stopBgm()
 })
 
@@ -30,6 +35,7 @@ watch(
     if (s === 'gameover') {
       gameLoop.stop()
       infoLeak.stop()
+      misbehavior.stop()
       audio.stopBgm()
       audio.playGameOver()
       router.push('/gameover')
@@ -160,7 +166,12 @@ const emotionalEmoji = computed(() => {
 
       <!-- Main panels -->
       <div class="flex flex-1 min-h-0">
-        <StreamPanel :info-leak-state="infoLeak.leakState.value" @censor-leak="infoLeak.censor()" />
+        <StreamPanel
+          :info-leak-state="infoLeak.leakState.value"
+          :misbehavior-state="misbehavior.state.value"
+          @censor-leak="infoLeak.censor()"
+          @censor-misbehavior="misbehavior.censor()"
+        />
         <ChatPanel />
       </div>
 

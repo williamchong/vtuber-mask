@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { InfoLeakState } from '~/composables/useInfoLeak'
+import type { MisbehaviorState } from '~/composables/useMisbehavior'
 
 defineProps<{
   infoLeakState: InfoLeakState
+  misbehaviorState: MisbehaviorState
 }>()
 
 const emit = defineEmits<{
   censorLeak: []
+  censorMisbehavior: []
 }>()
 </script>
 
@@ -27,7 +30,10 @@ const emit = defineEmits<{
 
     <InfoLeakOverlay :state="infoLeakState" @censor="emit('censorLeak')" />
 
-    <VTuberOverlay />
+    <VTuberOverlay
+      :misbehavior-state="misbehaviorState"
+      @censor-misbehavior="emit('censorMisbehavior')"
+    />
   </div>
 </template>
 

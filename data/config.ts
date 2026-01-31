@@ -52,6 +52,15 @@ export const GAME_CONFIG = {
   INFO_LEAK_MISS_VIEWER_PENALTY: 30,
   INFO_LEAK_DANGER_EMOTIONAL_PENALTY: 5, // one-time on entering danger
 
+  // VTuber Misbehavior (emotion-triggered threat)
+  MISBEHAVIOR_EMOTION_THRESHOLD: 40, // only triggers below this emotional value
+  MISBEHAVIOR_CHECK_INTERVAL: 5000, // ms between spawn checks
+  MISBEHAVIOR_GRACE_PERIOD: 1000, // ms — censor with no penalty
+  MISBEHAVIOR_DANGER_EMOTIONAL_PENALTY: 5, // one-time on entering danger
+  MISBEHAVIOR_DANGER_EMOTIONAL_DRAIN: 3, // per second while in danger
+  MISBEHAVIOR_DANGER_VIEWER_DRAIN: 5, // per second while in danger
+  MISBEHAVIOR_CENSOR_BLUR_TIME: 2000, // ms — blur duration after censoring
+
   // Chat
   CHAT_MAX_MESSAGES: 15,
 

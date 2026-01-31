@@ -199,6 +199,26 @@ export const useGameStore = defineStore('game', () => {
     if (emotionalValue.value <= 0) gameOver()
   }
 
+  function penalizeMisbehaviorDanger() {
+    if (state.value !== 'playing') return
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.MISBEHAVIOR_DANGER_EMOTIONAL_PENALTY
+    )
+    setLaggy()
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
+  function drainMisbehaviorDanger(dt: number) {
+    if (state.value !== 'playing') return
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.MISBEHAVIOR_DANGER_EMOTIONAL_DRAIN * dt
+    )
+    viewers.value = Math.max(0, viewers.value - GAME_CONFIG.MISBEHAVIOR_DANGER_VIEWER_DRAIN * dt)
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
   function updateViewers(dt: number) {
     if (state.value !== 'playing') return
     viewers.value = Math.max(0, viewers.value + viewerRate.value * dt)
@@ -269,6 +289,8 @@ export const useGameStore = defineStore('game', () => {
     missedThreat,
     penalizeInfoLeakDanger,
     missedInfoLeak,
+    penalizeMisbehaviorDanger,
+    drainMisbehaviorDanger,
     updateSmoothness,
     updateViewers,
     fluctuateEmotionalValue,

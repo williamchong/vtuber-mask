@@ -1,3 +1,4 @@
+import angrySrc from '~/assets/audio/angry.mp3'
 import bgmSrc from '~/assets/audio/bgm.mp3'
 import correctSrc from '~/assets/audio/correct_action.mp3'
 import gameOverSrc from '~/assets/audio/game_over.mp3'
@@ -51,6 +52,10 @@ export function useAudio() {
     playSfx(newChatSrc, 0.15)
   }
 
+  function playAngry() {
+    playSfx(angrySrc, 0.5)
+  }
+
   function playGameOver() {
     playSfx(gameOverSrc, 0.6)
   }
@@ -71,6 +76,7 @@ export function useAudio() {
   }
 
   return {
+    playAngry,
     playClick,
     playCorrect,
     playIncorrect,

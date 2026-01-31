@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { loadOml2d } from 'oh-my-live2d'
+import type { MisbehaviorState } from '~/composables/useMisbehavior'
+
+defineProps<{
+  misbehaviorState: MisbehaviorState
+}>()
+
+const emit = defineEmits<{
+  censorMisbehavior: []
+}>()
 
 const gameStore = useGameStore()
 const containerRef = ref<HTMLElement | null>(null)
@@ -60,6 +69,8 @@ onMounted(() => {
   >
     <!-- Live2D container -->
     <div ref="containerRef" class="w-full h-[150px]" />
+
+    <VTuberMisbehavior :state="misbehaviorState" @censor="emit('censorMisbehavior')" />
 
     <!-- Name bar -->
     <div
