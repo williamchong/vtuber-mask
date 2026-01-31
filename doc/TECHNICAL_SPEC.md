@@ -526,29 +526,583 @@ class InputManager {
 }
 ```
 
-## UI Components
+## UI Components (Nuxt/Vue)
 
-### VTuber Panel
+### Overall Layout Structure
 
-**HTML Structure:**
-```html
-<div id="vtuber-panel" class="panel">
-  <div class="vtuber-model">
-    <img id="vtuber-base" src="assets/vtuber/base.png">
-    <img id="vtuber-expression" src="assets/vtuber/idle.png">
-    <div id="vtuber-threat-layer"></div>
+```vue
+<!-- pages/game.vue -->
+<template>
+  <div class="game-container">
+    <!-- Platform Header -->
+    <PlatformHeader />
+
+    <div class="main-content">
+      <!-- Left: Stream Panel (50%) with VTuber overlay -->
+      <div class="stream-container">
+        <StreamPanel class="stream-panel" />
+        <VTuberPanel class="vtuber-overlay" />
+      </div>
+
+      <!-- Right: Full-height Chat (50%) -->
+      <ChatPanel class="chat-panel" />
+    </div>
+
+    <!-- Stream Info Bar -->
+    <StreamInfoBar />
   </div>
-  <div class="vtuber-info">
-    <h3>KawaiiStreamer</h3>
-    <span class="live-indicator">LIVE</span>
-  </div>
-</div>
+</template>
+
+<style scoped>
+.game-container {
+  width: 1280px;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  gap: 0;
+}
+
+.stream-container {
+  width: 50%; /* 640px - gameplay optimized */
+  position: relative;
+}
+
+.stream-panel {
+  width: 100%;
+  height: 100%;
+}
+
+.vtuber-overlay {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 220px;
+  height: 180px;
+  z-index: 50; /* Above stream, below HUD */
+}
+
+.chat-panel {
+  width: 50%; /* 640px - primary threat source */
+  height: 100%; /* Full height */
+}
+</style>
 ```
 
-**Threat Display:**
-- Swap expression sprite
-- Overlay gesture image
-- Add glitch effect for model errors
+**Layout Rationale:**
+- 50/50 split optimizes for gameplay (chat has 60% of threats)
+- VTuber overlaps stream (doesn't steal space from chat)
+- Chat is full height (maximum threat visibility)
+- Stream threats are larger/fewer (needs less space)
+
+### PlatformHeader Component
+
+```vue
+<!-- components/PlatformHeader.vue -->
+<template>
+  <header class="platform-header">
+    <div class="header-left">
+      <img src="/logo.svg" class="logo" />
+      <h1>VTuber Mask</h1>
+    </div>
+    <div class="header-center">
+      <span class="stream-title">🎭 Protect the Stream!</span>
+    </div>
+    <div class="header-right">
+      <span class="viewers">👁 {{ viewerCount.toLocaleString() }}</span>
+      <button @click="openSettings">⚙️</button>
+    </div>
+  </header>
+</template>
+
+<script setup lang="ts">
+const viewerCount = ref(1234)
+</script>
+
+<style scoped>
+.platform-header {
+  height: 60px;
+  background: #0f0f1e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+</style>
+```
+
+### VTuber Panel Component (Overlay)
+
+```vue
+<!-- components/VTuberPanel.vue -->
+<template>
+  <div class="vtuber-overlay">
+    <div class="vtuber-avatar-container">
+      <img :src="currentExpression" class="vtuber-avatar" />
+
+      <!-- Threat overlays -->
+      <ThreatOverlay
+        v-for="threat in vtuberThreats"
+        :key="threat.id"
+        :threat="threat"
+        @click="maskThreat(threat)"
+      />
+    </div>
+
+    <div class="vtuber-info">
+      <span class="vtuber-name">{{ vtuberName }} 認証済</span>
+      <span class="live-status">
+        <span class="live-dot">🔴</span> LIVE {{ viewerCount }} 👁
+      </span>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useThreatStore } from '@/stores/threat'
+
+const threatStore = useThreatStore()
+const vtuberThreats = computed(() =>
+  threatStore.threats.filter(t => t.type === 'vtuber' && !t.isMasked)
+)
+
+const vtuberName = ref('KawaiiChan')
+const viewerCount = ref(1234)
+const currentExpression = ref('/assets/images/vtuber/idle.png')
+</script>
+
+<style scoped>
+.vtuber-overlay {
+  width: 220px;
+  height: 180px;
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.vtuber-avatar-container {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.vtuber-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vtuber-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.vtuber-name {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.live-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.live-dot {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+</style>
+```
+
+**Overlay Positioning:**
+- Position: Absolute, bottom-right of stream panel
+- Z-index: 50 (above stream content, below game HUD)
+- Semi-transparent background with backdrop blur
+- Rounded corners and subtle border for modern look
+- Compact 220×180px footprint
+
+### Chat Panel Component (Full Height - Primary Threat Zone)
+
+```vue
+<!-- components/ChatPanel.vue -->
+<template>
+  <div class="chat-panel">
+    <div class="chat-header">
+      <span>💬 STREAM CHAT</span>
+      <button class="settings-btn">⚙️</button>
+    </div>
+
+    <div ref="chatContainer" class="chat-messages">
+      <div
+        v-for="message in visibleMessages"
+        :key="message.id"
+        :class="['chat-message', { threat: message.isThreat }]"
+        @click="handleMessageClick(message)"
+      >
+        <!-- Badges -->
+        <span v-if="message.badges" class="badges">
+          <img
+            v-for="badge in message.badges"
+            :key="badge.type"
+            :src="badge.icon"
+            :title="badge.tooltip"
+            class="badge-icon"
+          />
+        </span>
+
+        <!-- Username -->
+        <span class="username" :style="{ color: message.userColor }">
+          {{ message.username }}:
+        </span>
+
+        <!-- Message -->
+        <span class="message-text">{{ message.text }}</span>
+
+        <!-- Timestamp -->
+        <span class="timestamp">{{ formatTime(message.timestamp) }}</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, ref, watch, nextTick } from 'vue'
+import { useThreatStore } from '@/stores/threat'
+import { useScoreStore } from '@/stores/score'
+import type { ChatMessage } from '@/types/threat'
+
+const threatStore = useThreatStore()
+const scoreStore = useScoreStore()
+const chatContainer = ref<HTMLElement>()
+
+const visibleMessages = computed(() =>
+  // Show last 20 messages for full-height chat (50% of screen)
+  threatStore.chatMessages.slice(-20)
+)
+
+function handleMessageClick(message: ChatMessage) {
+  if (message.isThreat && !message.isMasked) {
+    threatStore.maskThreat(message.id, { x: 0, y: 0 })
+  } else if (!message.isThreat) {
+    // False positive penalty
+    scoreStore.onFalsePositive()
+  }
+}
+
+// Auto-scroll to bottom when new messages arrive
+watch(visibleMessages, async () => {
+  await nextTick()
+  if (chatContainer.value) {
+    chatContainer.value.scrollTop = chatContainer.value.scrollHeight
+  }
+})
+</script>
+
+<style scoped>
+.chat-panel {
+  width: 100%;
+  height: 100%;
+  background: #1f1f23;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-header {
+  padding: 14px 16px;
+  background: #18181b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.settings-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 16px;
+}
+
+.settings-btn:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0;
+}
+
+.chat-message {
+  padding: 6px 16px;
+  font-size: 14px; /* Slightly larger for 50% width */
+  line-height: 1.6;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: background 0.1s ease;
+  word-wrap: break-word;
+}
+
+.chat-message:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-left-color: #e94560;
+}
+
+.chat-message.threat {
+  background: rgba(255, 51, 85, 0.15);
+  border-left-color: #ff3355;
+  animation: threat-pulse 1s ease-in-out;
+}
+
+@keyframes threat-pulse {
+  0%, 100% { background: rgba(255, 51, 85, 0.15); }
+  50% { background: rgba(255, 51, 85, 0.25); }
+}
+
+.badges {
+  display: inline-flex;
+  gap: 2px;
+  margin-right: 6px;
+  align-items: center;
+}
+
+.badge-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+.username {
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.message-text {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.timestamp {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-left: 8px;
+}
+
+/* Scrollbar styling */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+</style>
+```
+
+**Full-Height Chat Benefits:**
+- Displays **18-20 messages** at once (vs 8-10 in smaller chat)
+- 50% screen width = **larger font sizes** (14px) for better readability
+- **Primary threat zone** gets primary screen real estate
+- Easier to spot threats among normal messages
+- Better click accuracy with larger message areas
+- Full height scrolling for continuous threat monitoring
+
+### Stream Panel Component
+
+```vue
+<!-- components/StreamPanel.vue -->
+<template>
+  <div class="stream-panel">
+    <!-- Game HUD Overlay -->
+    <div class="game-hud">
+      <div class="hud-item">💯 {{ score.toLocaleString() }}</div>
+      <div class="hud-item combo" :class="{ active: combo > 0 }">
+        🔥 {{ combo }}x
+      </div>
+      <div class="hud-item health">
+        <div class="health-bar">
+          <div class="health-fill" :style="{ width: health + '%' }"></div>
+        </div>
+        <span>❤️ {{ health }}%</span>
+      </div>
+    </div>
+
+    <!-- Stream content -->
+    <div class="stream-content">
+      <img :src="currentStreamContent" class="content-image" />
+
+      <!-- Threat overlays -->
+      <ThreatOverlay
+        v-for="threat in streamThreats"
+        :key="threat.id"
+        :threat="threat"
+        @click="maskThreat(threat)"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useScoreStore } from '@/stores/score'
+import { useThreatStore } from '@/stores/threat'
+
+const scoreStore = useScoreStore()
+const threatStore = useThreatStore()
+
+const score = computed(() => scoreStore.score)
+const combo = computed(() => scoreStore.combo)
+const health = computed(() => scoreStore.health)
+
+const streamThreats = computed(() =>
+  threatStore.threats.filter(t => t.type === 'stream' && !t.isMasked)
+)
+</script>
+
+<style scoped>
+.stream-panel {
+  width: 100%;
+  height: 100%;
+  background: #0e0e14;
+  position: relative;
+}
+
+.game-hud {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 12px;
+  z-index: 100;
+  min-width: 180px;
+}
+
+.hud-item {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.hud-item:last-child {
+  margin-bottom: 0;
+}
+
+.health-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.health-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #ffaa00, #ff3355);
+  transition: width 0.3s ease;
+}
+</style>
+```
+
+### StreamInfoBar Component
+
+```vue
+<!-- components/StreamInfoBar.vue -->
+<template>
+  <div class="stream-info-bar">
+    <div class="info-left">
+      <span class="live-indicator">🔴 LIVE</span>
+      <span class="category">Reaction Game</span>
+      <span class="viewers">{{ viewerCount.toLocaleString() }} viewers</span>
+    </div>
+
+    <div class="info-right">
+      <button class="subscribe-btn">⭐ Subscribe</button>
+      <button class="share-btn">Share</button>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+const viewerCount = ref(1234)
+</script>
+
+<style scoped>
+.stream-info-bar {
+  height: 50px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-left {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.live-indicator {
+  color: #ff0000;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+</style>
+```
+
+**Key Points:**
+- All components use Nuxt 3 auto-imports
+- TypeScript for type safety
+- Reactive state with Pinia stores
+- Scoped styles for isolation
+- Component-based architecture
 
 ### Stream Panel
 
