@@ -1,3 +1,22 @@
+<script setup lang="ts">
+useHead({
+  link: [
+    // Prefetch Live2D model assets
+    { rel: 'prefetch', href: '/live2d/hiyori_free_t08.model3.json' },
+    { rel: 'prefetch', href: '/live2d/hiyori_free_t08.moc3' },
+    { rel: 'prefetch', href: '/live2d/hiyori_free_t08.2048/texture_00.png' },
+    // Prefetch stream video
+    { rel: 'prefetch', href: '/assets/video/stream_normal.mp4' },
+    // Prefetch critical audio
+    { rel: 'prefetch', href: '/assets/audio/bgm.mp3', as: 'audio' },
+    { rel: 'prefetch', href: '/assets/audio/hurt_1.mp3', as: 'audio' },
+    { rel: 'prefetch', href: '/assets/audio/hurt_2.mp3', as: 'audio' },
+    { rel: 'prefetch', href: '/assets/audio/hurt_3.mp3', as: 'audio' },
+    { rel: 'prefetch', href: '/assets/audio/new_chat.mp3', as: 'audio' },
+  ],
+})
+</script>
+
 <template>
   <div
     class="flex flex-col items-center justify-center w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50 menu-bg"

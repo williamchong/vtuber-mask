@@ -1,6 +1,26 @@
 <script setup lang="ts">
 import { GAME_CONFIG } from '~/data/config'
 
+useHead({
+  link: [
+    // Preload Live2D model assets (critical for game)
+    { rel: 'preload', href: '/live2d/hiyori_free_t08.model3.json', as: 'fetch', crossorigin: 'anonymous' },
+    { rel: 'preload', href: '/live2d/hiyori_free_t08.moc3', as: 'fetch', crossorigin: 'anonymous' },
+    { rel: 'preload', href: '/live2d/hiyori_free_t08.2048/texture_00.png', as: 'image' },
+    // Preload stream video background
+    { rel: 'preload', href: '/assets/video/stream_normal.mp4', as: 'video', type: 'video/mp4' },
+    // Preload critical audio
+    { rel: 'preload', href: '/assets/audio/bgm.mp3', as: 'audio', type: 'audio/mpeg' },
+    { rel: 'preload', href: '/assets/audio/hurt_1.mp3', as: 'audio', type: 'audio/mpeg' },
+    { rel: 'preload', href: '/assets/audio/hurt_2.mp3', as: 'audio', type: 'audio/mpeg' },
+    { rel: 'preload', href: '/assets/audio/hurt_3.mp3', as: 'audio', type: 'audio/mpeg' },
+    { rel: 'preload', href: '/assets/audio/new_chat.mp3', as: 'audio', type: 'audio/mpeg' },
+    { rel: 'preload', href: '/assets/audio/game_over.mp3', as: 'audio', type: 'audio/mpeg' },
+    { rel: 'preload', href: '/assets/audio/correct_action.mp3', as: 'audio', type: 'audio/mpeg' },
+    { rel: 'preload', href: '/assets/audio/incorrect_action.mp3', as: 'audio', type: 'audio/mpeg' },
+  ],
+})
+
 const gameStore = useGameStore()
 const chatStore = useChatStore()
 const infoLeak = useInfoLeak()
