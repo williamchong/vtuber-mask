@@ -21,7 +21,7 @@ export default defineNuxtConfig({
       title: 'VTuber Mask - Protect the Stream',
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
         { name: 'description', content: 'A reaction game for Global Game Jam 2026' },
       ],
     },

@@ -109,11 +109,10 @@ const emotionalEmoji = computed(() => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center w-screen h-screen bg-[#111118]">
-    <div
-      class="flex flex-col w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50 relative"
-      :class="{ 'miss-shake': missFlash }"
-    >
+  <div
+    class="flex flex-col w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50 relative"
+    :class="{ 'miss-shake': missFlash }"
+  >
       <!-- Miss flash overlay -->
       <Transition name="miss-flash">
         <div
@@ -191,7 +190,6 @@ const emotionalEmoji = computed(() => {
         </div>
         <span class="text-white/50">Hold to censor inappropriate content!</span>
       </div>
-    </div>
   </div>
 </template>
 
