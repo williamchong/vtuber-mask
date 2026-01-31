@@ -189,7 +189,7 @@ const emotionalEmoji = computed(() => {
           </span>
           <span class="text-white/40">Gaming &middot; Content Moderation Simulator</span>
         </div>
-        <span class="text-white/50">Click to censor inappropriate content!</span>
+        <span class="text-white/50">Hold to censor inappropriate content!</span>
       </div>
     </div>
   </div>

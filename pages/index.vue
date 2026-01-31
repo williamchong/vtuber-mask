@@ -18,7 +18,7 @@
       <UButton size="xl" color="primary" to="/game" class="px-10 mb-6"> Go Live </UButton>
 
       <p class="text-sm text-white/30 max-w-xs text-center leading-relaxed">
-        You're a VTuber going live. Click to mask dangerous content before your viewers notice!
+        You're a VTuber going live. Hold to mask dangerous content before your viewers notice!
       </p>
     </div>
   </div>
