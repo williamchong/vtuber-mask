@@ -1,6 +1,15 @@
 <script setup lang="ts">
 const gameStore = useGameStore()
 
+useHead({
+  title: 'Stream Ended - VTuber Mask',
+  meta: [
+    { name: 'description', content: 'Your stream has ended! See your stats, grade, and how long you survived in VTuber Mask.' },
+    { name: 'robots', content: 'noindex, nofollow' }, // Don't index game over pages
+    { name: 'theme-color', content: '#e94560' },
+  ],
+})
+
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60)
   const s = seconds % 60

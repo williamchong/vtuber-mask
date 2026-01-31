@@ -2,6 +2,19 @@
 import { GAME_CONFIG } from '~/data/config'
 
 useHead({
+  title: 'Playing VTuber Mask - Protect Your Stream',
+  meta: [
+    { name: 'description', content: 'Play VTuber Mask now! Hold to mask dangerous chat messages and on-screen content before your viewers notice. How long can you keep your stream safe?' },
+    { name: 'keywords', content: 'VTuber, game, Global Game Jam 2026, reaction game, streaming simulator' },
+    { name: 'theme-color', content: '#e94560' },
+    { name: 'robots', content: 'noindex, nofollow' }, // Don't index the actual game page
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'VTuber Mask - Now Playing' },
+    { property: 'og:description', content: 'Play VTuber Mask - A fast-paced reaction game for Global Game Jam 2026' },
+    { property: 'og:image', content: '/og-image.png' },
+  ],
   link: [
     // Preload Live2D model assets (critical for game)
     { rel: 'preload', href: '/live2d/hiyori_free_t08.model3.json', as: 'fetch', crossorigin: 'anonymous' },
