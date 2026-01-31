@@ -58,8 +58,7 @@ function maskMessage() {
       gameStore.maskThreat(positionRatio)
       audio.playCorrect()
     }
-  }
-  else {
+  } else {
     chatStore.maskMessage(msg.id)
     chatStore.flagFalsePositive(msg.id)
     gameStore.penalizeFalsePositive()
@@ -91,31 +90,27 @@ function cancelHold() {
     :class="{
       'border-transparent hover:bg-white/[0.04]':
         !message.isMasked && !message.falsePositive && !isFlashing,
-      'border-l-[#1a1a2e] bg-[#1a1a2e]': message.isMasked && !message.correctMask && !message.falsePositive,
+      'border-l-[#1a1a2e] bg-[#1a1a2e]':
+        message.isMasked && !message.correctMask && !message.falsePositive,
       'border-l-green-400 bg-green-500/30': message.correctMask,
       'border-l-red-400 bg-red-500/30': message.falsePositive,
       'threat-flash': isFlashing,
     }"
-    :style="
-      !message.isMasked && !message.falsePositive && !isFlashing
-        ? threatStyle
-        : {}
-    "
+    :style="!message.isMasked && !message.falsePositive && !isFlashing ? threatStyle : {}"
     @mousedown.prevent="startHold"
     @mouseup="cancelHold"
     @mouseleave="cancelHold"
   >
     <!-- Hold progress bar -->
-    <div
-      v-if="holding"
-      class="hold-progress absolute inset-0 bg-white/15 pointer-events-none"
-    />
+    <div v-if="holding" class="hold-progress absolute inset-0 bg-white/15 pointer-events-none" />
     <template v-if="message.isMasked">
       <span class="text-sm font-bold text-white/40">{{ message.username }}</span>
       <span class="ml-2 text-sm text-white/30 line-through">[CENSORED]</span>
     </template>
     <template v-else>
-      <span class="text-sm font-bold" :style="{ color: message.color }">{{ message.username }}</span>
+      <span class="text-sm font-bold" :style="{ color: message.color }">{{
+        message.username
+      }}</span>
       <span class="ml-2 text-sm text-white/80">{{ message.text }}</span>
     </template>
   </div>

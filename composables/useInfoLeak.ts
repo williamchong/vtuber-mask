@@ -18,7 +18,8 @@ export function useInfoLeak() {
     if (!gameStore.isRunning) return
 
     const viewers = Math.min(gameStore.viewers, GAME_CONFIG.VIEWER_DIFFICULTY_CAP)
-    const speedup = 1 + (viewers - GAME_CONFIG.INITIAL_VIEWERS) / GAME_CONFIG.VIEWER_DIFFICULTY_SCALE
+    const speedup =
+      1 + (viewers - GAME_CONFIG.INITIAL_VIEWERS) / GAME_CONFIG.VIEWER_DIFFICULTY_SCALE
     const base = GAME_CONFIG.INFO_LEAK_BASE_INTERVAL
     const interval = Math.max(GAME_CONFIG.INFO_LEAK_MIN_INTERVAL, base / Math.max(0.5, speedup))
     const jitter = 0.7 + Math.random() * 0.6
@@ -26,8 +27,7 @@ export function useInfoLeak() {
     spawnTimer = setTimeout(() => {
       if (gameStore.isRunning && leakState.value === 'idle') {
         startLeak()
-      }
-      else {
+      } else {
         scheduleNext()
       }
     }, interval * jitter)
@@ -61,8 +61,7 @@ export function useInfoLeak() {
     if (leakState.value === 'grace' || leakState.value === 'danger') {
       if (leakState.value === 'grace') {
         gameStore.threatsMasked++
-      }
-      else {
+      } else {
         // Danger state: already penalized on entry, still counts as masked
         gameStore.threatsMasked++
       }
@@ -90,16 +89,28 @@ export function useInfoLeak() {
   }
 
   function clearSpawnTimer() {
-    if (spawnTimer) { clearTimeout(spawnTimer); spawnTimer = null }
+    if (spawnTimer) {
+      clearTimeout(spawnTimer)
+      spawnTimer = null
+    }
   }
   function clearGraceTimer() {
-    if (graceTimer) { clearTimeout(graceTimer); graceTimer = null }
+    if (graceTimer) {
+      clearTimeout(graceTimer)
+      graceTimer = null
+    }
   }
   function clearDangerTimer() {
-    if (dangerTimer) { clearTimeout(dangerTimer); dangerTimer = null }
+    if (dangerTimer) {
+      clearTimeout(dangerTimer)
+      dangerTimer = null
+    }
   }
   function clearCensorTimer() {
-    if (censorTimer) { clearTimeout(censorTimer); censorTimer = null }
+    if (censorTimer) {
+      clearTimeout(censorTimer)
+      censorTimer = null
+    }
   }
 
   return {

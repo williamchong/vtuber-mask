@@ -32,8 +32,7 @@ export function useGameLoop(externalDanger?: Ref<boolean>) {
             if (!msg.redTriggered) msg.redTriggered = true // skip red if went straight to flash
             gameStore.penalizeThreatFlash()
           }
-        }
-        else if (isRed) {
+        } else if (isRed) {
           hasRed = true
           if (!msg.redTriggered) {
             msg.redTriggered = true

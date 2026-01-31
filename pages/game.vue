@@ -26,7 +26,7 @@ onUnmounted(() => {
 
 watch(
   () => gameStore.state,
-  (s) => {
+  s => {
     if (s === 'gameover') {
       gameLoop.stop()
       infoLeak.stop()
@@ -34,7 +34,7 @@ watch(
       audio.playGameOver()
       router.push('/gameover')
     }
-  },
+  }
 )
 
 // Flash red and play hurt sound when a threat is missed
@@ -48,7 +48,7 @@ watch(
         missFlash.value = false
       }, 400)
     }
-  },
+  }
 )
 
 // Play sound when new chat message appears
@@ -58,20 +58,20 @@ watch(
     if (newLen > oldLen) {
       audio.playNewChat()
     }
-  },
+  }
 )
 
 // Show viewer delta when it changes from player action
 watch(
   () => gameStore.viewerDelta,
-  (delta) => {
+  delta => {
     if (delta === 0) return
     viewerDeltaDisplay.value = delta
     if (deltaTimeout) clearTimeout(deltaTimeout)
     deltaTimeout = setTimeout(() => {
       viewerDeltaDisplay.value = null
     }, 1200)
-  },
+  }
 )
 
 const smoothnessDotColors = {
@@ -83,7 +83,7 @@ const smoothnessDotColors = {
 const smoothnessDotColor = computed(() => smoothnessDotColors[gameStore.smoothness])
 
 const emotionalPercent = computed(() =>
-  Math.max(0, Math.min(100, (gameStore.emotionalValue / GAME_CONFIG.EMOTIONAL_VALUE_MAX) * 100)),
+  Math.max(0, Math.min(100, (gameStore.emotionalValue / GAME_CONFIG.EMOTIONAL_VALUE_MAX) * 100))
 )
 
 const emotionalBarColor = computed(() => {

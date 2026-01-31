@@ -153,7 +153,8 @@ export const useChatStore = defineStore('chat', () => {
   function getChatSpeedMultiplier(): number {
     const gameStore = useGameStore()
     const viewers = Math.min(gameStore.viewers, GAME_CONFIG.VIEWER_DIFFICULTY_CAP)
-    const multiplier = 1 + (viewers - GAME_CONFIG.INITIAL_VIEWERS) / GAME_CONFIG.VIEWER_DIFFICULTY_SCALE
+    const multiplier =
+      1 + (viewers - GAME_CONFIG.INITIAL_VIEWERS) / GAME_CONFIG.VIEWER_DIFFICULTY_SCALE
     return Math.max(GAME_CONFIG.VIEWER_DIFFICULTY_FLOOR, multiplier)
   }
 

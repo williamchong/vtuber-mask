@@ -34,7 +34,6 @@ function cancelHold() {
     holdTimer = null
   }
 }
-
 </script>
 
 <template>
@@ -46,11 +45,7 @@ function cancelHold() {
     @mouseup="cancelHold"
     @mouseleave="cancelHold"
   >
-    <img
-      :src="gmailImg"
-      class="absolute inset-0 w-full h-full object-cover"
-      draggable="false"
-    >
+    <img :src="gmailImg" class="absolute inset-0 w-full h-full object-cover" draggable="false" />
 
     <!-- Danger warning icon -->
     <Transition name="warn-fade">
@@ -58,20 +53,25 @@ function cancelHold() {
         v-if="state === 'danger'"
         class="absolute inset-0 flex items-center justify-center pointer-events-none"
       >
-        <div class="warn-pulse flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-red-500/20 backdrop-blur-sm">
-          <svg class="w-16 h-16 text-red-500 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+        <div
+          class="warn-pulse flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-red-500/20 backdrop-blur-sm"
+        >
+          <svg
+            class="w-16 h-16 text-red-500 drop-shadow-lg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
             <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
           </svg>
-          <span class="text-red-400 text-sm font-bold uppercase tracking-wider">Personal Info Exposed!</span>
+          <span class="text-red-400 text-sm font-bold uppercase tracking-wider"
+            >Personal Info Exposed!</span
+          >
         </div>
       </div>
     </Transition>
 
     <!-- Hold progress bar -->
-    <div
-      v-if="holding"
-      class="hold-progress absolute inset-0 bg-white/20 pointer-events-none"
-    />
+    <div v-if="holding" class="hold-progress absolute inset-0 bg-white/20 pointer-events-none" />
   </div>
 
   <!-- Censored blur overlay -->
@@ -94,7 +94,8 @@ function cancelHold() {
 }
 
 @keyframes warn-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgb(239 68 68 / 0.4);
   }
   50% {

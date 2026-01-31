@@ -19,9 +19,12 @@ export const useGameStore = defineStore('game', () => {
 
   const viewerRate = computed(() => {
     switch (smoothness.value) {
-      case 'smooth': return GAME_CONFIG.VIEWER_RATE_SMOOTH
-      case 'normal': return GAME_CONFIG.VIEWER_RATE_NORMAL
-      case 'laggy': return GAME_CONFIG.VIEWER_RATE_LAGGY
+      case 'smooth':
+        return GAME_CONFIG.VIEWER_RATE_SMOOTH
+      case 'normal':
+        return GAME_CONFIG.VIEWER_RATE_NORMAL
+      case 'laggy':
+        return GAME_CONFIG.VIEWER_RATE_LAGGY
     }
   })
 
@@ -88,15 +91,13 @@ export const useGameStore = defineStore('game', () => {
       case 'normal':
         if (hasFlashing) {
           setLaggy()
-        }
-        else if (!hasRed) {
+        } else if (!hasRed) {
           smoothnessTimer.value += dtMs
           if (smoothnessTimer.value >= GAME_CONFIG.SMOOTHNESS_NORMAL_TO_SMOOTH_TIME) {
             smoothness.value = 'smooth'
             smoothnessTimer.value = 0
           }
-        }
-        else {
+        } else {
           smoothnessTimer.value = 0
         }
         break
@@ -112,13 +113,19 @@ export const useGameStore = defineStore('game', () => {
 
   function penalizeThreatRed() {
     if (state.value !== 'playing') return
-    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.THREAT_RED_EMOTIONAL_PENALTY)
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.THREAT_RED_EMOTIONAL_PENALTY
+    )
     if (emotionalValue.value <= 0) gameOver()
   }
 
   function penalizeThreatFlash() {
     if (state.value !== 'playing') return
-    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.THREAT_FLASH_EMOTIONAL_PENALTY)
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.THREAT_FLASH_EMOTIONAL_PENALTY
+    )
     if (emotionalValue.value <= 0) gameOver()
   }
 
@@ -136,7 +143,7 @@ export const useGameStore = defineStore('game', () => {
     if (positionRatio > 0.5) {
       emotionalValue.value = Math.min(
         GAME_CONFIG.EMOTIONAL_VALUE_MAX,
-        emotionalValue.value + GAME_CONFIG.EARLY_MASK_EMOTIONAL_RECOVERY * earlyBonus,
+        emotionalValue.value + GAME_CONFIG.EARLY_MASK_EMOTIONAL_RECOVERY * earlyBonus
       )
     }
   }
@@ -146,7 +153,7 @@ export const useGameStore = defineStore('game', () => {
     falsePositives.value++
     emotionalValue.value = Math.max(
       0,
-      emotionalValue.value - GAME_CONFIG.FALSE_POSITIVE_EMOTIONAL_PENALTY,
+      emotionalValue.value - GAME_CONFIG.FALSE_POSITIVE_EMOTIONAL_PENALTY
     )
     const before = viewers.value
     viewers.value = Math.max(0, viewers.value - GAME_CONFIG.FALSE_POSITIVE_VIEWER_PENALTY)
@@ -170,7 +177,10 @@ export const useGameStore = defineStore('game', () => {
 
   function penalizeInfoLeakDanger() {
     if (state.value !== 'playing') return
-    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.INFO_LEAK_DANGER_EMOTIONAL_PENALTY)
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.INFO_LEAK_DANGER_EMOTIONAL_PENALTY
+    )
     setLaggy()
     if (emotionalValue.value <= 0) gameOver()
   }
@@ -178,7 +188,10 @@ export const useGameStore = defineStore('game', () => {
   function missedInfoLeak() {
     if (state.value !== 'playing') return
     threatsExpired.value++
-    emotionalValue.value = Math.max(0, emotionalValue.value - GAME_CONFIG.INFO_LEAK_MISS_EMOTIONAL_PENALTY)
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.INFO_LEAK_MISS_EMOTIONAL_PENALTY
+    )
     const before = viewers.value
     viewers.value = Math.max(0, viewers.value - GAME_CONFIG.INFO_LEAK_MISS_VIEWER_PENALTY)
     viewerDelta.value = Math.round(viewers.value - before)
@@ -198,7 +211,7 @@ export const useGameStore = defineStore('game', () => {
     const delta = min + Math.random() * (max - min)
     emotionalValue.value = Math.max(
       0,
-      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + delta),
+      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + delta)
     )
     if (emotionalValue.value <= 0) gameOver()
   }
@@ -207,7 +220,7 @@ export const useGameStore = defineStore('game', () => {
     if (state.value !== 'playing') return
     emotionalValue.value = Math.max(
       0,
-      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + sentiment * 0.15),
+      Math.min(GAME_CONFIG.EMOTIONAL_VALUE_MAX, emotionalValue.value + sentiment * 0.15)
     )
   }
 

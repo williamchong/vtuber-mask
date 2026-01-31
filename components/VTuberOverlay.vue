@@ -70,7 +70,10 @@ onMounted(() => {
           class="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 transition-colors duration-300"
           :class="dotColor.ping"
         />
-        <span class="relative inline-flex h-2 w-2 rounded-full transition-colors duration-300" :class="dotColor.dot" />
+        <span
+          class="relative inline-flex h-2 w-2 rounded-full transition-colors duration-300"
+          :class="dotColor.dot"
+        />
       </span>
       <span class="font-semibold text-white/90 truncate">MaskChan_TV</span>
     </div>
