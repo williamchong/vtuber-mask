@@ -36,6 +36,7 @@ onMounted(() => {
   loadOml2d({
     parentElement: containerRef.value,
     dockedPosition: 'right',
+    mobileDisplay: true,
     sayHello: false,
     transitionTime: 0,
     primaryColor: '#e94560',
@@ -47,11 +48,17 @@ onMounted(() => {
       disable: true,
     },
     tips: {
+      mobileStyle: {
+        display: 'none',
+      },
       style: {
         display: 'none',
       },
     },
     menus: {
+      mobileStyle: {
+        display: 'none',
+      },
       style: {
         display: 'none',
       },
