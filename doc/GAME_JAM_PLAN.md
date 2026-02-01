@@ -202,4 +202,3 @@ These are the cherry on top, only add if everything else is done.
 ✅ Audio/visual feedback is satisfying
 ✅ Players can learn by playing (hold hint shown on first tap)
 ✅ Ready for public demo/submission
-

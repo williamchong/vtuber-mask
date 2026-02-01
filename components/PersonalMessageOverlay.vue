@@ -46,10 +46,17 @@ function cancelHold() {
     @pointerup="cancelHold"
     @pointerleave="cancelHold"
   >
-    <img :src="discordMsgImg" class="max-w-[320px] max-h-[180px] object-contain rounded-lg" draggable="false">
+    <img
+      :src="discordMsgImg"
+      class="max-w-[320px] max-h-[180px] object-contain rounded-lg"
+      draggable="false"
+    />
 
     <!-- Hold progress bar -->
-    <div v-if="holding" class="hold-progress absolute inset-0 bg-white/20 pointer-events-none rounded-lg" />
+    <div
+      v-if="holding"
+      class="hold-progress absolute inset-0 bg-white/20 pointer-events-none rounded-lg"
+    />
   </div>
 
   <!-- Censored blur overlay (over the notification area only) -->

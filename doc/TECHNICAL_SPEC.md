@@ -33,40 +33,40 @@
 
 ### Stores (Pinia)
 
-| Store | File | Responsibilities |
-|---|---|---|
-| Game | `stores/game.ts` | Game state, emotional value, viewers, smoothness state machine, threat/mask stats, grading |
-| Chat | `stores/chat.ts` | Chat messages (max 15), threat spawning, difficulty scaling, position-based expiry |
+| Store | File             | Responsibilities                                                                           |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------ |
+| Game  | `stores/game.ts` | Game state, emotional value, viewers, smoothness state machine, threat/mask stats, grading |
+| Chat  | `stores/chat.ts` | Chat messages (max 15), threat spawning, difficulty scaling, position-based expiry         |
 
 ### Composables
 
-| Composable | Responsibilities |
-|---|---|
-| `useGameLoop` | RAF-based loop, danger zone detection per frame, smoothness/viewer/emotion updates |
-| `useInfoLeak` | Info leak threat state machine (idle → grace → danger → censored) |
-| `useMisbehavior` | VTuber misbehavior (emotion < 40 trigger, continuous drain in danger) |
-| `usePersonalMessage` | Personal message threat state machine |
-| `useAudio` | Web Audio API wrapper, SFX + BGM playback with caching |
-| `useViewportScale` | Responsive 1280x720 scaling to fit window |
+| Composable           | Responsibilities                                                                   |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| `useGameLoop`        | RAF-based loop, danger zone detection per frame, smoothness/viewer/emotion updates |
+| `useInfoLeak`        | Info leak threat state machine (idle → grace → danger → censored)                  |
+| `useMisbehavior`     | VTuber misbehavior (emotion < 40 trigger, continuous drain in danger)              |
+| `usePersonalMessage` | Personal message threat state machine                                              |
+| `useAudio`           | Web Audio API wrapper, SFX + BGM playback with caching                             |
+| `useViewportScale`   | Responsive 1280x720 scaling to fit window                                          |
 
 ### Components
 
-| Component | Role |
-|---|---|
-| `StreamPanel` | Left 50%, video background, integrates threat overlays + VTuber |
-| `ChatPanel` | Right 50%, renders 15 ChatMessage components with TransitionGroup |
-| `ChatMessage` | Individual message with hold-to-mask, position-based danger states |
-| `VTuberOverlay` | Live2D model container, smoothness dot, name bar |
-| `InfoLeakOverlay` | Gmail-style info leak popup on stream |
-| `PersonalMessageOverlay` | Discord-style notification on stream |
-| `VTuberMisbehavior` | Angry face overlay on VTuber model |
+| Component                | Role                                                               |
+| ------------------------ | ------------------------------------------------------------------ |
+| `StreamPanel`            | Left 50%, video background, integrates threat overlays + VTuber    |
+| `ChatPanel`              | Right 50%, renders 15 ChatMessage components with TransitionGroup  |
+| `ChatMessage`            | Individual message with hold-to-mask, position-based danger states |
+| `VTuberOverlay`          | Live2D model container, smoothness dot, name bar                   |
+| `InfoLeakOverlay`        | Gmail-style info leak popup on stream                              |
+| `PersonalMessageOverlay` | Discord-style notification on stream                               |
+| `VTuberMisbehavior`      | Angry face overlay on VTuber model                                 |
 
 ### Data
 
-| File | Contents |
-|---|---|
-| `data/config.ts` | All game constants: penalties, timings, viewer rates, difficulty scaling |
-| `data/chatMessages.ts` | Normal messages (45+), threat messages (35+), usernames (30+), colors |
+| File                   | Contents                                                                 |
+| ---------------------- | ------------------------------------------------------------------------ |
+| `data/config.ts`       | All game constants: penalties, timings, viewer rates, difficulty scaling |
+| `data/chatMessages.ts` | Normal messages (45+), threat messages (35+), usernames (30+), colors    |
 
 ## Nuxt Configuration
 

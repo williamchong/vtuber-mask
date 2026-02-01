@@ -65,11 +65,11 @@ Two independent axes that make the game harder over time:
 
 **Stream (3 types):**
 
-| Threat | Trigger | Duration | Miss Penalty |
-|---|---|---|---|
-| Personal Info Leak | Random timer | ~4s | -8 emo, -30 viewers |
+| Threat             | Trigger      | Duration         | Miss Penalty        |
+| ------------------ | ------------ | ---------------- | ------------------- |
+| Personal Info Leak | Random timer | ~4s              | -8 emo, -30 viewers |
 | VTuber Misbehavior | Emotion < 40 | Continuous drain | -5 emo/danger entry |
-| Personal Message | Random timer | ~4s | -8 emo, -30 viewers |
+| Personal Message   | Random timer | ~4s              | -8 emo, -30 viewers |
 
 ### Grading
 

@@ -7,7 +7,7 @@ export function useViewportScale() {
     scale.value = Math.min(
       window.innerWidth / GAME_CONFIG.VIEWPORT_WIDTH,
       window.innerHeight / GAME_CONFIG.VIEWPORT_HEIGHT,
-      1,
+      1
     )
   }
 

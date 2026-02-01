@@ -21,9 +21,20 @@ export default defineNuxtConfig({
       title: 'VTuber Mask - Protect the Stream',
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
-        { name: 'description', content: 'You\'re a VTuber going live. Hold to mask dangerous content before your viewers notice! A fast-paced reaction game for Global Game Jam 2026.' },
-        { name: 'keywords', content: 'VTuber, game, Global Game Jam 2026, reaction game, streaming simulator, content moderation' },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+        },
+        {
+          name: 'description',
+          content:
+            "You're a VTuber going live. Hold to mask dangerous content before your viewers notice! A fast-paced reaction game for Global Game Jam 2026.",
+        },
+        {
+          name: 'keywords',
+          content:
+            'VTuber, game, Global Game Jam 2026, reaction game, streaming simulator, content moderation',
+        },
         { name: 'author', content: 'VTuber Mask Team' },
         { name: 'theme-color', content: '#e94560' },
 
@@ -31,7 +42,11 @@ export default defineNuxtConfig({
         { property: 'og:site_name', content: 'VTuber Mask' },
         { property: 'og:type', content: 'website' },
         { property: 'og:title', content: 'VTuber Mask - Protect Your Stream' },
-        { property: 'og:description', content: 'You\'re a VTuber going live. Hold to mask dangerous content before your viewers notice!' },
+        {
+          property: 'og:description',
+          content:
+            "You're a VTuber going live. Hold to mask dangerous content before your viewers notice!",
+        },
         { property: 'og:image', content: '/og-image.png' },
 
         // Additional SEO

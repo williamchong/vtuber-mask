@@ -7,7 +7,6 @@ const baseURL = computed(() => {
   return config.app.baseURL || '/'
 })
 
-
 const live2dLinks = computed(() => [
   { rel: 'prefetch' as const, href: `${baseURL.value}live2d/hiyori_free_t08.model3.json` },
   { rel: 'prefetch' as const, href: `${baseURL.value}live2d/hiyori_free_t08.moc3` },
@@ -17,8 +16,16 @@ const live2dLinks = computed(() => [
 useHead({
   title: 'VTuber Mask - Protect Your Stream',
   meta: [
-    { name: 'description', content: 'You\'re a VTuber going live. Hold to mask dangerous content before your viewers notice! A fast-paced reaction game for Global Game Jam 2026.' },
-    { name: 'keywords', content: 'VTuber, game, Global Game Jam 2026, reaction game, streaming simulator, content moderation' },
+    {
+      name: 'description',
+      content:
+        "You're a VTuber going live. Hold to mask dangerous content before your viewers notice! A fast-paced reaction game for Global Game Jam 2026.",
+    },
+    {
+      name: 'keywords',
+      content:
+        'VTuber, game, Global Game Jam 2026, reaction game, streaming simulator, content moderation',
+    },
     { name: 'author', content: 'VTuber Mask Team' },
     { name: 'theme-color', content: '#e94560' },
 
@@ -26,7 +33,11 @@ useHead({
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://williamchong.github.io/vtuber-mask' },
     { property: 'og:title', content: 'VTuber Mask - Protect Your Stream' },
-    { property: 'og:description', content: 'You\'re a VTuber going live. Hold to mask dangerous content before your viewers notice!' },
+    {
+      property: 'og:description',
+      content:
+        "You're a VTuber going live. Hold to mask dangerous content before your viewers notice!",
+    },
     { property: 'og:image', content: `${baseURL.value}og-image.png` },
   ],
   link: [
@@ -47,7 +58,8 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'VideoGame',
         name: 'VTuber Mask',
-        description: 'A fast-paced reaction game where you play as a VTuber protecting your live stream. Mask dangerous content in chat and on-screen before viewers notice!',
+        description:
+          'A fast-paced reaction game where you play as a VTuber protecting your live stream. Mask dangerous content in chat and on-screen before viewers notice!',
         genre: ['Reaction Game', 'Simulation', 'Casual'],
         gamePlatform: 'Web Browser',
         applicationCategory: 'Game',

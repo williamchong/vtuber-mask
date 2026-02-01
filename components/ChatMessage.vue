@@ -173,7 +173,9 @@ function cancelHold() {
 
 .hint-fade-enter-active,
 .hint-fade-leave-active {
-  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
 }
 
 .hint-fade-enter-from,

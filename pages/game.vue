@@ -19,38 +19,88 @@ const baseURL = computed(() => {
 })
 
 const live2dLinks = computed(() => [
-  { rel: 'preload' as const, href: `${baseURL.value}live2d/hiyori_free_t08.model3.json`, as: 'fetch' as const, crossorigin: 'anonymous' as const },
-  { rel: 'preload' as const, href: `${baseURL.value}live2d/hiyori_free_t08.moc3`, as: 'fetch' as const, crossorigin: 'anonymous' as const },
-  { rel: 'preload' as const, href: `${baseURL.value}live2d/hiyori_free_t08.2048/texture_00.png`, as: 'image' as const, crossorigin: 'anonymous' as const },
+  {
+    rel: 'preload' as const,
+    href: `${baseURL.value}live2d/hiyori_free_t08.model3.json`,
+    as: 'fetch' as const,
+    crossorigin: 'anonymous' as const,
+  },
+  {
+    rel: 'preload' as const,
+    href: `${baseURL.value}live2d/hiyori_free_t08.moc3`,
+    as: 'fetch' as const,
+    crossorigin: 'anonymous' as const,
+  },
+  {
+    rel: 'preload' as const,
+    href: `${baseURL.value}live2d/hiyori_free_t08.2048/texture_00.png`,
+    as: 'image' as const,
+    crossorigin: 'anonymous' as const,
+  },
 ])
 
 useHead({
   title: 'Playing VTuber Mask - Protect Your Stream',
   meta: [
-    { name: 'description', content: 'Play VTuber Mask now! Hold to mask dangerous chat messages and on-screen content before your viewers notice. How long can you keep your stream safe?' },
-    { name: 'keywords', content: 'VTuber, game, Global Game Jam 2026, reaction game, streaming simulator' },
+    {
+      name: 'description',
+      content:
+        'Play VTuber Mask now! Hold to mask dangerous chat messages and on-screen content before your viewers notice. How long can you keep your stream safe?',
+    },
+    {
+      name: 'keywords',
+      content: 'VTuber, game, Global Game Jam 2026, reaction game, streaming simulator',
+    },
     { name: 'theme-color', content: '#e94560' },
     { name: 'robots', content: 'noindex, nofollow' }, // Don't index the actual game page
 
     // Open Graph
     { property: 'og:type', content: 'website' },
     { property: 'og:title', content: 'VTuber Mask - Now Playing' },
-    { property: 'og:description', content: 'Play VTuber Mask - A fast-paced reaction game for Global Game Jam 2026' },
+    {
+      property: 'og:description',
+      content: 'Play VTuber Mask - A fast-paced reaction game for Global Game Jam 2026',
+    },
     { property: 'og:image', content: `${baseURL.value}og-image.png` },
   ],
   link: [
     ...live2dLinks.value,
     // Preload stream video background (Vite-processed asset)
-    { rel: 'preload' as const, href: streamVideoUrl, as: 'video' as const, type: 'video/mp4' as const },
+    {
+      rel: 'preload' as const,
+      href: streamVideoUrl,
+      as: 'video' as const,
+      type: 'video/mp4' as const,
+    },
     // Preload critical audio (Vite-processed assets)
     { rel: 'preload' as const, href: bgmUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
     { rel: 'preload' as const, href: hurt1Url, as: 'audio' as const, type: 'audio/mpeg' as const },
     { rel: 'preload' as const, href: hurt2Url, as: 'audio' as const, type: 'audio/mpeg' as const },
     { rel: 'preload' as const, href: hurt3Url, as: 'audio' as const, type: 'audio/mpeg' as const },
-    { rel: 'preload' as const, href: newChatUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
-    { rel: 'preload' as const, href: gameOverUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
-    { rel: 'preload' as const, href: correctUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
-    { rel: 'preload' as const, href: incorrectUrl, as: 'audio' as const, type: 'audio/mpeg' as const },
+    {
+      rel: 'preload' as const,
+      href: newChatUrl,
+      as: 'audio' as const,
+      type: 'audio/mpeg' as const,
+    },
+    {
+      rel: 'preload' as const,
+      href: gameOverUrl,
+      as: 'audio' as const,
+      type: 'audio/mpeg' as const,
+    },
+    {
+      rel: 'preload' as const,
+      href: correctUrl,
+      as: 'audio' as const,
+      type: 'audio/mpeg' as const,
+    },
+    {
+      rel: 'preload' as const,
+      href: incorrectUrl,
+      as: 'audio' as const,
+      type: 'audio/mpeg' as const,
+    },
   ],
 })
 
@@ -173,85 +223,85 @@ const emotionalEmoji = computed(() => {
     class="flex flex-col w-[1280px] h-[720px] bg-[#1a1a2e] text-white rounded-lg overflow-hidden shadow-2xl shadow-black/50 relative"
     :class="{ 'miss-shake': missFlash }"
   >
-      <!-- Miss flash overlay -->
-      <Transition name="miss-flash">
-        <div
-          v-if="missFlash"
-          class="absolute inset-0 z-[200] pointer-events-none border-4 border-red-500/60 rounded-lg"
-        />
-      </Transition>
-
-      <!-- Emotional Value Bar -->
-      <div class="flex items-center h-6 bg-[#0a0a16] px-2 gap-2">
-        <span class="text-sm leading-none">{{ emotionalEmoji }}</span>
-        <div class="flex-1 h-1.5 bg-white/10 rounded-full relative overflow-hidden">
-          <div
-            class="absolute inset-y-0 left-0 rounded-full transition-all duration-300"
-            :class="emotionalBarColor"
-            :style="{ width: `${emotionalPercent}%` }"
-          />
-        </div>
-      </div>
-
-      <!-- Platform header -->
-      <header
-        class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10"
-      >
-        <div class="flex items-center gap-3">
-          <div
-            class="w-7 h-7 rounded-lg bg-[#e94560] flex items-center justify-center text-xs font-bold"
-          >
-            VM
-          </div>
-          <span class="font-bold">VTuber Mask</span>
-        </div>
-        <div class="flex items-center gap-2 text-sm text-white/70">
-          <span
-            class="inline-block w-2 h-2 rounded-full transition-colors duration-300"
-            :class="smoothnessDotColor"
-          />
-          <span>{{ Math.floor(gameStore.viewers).toLocaleString() }} viewers</span>
-          <Transition name="delta-pop">
-            <span
-              v-if="viewerDeltaDisplay !== null"
-              :key="viewerDeltaDisplay"
-              class="text-xs font-bold tabular-nums"
-              :class="viewerDeltaDisplay < 0 ? 'text-red-400' : 'text-green-400'"
-            >
-              {{ viewerDeltaDisplay < 0 ? '' : '+' }}{{ viewerDeltaDisplay }}
-            </span>
-          </Transition>
-        </div>
-      </header>
-
-      <!-- Main panels -->
-      <div class="flex flex-1 min-h-0">
-        <StreamPanel
-          :info-leak-state="infoLeak.leakState.value"
-          :misbehavior-state="misbehavior.state.value"
-          :personal-message-state="personalMessage.msgState.value"
-          @censor-leak="infoLeak.censor()"
-          @censor-misbehavior="misbehavior.censor()"
-          @censor-personal-message="personalMessage.censor()"
-        />
-        <ChatPanel />
-      </div>
-
-      <!-- Info bar -->
+    <!-- Miss flash overlay -->
+    <Transition name="miss-flash">
       <div
-        class="flex justify-between items-center h-[50px] px-6 bg-[#0f0f1e] border-t border-white/10 text-sm"
-      >
-        <div class="flex items-center gap-3">
-          <span
-            class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider"
-          >
-            <span class="inline-block w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-            Live
-          </span>
-          <span class="text-white/40">Gaming &middot; Content Moderation Simulator</span>
-        </div>
-        <span class="text-white/50">Hold to censor inappropriate content!</span>
+        v-if="missFlash"
+        class="absolute inset-0 z-[200] pointer-events-none border-4 border-red-500/60 rounded-lg"
+      />
+    </Transition>
+
+    <!-- Emotional Value Bar -->
+    <div class="flex items-center h-6 bg-[#0a0a16] px-2 gap-2">
+      <span class="text-sm leading-none">{{ emotionalEmoji }}</span>
+      <div class="flex-1 h-1.5 bg-white/10 rounded-full relative overflow-hidden">
+        <div
+          class="absolute inset-y-0 left-0 rounded-full transition-all duration-300"
+          :class="emotionalBarColor"
+          :style="{ width: `${emotionalPercent}%` }"
+        />
       </div>
+    </div>
+
+    <!-- Platform header -->
+    <header
+      class="flex items-center justify-between h-[60px] bg-[#0f0f1e] px-6 border-b border-white/10"
+    >
+      <div class="flex items-center gap-3">
+        <div
+          class="w-7 h-7 rounded-lg bg-[#e94560] flex items-center justify-center text-xs font-bold"
+        >
+          VM
+        </div>
+        <span class="font-bold">VTuber Mask</span>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-white/70">
+        <span
+          class="inline-block w-2 h-2 rounded-full transition-colors duration-300"
+          :class="smoothnessDotColor"
+        />
+        <span>{{ Math.floor(gameStore.viewers).toLocaleString() }} viewers</span>
+        <Transition name="delta-pop">
+          <span
+            v-if="viewerDeltaDisplay !== null"
+            :key="viewerDeltaDisplay"
+            class="text-xs font-bold tabular-nums"
+            :class="viewerDeltaDisplay < 0 ? 'text-red-400' : 'text-green-400'"
+          >
+            {{ viewerDeltaDisplay < 0 ? '' : '+' }}{{ viewerDeltaDisplay }}
+          </span>
+        </Transition>
+      </div>
+    </header>
+
+    <!-- Main panels -->
+    <div class="flex flex-1 min-h-0">
+      <StreamPanel
+        :info-leak-state="infoLeak.leakState.value"
+        :misbehavior-state="misbehavior.state.value"
+        :personal-message-state="personalMessage.msgState.value"
+        @censor-leak="infoLeak.censor()"
+        @censor-misbehavior="misbehavior.censor()"
+        @censor-personal-message="personalMessage.censor()"
+      />
+      <ChatPanel />
+    </div>
+
+    <!-- Info bar -->
+    <div
+      class="flex justify-between items-center h-[50px] px-6 bg-[#0f0f1e] border-t border-white/10 text-sm"
+    >
+      <div class="flex items-center gap-3">
+        <span
+          class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider"
+        >
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+          Live
+        </span>
+        <span class="text-white/40">Gaming &middot; Content Moderation Simulator</span>
+      </div>
+      <span class="text-white/50">Hold to censor inappropriate content!</span>
+    </div>
   </div>
 </template>
 

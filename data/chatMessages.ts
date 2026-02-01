@@ -115,7 +115,7 @@ export const threatMessages: ThreatMessage[] = [
 
   // Dox
   { text: 'I found your address: 123 Maple Street', type: 'dox' },
-  { text: "Your real name is Sarah right? I looked it up", type: 'dox' },
+  { text: 'Your real name is Sarah right? I looked it up', type: 'dox' },
   { text: 'I know where you live, 456 Oak Avenue', type: 'dox' },
   { text: "Isn't your phone number 555-0142?", type: 'dox' },
 

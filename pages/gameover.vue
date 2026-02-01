@@ -4,7 +4,11 @@ const gameStore = useGameStore()
 useHead({
   title: 'Stream Ended - VTuber Mask',
   meta: [
-    { name: 'description', content: 'Your stream has ended! See your stats, grade, and how long you survived in VTuber Mask.' },
+    {
+      name: 'description',
+      content:
+        'Your stream has ended! See your stats, grade, and how long you survived in VTuber Mask.',
+    },
     { name: 'robots', content: 'noindex, nofollow' }, // Don't index game over pages
     { name: 'theme-color', content: '#e94560' },
   ],
@@ -25,9 +29,7 @@ function formatTime(seconds: number): string {
     <p class="text-white/40 mb-8">Your stream is over. Here's how it went.</p>
 
     <!-- Stats card -->
-    <div
-      class="w-[360px] rounded-xl bg-black/40 border border-white/10 backdrop-blur-sm p-6 mb-8"
-    >
+    <div class="w-[360px] rounded-xl bg-black/40 border border-white/10 backdrop-blur-sm p-6 mb-8">
       <!-- Grade -->
       <div class="text-center mb-5">
         <span class="text-6xl font-black text-[#e94560]">{{ gameStore.grade }}</span>

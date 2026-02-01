@@ -34,10 +34,7 @@ const emit = defineEmits<{
 
     <InfoLeakOverlay :state="infoLeakState" @censor="emit('censorLeak')" />
 
-    <PersonalMessageOverlay
-      :state="personalMessageState"
-      @censor="emit('censorPersonalMessage')"
-    />
+    <PersonalMessageOverlay :state="personalMessageState" @censor="emit('censorPersonalMessage')" />
 
     <VTuberOverlay
       :misbehavior-state="misbehaviorState"
