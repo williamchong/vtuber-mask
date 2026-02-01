@@ -1,5 +1,7 @@
 # VTuber Mask - Game Design Document
 
+> **Note:** This document was written during pre-production. The actual implementation differs in several ways: hold-to-mask replaced click-to-mask, emotional value (0-100) replaced 3-heart health, accuracy grading replaced score/combo system, and position-based chat danger replaced fixed timers. See `CLAUDE.md` for the actual implementation status.
+
 ## Game Concept
 
 **Title:** VTuber Mask (working title)

@@ -1,5 +1,7 @@
 # VTuber Mask - UI/UX Design Document
 
+> **Note:** This document was written during pre-production. The overall layout (50/50 split, VTuber overlay, color scheme) was implemented as designed. However, the Game HUD is inline in the header/bars rather than a top-left overlay, there is no combo system, and the chat uses fixed 15 messages without scrolling instead of 18-20 with auto-scroll. See the actual components for current UI.
+
 ## Design Philosophy
 
 **Core Principles:**
