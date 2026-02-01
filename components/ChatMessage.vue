@@ -14,7 +14,9 @@ const gameStore = useGameStore()
 const audio = useAudio()
 
 let holdTimer: ReturnType<typeof setTimeout> | null = null
+let hintTimer: ReturnType<typeof setTimeout> | null = null
 const holding = ref(false)
+const showHoldHint = ref(false)
 
 function getDanger(): number {
   if (!props.message.isThreat || props.message.isMasked) return 0
@@ -76,17 +78,29 @@ function startHold() {
 }
 
 function cancelHold() {
+  const wasHolding = holding.value
   holding.value = false
   if (holdTimer) {
     clearTimeout(holdTimer)
     holdTimer = null
+  }
+
+  // Show hint if user tapped but didn't hold long enough (only first time globally)
+  if (wasHolding && !gameStore.holdHintShown) {
+    gameStore.markHoldHintShown()
+    showHoldHint.value = true
+    if (hintTimer) clearTimeout(hintTimer)
+    hintTimer = setTimeout(() => {
+      showHoldHint.value = false
+      hintTimer = null
+    }, 2000)
   }
 }
 </script>
 
 <template>
   <div
-    class="relative px-4 py-1.5 border-l-2 cursor-pointer select-none overflow-hidden"
+    class="relative px-4 py-1.5 border-l-2 cursor-pointer select-none overflow-visible"
     :class="{
       'border-transparent hover:bg-white/[0.04]':
         !message.isMasked && !message.falsePositive && !isFlashing,
@@ -103,6 +117,17 @@ function cancelHold() {
   >
     <!-- Hold progress bar -->
     <div v-if="holding" class="hold-progress absolute inset-0 bg-white/15 pointer-events-none" />
+
+    <!-- Hold hint (shows once after first failed tap) -->
+    <Transition name="hint-fade">
+      <div
+        v-if="showHoldHint && !message.isMasked"
+        class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 bg-black/90 text-white text-sm rounded-lg pointer-events-none"
+      >
+        Hold to censor!
+      </div>
+    </Transition>
+
     <template v-if="message.isMasked">
       <span class="text-sm font-bold text-white/40">{{ message.username }}</span>
       <span class="ml-2 text-sm text-white/30 line-through">[CENSORED]</span>
@@ -144,5 +169,16 @@ function cancelHold() {
   to {
     transform: scaleX(1);
   }
+}
+
+.hint-fade-enter-active,
+.hint-fade-leave-active {
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.hint-fade-enter-from,
+.hint-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(4px);
 }
 </style>

@@ -40,16 +40,16 @@ function cancelHold() {
   <!-- Discord message notification (bottom-left corner) -->
   <div
     v-if="state === 'grace' || state === 'danger'"
-    class="absolute bottom-4 left-4 max-w-[320px] max-h-[180px] z-[85] cursor-pointer select-none rounded-lg overflow-hidden"
+    class="absolute bottom-4 left-4 max-w-[320px] max-h-[180px] z-[85] cursor-pointer select-none rounded-lg overflow-visible"
     :class="{ 'danger-glow': state === 'danger' }"
     @pointerdown.prevent="startHold"
     @pointerup="cancelHold"
     @pointerleave="cancelHold"
   >
-    <img :src="discordMsgImg" class="max-w-[320px] max-h-[180px] object-contain" draggable="false">
+    <img :src="discordMsgImg" class="max-w-[320px] max-h-[180px] object-contain rounded-lg" draggable="false">
 
     <!-- Hold progress bar -->
-    <div v-if="holding" class="hold-progress absolute inset-0 bg-white/20 pointer-events-none" />
+    <div v-if="holding" class="hold-progress absolute inset-0 bg-white/20 pointer-events-none rounded-lg" />
   </div>
 
   <!-- Censored blur overlay (over the notification area only) -->

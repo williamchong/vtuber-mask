@@ -17,6 +17,7 @@ export const useGameStore = defineStore('game', () => {
   const peakViewers = ref<number>(GAME_CONFIG.INITIAL_VIEWERS)
   const viewerDelta = ref<number>(0)
   const viewerDeltaSeq = ref<number>(0)
+  const holdHintShown = ref<boolean>(false)
 
   const viewerRate = computed(() => {
     switch (smoothness.value) {
@@ -64,6 +65,7 @@ export const useGameStore = defineStore('game', () => {
     endTime.value = 0
     peakViewers.value = GAME_CONFIG.INITIAL_VIEWERS
     viewerDelta.value = 0
+    holdHintShown.value = false
   }
 
   function setLaggy() {
@@ -273,6 +275,10 @@ export const useGameStore = defineStore('game', () => {
     )
   }
 
+  function markHoldHintShown() {
+    holdHintShown.value = true
+  }
+
   function gameOver() {
     endTime.value = Date.now()
     state.value = 'gameover'
@@ -307,6 +313,7 @@ export const useGameStore = defineStore('game', () => {
     peakViewers,
     viewerDelta,
     viewerDeltaSeq,
+    holdHintShown,
     isRunning,
     survivalTime,
     accuracy,
@@ -327,6 +334,7 @@ export const useGameStore = defineStore('game', () => {
     updateViewers,
     fluctuateEmotionalValue,
     applySentiment,
+    markHoldHintShown,
     gameOver,
     reset,
   }
