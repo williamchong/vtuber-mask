@@ -36,7 +36,7 @@ useHead({
     { property: 'og:type', content: 'website' },
     { property: 'og:title', content: 'VTuber Mask - Now Playing' },
     { property: 'og:description', content: 'Play VTuber Mask - A fast-paced reaction game for Global Game Jam 2026' },
-    { property: 'og:image', content: `${baseURL.value}/og-image.png` },
+    { property: 'og:image', content: `${baseURL.value}og-image.png` },
   ],
   link: [
     ...live2dLinks.value,
@@ -58,8 +58,12 @@ const gameStore = useGameStore()
 const chatStore = useChatStore()
 const infoLeak = useInfoLeak()
 const misbehavior = useMisbehavior()
+const personalMessage = usePersonalMessage()
 const externalDanger = computed(
-  () => infoLeak.leakState.value === 'danger' || misbehavior.state.value === 'danger'
+  () =>
+    infoLeak.leakState.value === 'danger' ||
+    misbehavior.state.value === 'danger' ||
+    personalMessage.msgState.value === 'danger'
 )
 const gameLoop = useGameLoop(externalDanger)
 const audio = useAudio()
@@ -72,6 +76,7 @@ onMounted(() => {
   gameLoop.start()
   infoLeak.start()
   misbehavior.start()
+  personalMessage.start()
   audio.startBgm()
 })
 
@@ -79,6 +84,7 @@ onUnmounted(() => {
   gameLoop.stop()
   infoLeak.stop()
   misbehavior.stop()
+  personalMessage.stop()
   audio.stopBgm()
 })
 
@@ -89,6 +95,7 @@ watch(
       gameLoop.stop()
       infoLeak.stop()
       misbehavior.stop()
+      personalMessage.stop()
       audio.stopBgm()
       audio.playGameOver()
       router.push('/gameover')
@@ -222,8 +229,10 @@ const emotionalEmoji = computed(() => {
         <StreamPanel
           :info-leak-state="infoLeak.leakState.value"
           :misbehavior-state="misbehavior.state.value"
+          :personal-message-state="personalMessage.msgState.value"
           @censor-leak="infoLeak.censor()"
           @censor-misbehavior="misbehavior.censor()"
+          @censor-personal-message="personalMessage.censor()"
         />
         <ChatPanel />
       </div>

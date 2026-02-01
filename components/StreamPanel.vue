@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import type { InfoLeakState } from '~/composables/useInfoLeak'
 import type { MisbehaviorState } from '~/composables/useMisbehavior'
+import type { PersonalMessageState } from '~/composables/usePersonalMessage'
 import streamVideo from '~/assets/video/stream_normal.mp4'
 
 defineProps<{
   infoLeakState: InfoLeakState
   misbehaviorState: MisbehaviorState
+  personalMessageState: PersonalMessageState
 }>()
 
 const emit = defineEmits<{
   censorLeak: []
   censorMisbehavior: []
+  censorPersonalMessage: []
 }>()
 </script>
 
@@ -30,6 +33,11 @@ const emit = defineEmits<{
     />
 
     <InfoLeakOverlay :state="infoLeakState" @censor="emit('censorLeak')" />
+
+    <PersonalMessageOverlay
+      :state="personalMessageState"
+      @censor="emit('censorPersonalMessage')"
+    />
 
     <VTuberOverlay
       :misbehavior-state="misbehaviorState"

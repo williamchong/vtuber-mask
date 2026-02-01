@@ -1,6 +1,7 @@
 import angrySrc from '~/assets/audio/angry.mp3'
 import bgmSrc from '~/assets/audio/bgm.mp3'
 import correctSrc from '~/assets/audio/correct_action.mp3'
+import discordNotificationSrc from '~/assets/audio/discord_notification.mp3'
 import gameOverSrc from '~/assets/audio/game_over.mp3'
 import clickSrc from '~/assets/audio/generic_click.mp3'
 import hurt1Src from '~/assets/audio/hurt_1.mp3'
@@ -56,6 +57,10 @@ export function useAudio() {
     playSfx(angrySrc, 0.5)
   }
 
+  function playDiscordNotification() {
+    playSfx(discordNotificationSrc, 0.4)
+  }
+
   function playGameOver() {
     playSfx(gameOverSrc, 0.6)
   }
@@ -79,6 +84,7 @@ export function useAudio() {
     playAngry,
     playClick,
     playCorrect,
+    playDiscordNotification,
     playIncorrect,
     playHurt,
     playNewChat,

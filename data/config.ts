@@ -61,6 +61,16 @@ export const GAME_CONFIG = {
   MISBEHAVIOR_DANGER_VIEWER_DRAIN: 5, // per second while in danger
   MISBEHAVIOR_CENSOR_BLUR_TIME: 2000, // ms — blur duration after censoring
 
+  // Personal Message (stream panel threat - Discord-style)
+  PERSONAL_MSG_BASE_INTERVAL: 35000, // ms between spawn attempts
+  PERSONAL_MSG_MIN_INTERVAL: 18000, // fastest spawn rate
+  PERSONAL_MSG_GRACE_PERIOD: 1000, // ms — censor with no penalty
+  PERSONAL_MSG_DANGER_DURATION: 4000, // ms — danger state before expiry
+  PERSONAL_MSG_CENSOR_BLUR_TIME: 3000, // ms — blur duration after censoring
+  PERSONAL_MSG_MISS_EMOTIONAL_PENALTY: 8,
+  PERSONAL_MSG_MISS_VIEWER_PENALTY: 30,
+  PERSONAL_MSG_DANGER_EMOTIONAL_PENALTY: 5, // one-time on entering danger
+
   // Chat
   CHAT_MAX_MESSAGES: 15,
 

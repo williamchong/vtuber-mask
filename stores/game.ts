@@ -223,6 +223,31 @@ export const useGameStore = defineStore('game', () => {
     if (emotionalValue.value <= 0) gameOver()
   }
 
+  function penalizePersonalMsgDanger() {
+    if (state.value !== 'playing') return
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.PERSONAL_MSG_DANGER_EMOTIONAL_PENALTY
+    )
+    setLaggy()
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
+  function missedPersonalMsg() {
+    if (state.value !== 'playing') return
+    threatsExpired.value++
+    emotionalValue.value = Math.max(
+      0,
+      emotionalValue.value - GAME_CONFIG.PERSONAL_MSG_MISS_EMOTIONAL_PENALTY
+    )
+    const before = viewers.value
+    viewers.value = Math.max(0, viewers.value - GAME_CONFIG.PERSONAL_MSG_MISS_VIEWER_PENALTY)
+    viewerDelta.value = Math.round(viewers.value - before)
+    viewerDeltaSeq.value++
+    setLaggy()
+    if (emotionalValue.value <= 0) gameOver()
+  }
+
   function updateViewers(dt: number) {
     if (state.value !== 'playing') return
     viewers.value = Math.max(0, viewers.value + viewerRate.value * dt)
@@ -296,6 +321,8 @@ export const useGameStore = defineStore('game', () => {
     missedInfoLeak,
     penalizeMisbehaviorDanger,
     drainMisbehaviorDanger,
+    penalizePersonalMsgDanger,
+    missedPersonalMsg,
     updateSmoothness,
     updateViewers,
     fluctuateEmotionalValue,
